@@ -1473,6 +1473,9 @@ __metadata:
     react-dom: "npm:^18.3.1"
     tsup: "npm:^8.1.0"
     typescript: "npm:^5.5.3"
+  peerDependencies:
+    react: ">=18"
+    react-dom: ">=18"
   languageName: unknown
   linkType: soft
 
