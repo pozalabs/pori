@@ -14,6 +14,7 @@ export default defineConfig({
   outDir: './dist',
   format: ['cjs', 'esm'],
   external: ['react', 'react-dom'],
+  onSuccess: 'node ./.scripts/import-css.js && sh ./.scripts/declare-type.sh',
   esbuildOptions: options => {
     options.loader = {
       '.ts': 'tsx',
