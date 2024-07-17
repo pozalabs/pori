@@ -1,28 +1,81 @@
 {
-  "name": "pori",
+  "name": "@pozalabs/pori",
+  "version": "0.1.0",
+  "description": "Pozalabs audio library for react",
+  "main": "./dist/index.js",
+  "module": "./dist/index.mjs",
+  "types": "./dist/index.d.ts",
+  "exports": {
+    "./package.json": "./package.json",
+    ".": {
+      "require": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      },
+      "import": {
+        "types": "./dist/index.d.mts",
+        "default": "./dist/index.mjs"
+      },
+      "default": {
+        "types": "./dist/index.d.ts",
+        "default": "./dist/index.js"
+      }
+    },
+    "./components": {
+      "require": {
+        "types": "./dist/components.d.ts",
+        "default": "./dist/components.js"
+      },
+      "import": {
+        "types": "./dist/components.d.mts",
+        "default": "./dist/components.mjs"
+      },
+      "default": {
+        "types": "./dist/components.d.ts",
+        "default": "./dist/components.js"
+      }
+    }
+  },
   "packageManager": "yarn@4.3.1",
   "scripts": {
-    "build": "tsup",
+    "build": "tsup && sh ./.scripts/postbuild.sh",
+    "dev": "tsup --watch",
     "tsc": "tsc --noEmit",
     "storybook": "storybook dev -p 6006",
-    "build-storybook": "storybook build"
+    "build-storybook": "storybook build",
+    "prepack": "yarn build"
   },
+  "files": [
+    "dist",
+    "components.d.ts"
+  ],
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
+    "@pozalabs/pokit": "^0.3.0",
     "@storybook/addon-essentials": "^8.2.4",
     "@storybook/addon-interactions": "^8.2.4",
     "@storybook/addon-links": "^8.2.4",
     "@storybook/addon-onboarding": "^8.2.4",
+    "@storybook/addon-styling-webpack": "^1.0.0",
+    "@storybook/addon-themes": "^8.2.4",
     "@storybook/addon-webpack5-compiler-swc": "^1.0.4",
     "@storybook/blocks": "^8.2.4",
     "@storybook/react": "^8.2.4",
     "@storybook/react-webpack5": "^8.2.4",
     "@storybook/test": "^8.2.4",
-    "@types/react": "^18",
-    "@types/react-dom": "^18",
+    "@swc/core": "^1.6.13",
+    "@types/react": "^18.3.3",
+    "@types/react-dom": "^18.3.0",
+    "@types/webaudioapi": "^0.0.27",
+    "autoprefixer": "^10.4.19",
+    "css-loader": "^7.1.2",
+    "postcss": "^8.4.39",
+    "postcss-loader": "^8.1.1",
     "react": "^18.3.1",
     "react-dom": "^18.3.1",
     "storybook": "^8.2.4",
+    "style-loader": "^4.0.0",
+    "tailwindcss": "^3.4.6",
     "tsup": "^8.1.0",
     "typescript": "~5.4.5"
   },

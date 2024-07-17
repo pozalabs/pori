@@ -10,7 +10,7 @@ function getAbsolutePath(value: string): any {
   return dirname(require.resolve(join(value, 'package.json')));
 }
 const config: StorybookConfig = {
-  stories: ['../src/**/*.mdx', '../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
+  stories: ['../src/**/*.stories.@(js|jsx|mjs|ts|tsx)'],
   addons: [
     getAbsolutePath('@storybook/addon-webpack5-compiler-swc'),
     getAbsolutePath('@storybook/addon-onboarding'),
@@ -18,6 +18,33 @@ const config: StorybookConfig = {
     getAbsolutePath('@storybook/addon-essentials'),
     getAbsolutePath('@chromatic-com/storybook'),
     getAbsolutePath('@storybook/addon-interactions'),
+    getAbsolutePath('@storybook/addon-themes'),
+    {
+      name: getAbsolutePath('@storybook/addon-styling-webpack'),
+      options: {
+        rules: [
+          {
+            test: /\.css$/,
+            sideEffects: true,
+            use: [
+              getAbsolutePath('style-loader'),
+              {
+                loader: getAbsolutePath('css-loader'),
+                options: {
+                  importLoaders: 1,
+                },
+              },
+              {
+                loader: getAbsolutePath('postcss-loader'),
+                options: {
+                  implementation: getAbsolutePath('postcss'),
+                },
+              },
+            ],
+          },
+        ],
+      },
+    },
   ],
   framework: {
     name: getAbsolutePath('@storybook/react-webpack5'),

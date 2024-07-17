@@ -1,1 +1,3 @@
-export * as Waveform from './Waveform/Waveform';
+import '../styles/global.css';
+
+export { default as Waveform } from './Waveform/Waveform';
