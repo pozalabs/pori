@@ -1,7 +1,10 @@
-const getFileSize = async (url: string): Promise<number> => {
-  const response = await fetch(url, {
+const getFileSize = async (src: string): Promise<number> => {
+  const response = await fetch(src, {
     method: 'HEAD',
   });
+
+  if (!response.ok) throw new Error('Failed to fetch audio with HEAD method');
+
   return Number(response.headers.get('Content-Length'));
 };
 
@@ -30,6 +33,9 @@ const fetchChunkFileToBlob = async ({
       Range: `bytes=${start}-${end}`,
     },
   });
+
+  if (!response.ok) throw new Error('Failed to fetch chunk file');
+
   return response.blob();
 };
 
