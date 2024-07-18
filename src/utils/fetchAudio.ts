@@ -15,7 +15,7 @@ const getChunkSize = (fileSize: number): number => {
   return 1 * 1024 * 1024;
 };
 
-const fetchChunkFileToBlob = ({
+const fetchChunkFileToBlob = async ({
   src,
   start,
   end,
@@ -23,13 +23,14 @@ const fetchChunkFileToBlob = ({
   src: string;
   start: number;
   end: number;
-}) => {
-  return fetch(src, {
+}): Promise<Blob> => {
+  const response = await fetch(src, {
     method: 'GET',
     headers: {
       Range: `bytes=${start}-${end}`,
     },
-  }).then(response => response.blob());
+  });
+  return response.blob();
 };
 
 interface FetchAudioParams {
