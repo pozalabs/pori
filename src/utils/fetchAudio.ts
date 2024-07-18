@@ -77,7 +77,7 @@ const fetchAudio = async <T extends string | Blob | ArrayBuffer>({
   const chunkBlobs = await Promise.all(chunkBlobPromises);
 
   const audioBlob = chunkBlobs.reduce(
-    (blob, chunkBlob) => new Blob([blob, chunkBlob], { type: 'audio/mpeg' }),
+    (blob, chunkBlob) => new Blob([blob, chunkBlob], { type: chunkBlob.type }),
     new Blob(),
   );
 
