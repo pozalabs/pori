@@ -34,6 +34,20 @@
         "types": "./dist/components.d.ts",
         "default": "./dist/components.js"
       }
+    },
+    "./utils": {
+      "require": {
+        "types": "./dist/utils.d.ts",
+        "default": "./dist/utils.js"
+      },
+      "import": {
+        "types": "./dist/utils.d.mts",
+        "default": "./dist/utils.mjs"
+      },
+      "default": {
+        "types": "./dist/utils.d.ts",
+        "default": "./dist/utils.js"
+      }
     }
   },
   "packageManager": "yarn@4.3.1",
@@ -49,7 +63,8 @@
   },
   "files": [
     "dist",
-    "components.d.ts"
+    "components.d.ts",
+    "utils.d.ts"
   ],
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
