@@ -23,6 +23,11 @@ jobs:
           yarnPath: .yarn/releases/yarn-4.3.1.cjs
           nodeLinker: pnp
           enableGlobalCache: false
+          npmScopes:
+            pozalabs:
+              npmRegistryServer: "https://npm.pkg.github.com"
+              npmAlwaysAuth: true
+              npmAuthToken: "${{ secrets.NPM_AUTH_TOKEN }}"
           EOF
 
       - name: Install dependencies
