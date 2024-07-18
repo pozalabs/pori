@@ -1,4 +1,4 @@
-name: Type Check
+name: Vitest
 
 on:
   pull_request:
@@ -6,7 +6,7 @@ on:
       - main
 
 jobs:
-  run-tsc:
+  run-vitest:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout
@@ -33,5 +33,5 @@ jobs:
       - name: Install dependencies
         run: yarn install
 
-      - name: TS check
-        run: yarn tsc
+      - name: Run vitest
+        run: yarn test

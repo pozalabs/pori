@@ -34,12 +34,28 @@
         "types": "./dist/components.d.ts",
         "default": "./dist/components.js"
       }
+    },
+    "./utils": {
+      "require": {
+        "types": "./dist/utils.d.ts",
+        "default": "./dist/utils.js"
+      },
+      "import": {
+        "types": "./dist/utils.d.mts",
+        "default": "./dist/utils.mjs"
+      },
+      "default": {
+        "types": "./dist/utils.d.ts",
+        "default": "./dist/utils.js"
+      }
     }
   },
   "packageManager": "yarn@4.3.1",
   "scripts": {
     "build": "tsup",
     "dev": "vite",
+    "test": "vitest",
+    "coverage": "vitest run --coverage",
     "tsc": "tsc --noEmit",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
@@ -47,7 +63,8 @@
   },
   "files": [
     "dist",
-    "components.d.ts"
+    "components.d.ts",
+    "utils.d.ts"
   ],
   "devDependencies": {
     "@chromatic-com/storybook": "^1.6.1",
@@ -68,8 +85,10 @@
     "@types/react-dom": "^18.3.0",
     "@types/webaudioapi": "^0.0.27",
     "@vitejs/plugin-react": "^4.3.1",
+    "@vitest/coverage-v8": "^2.0.3",
     "autoprefixer": "^10.4.19",
     "css-loader": "^7.1.2",
+    "msw": "^2.3.1",
     "postcss": "^8.4.39",
     "postcss-loader": "^8.1.1",
     "react": "^18.3.1",
@@ -79,7 +98,8 @@
     "tailwindcss": "^3.4.6",
     "tsup": "^8.1.0",
     "typescript": "~5.4.5",
-    "vite": "^5.3.4"
+    "vite": "^5.3.4",
+    "vitest": "^2.0.3"
   },
   "peerDependencies": {
     "react": ">=18",
