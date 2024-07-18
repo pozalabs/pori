@@ -1,12 +1,4 @@
-const getFileSize = async (src: string): Promise<number> => {
-  const response = await fetch(src, {
-    method: 'HEAD',
-  });
-
-  if (!response.ok) throw new Error('Failed to fetch audio with HEAD method');
-
-  return Number(response.headers.get('Content-Length'));
-};
+import getAudioFileInformation from './getAudioFileInformation';
 
 const getChunkSize = (fileSize: number): number => {
   if (fileSize >= 100 * 1024 * 1024) {
@@ -64,7 +56,8 @@ const fetchAudio = async <T extends string | Blob | ArrayBuffer>({
   type = 'url',
   chunkSize,
 }: FetchAudioParams): Promise<T> => {
-  const audioSize = await getFileSize(src);
+  const { audioType, audioSize } = await getAudioFileInformation(src);
+
   const computedChunkSize = chunkSize ?? getChunkSize(audioSize);
 
   const chunks = [...Array(Math.ceil(audioSize / computedChunkSize)).keys()];
@@ -77,7 +70,7 @@ const fetchAudio = async <T extends string | Blob | ArrayBuffer>({
   const chunkBlobs = await Promise.all(chunkBlobPromises);
 
   const audioBlob = chunkBlobs.reduce(
-    (blob, chunkBlob) => new Blob([blob, chunkBlob], { type: chunkBlob.type }),
+    (blob, chunkBlob) => new Blob([blob, chunkBlob], { type: audioType }),
     new Blob(),
   );
 
