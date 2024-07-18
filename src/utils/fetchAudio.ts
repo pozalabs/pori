@@ -38,6 +38,20 @@ interface FetchAudioParams {
   chunkSize?: number;
 }
 
+/**
+ * 오디오 파일을 청크로 나누어 병렬 다운로드 후 반환하는 유틸 함수입니다.
+ * 반환 타입은 url, blob, arrayBuffer 중에서 선택할 수 있습니다.
+ * @param FetchAudioParams
+ * ```
+ * interface FetchAudioParams {
+ *    src: string;
+ *    type?: 'url' | 'blob' | 'arrayBuffer';
+ *    chunkSize?: number;
+ * }
+ * ```
+ * - type default : `url`
+ * @returns `Promise<T>`
+ */
 const fetchAudio = async <T extends string | Blob | ArrayBuffer>({
   src,
   type = 'url',
