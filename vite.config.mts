@@ -10,6 +10,10 @@ export default defineConfig(() => {
     },
     test: {
       globals: true,
+      environmentMatchGlobs: [
+        ['./src/utils/**/*.{test,spec}.?(c|m)[jt]s?(x)', 'node'],
+        ['./src/components/**/*.{test,spec}.?(c|m)[jt]s?(x)', 'jsdom'],
+      ],
       coverage: {
         include: ['./src/utils/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
       },
