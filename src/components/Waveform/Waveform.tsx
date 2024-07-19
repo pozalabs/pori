@@ -1,11 +1,25 @@
-import { cn } from '@pozalabs/pokit/utils';
+import CanvasWaveform from './CanvasWaveform';
+import SvgWaveform from './SvgWaveform';
+
+import useAudioData from '../../hooks/useAudioData';
 
 interface WaveformProps {
-  className?: string;
+  src: string;
+  type?: 'canvas' | 'svg';
 }
 
-const Waveform = ({ className }: WaveformProps) => {
-  return <div className={cn('bg-red-500', className)}>Waveform</div>;
+const Waveform = ({ src, type = 'canvas' }: WaveformProps) => {
+  const { peaks } = useAudioData(src);
+
+  const renderWaveform = () => {
+    if (type === 'svg') {
+      return <SvgWaveform peaks={peaks} />;
+    }
+
+    return <CanvasWaveform peaks={peaks} />;
+  };
+
+  return <div className="w-dvw h-[100px]">{renderWaveform()}</div>;
 };
 
 export default Waveform;
