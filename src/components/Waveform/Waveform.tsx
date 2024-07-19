@@ -11,7 +11,7 @@ interface WaveformProps {
 const Waveform = ({ src, type = 'canvas' }: WaveformProps) => {
   const { peaks } = useAudioData(src);
 
-  const renderWaveform = () => {
+  const renderWaveform = (): JSX.Element => {
     if (type === 'svg') {
       return <SvgWaveform peaks={peaks} />;
     }

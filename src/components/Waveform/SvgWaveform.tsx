@@ -8,7 +8,7 @@ const SvgWaveform = ({ peaks }: SvgWaveformProps) => {
   const svgRef = useRef<SVGSVGElement | null>(null);
 
   const renderWaveform = useCallback(
-    (peaks: number[]) => {
+    (peaks: number[]): JSX.Element | undefined => {
       if (!svgRef.current) return;
 
       const { clientWidth: width, clientHeight: height } = svgRef.current;

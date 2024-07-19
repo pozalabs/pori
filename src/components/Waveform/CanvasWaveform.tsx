@@ -7,7 +7,7 @@ interface CanvasWaveformProps {
 const CanvasWaveform = ({ peaks }: CanvasWaveformProps) => {
   const canvasRef = useRef<HTMLCanvasElement>(null);
 
-  const setCanvasSize = useCallback(() => {
+  const setCanvasSize = useCallback((): void => {
     const canvas = canvasRef.current;
     const ctx = canvas?.getContext('2d');
 
@@ -19,7 +19,7 @@ const CanvasWaveform = ({ peaks }: CanvasWaveformProps) => {
     ctx.canvas.height = clientHeight;
   }, []);
 
-  const drawWaveform = useCallback((peaks: number[]) => {
+  const drawWaveform = useCallback((peaks: number[]): void => {
     const ctx = canvasRef.current?.getContext('2d');
 
     if (!ctx) return;
