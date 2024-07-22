@@ -16,7 +16,7 @@ const Waveform = ({
   sampleRate = 8000,
   peakLength = 1024,
 }: WaveformProps) => {
-  const { peaks } = useAudioData(src, { sampleRate, peakLength });
+  const { peaks } = useAudioData({ src, sampleRate, peakLength });
 
   const renderWaveform = (): JSX.Element => {
     if (type === 'svg') {

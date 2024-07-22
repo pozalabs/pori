@@ -2,12 +2,13 @@ import { useCallback, useEffect, useState } from 'react';
 
 import fetchAudio from '../utils/fetchAudio';
 
-interface UseAudioDataOptions {
+interface UseAudioDataParams {
+  src: string;
   sampleRate: number;
   peakLength: number;
 }
 
-const useAudioData = (src: string, { sampleRate, peakLength }: UseAudioDataOptions) => {
+const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams) => {
   const [audioBuffer, setAudioBuffer] = useState<AudioBuffer | null>(null);
   const [peaks, setPeaks] = useState<number[]>([]);
 
