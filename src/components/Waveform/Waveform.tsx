@@ -19,14 +19,6 @@ const Waveform = ({
 }: WaveformProps) => {
   const { peaks } = useAudioData({ src, sampleRate, peakLength });
 
-  const renderWaveform = (): JSX.Element => {
-    if (type === 'svg') {
-      return <SvgWaveform peaks={peaks} />;
-    }
-
-    return <CanvasWaveform peaks={peaks} />;
-  };
-
   return (
     <div className="w-dvw h-[100px]">
       <SwitchRenderer value={type}>
