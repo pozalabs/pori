@@ -6,10 +6,17 @@ import useAudioData from '../../hooks/useAudioData';
 interface WaveformProps {
   src: string;
   type?: 'canvas' | 'svg';
+  sampleRate?: number;
+  peakLength?: number;
 }
 
-const Waveform = ({ src, type = 'canvas' }: WaveformProps) => {
-  const { peaks } = useAudioData(src);
+const Waveform = ({
+  src,
+  type = 'canvas',
+  sampleRate = 8000,
+  peakLength = 1024,
+}: WaveformProps) => {
+  const { peaks } = useAudioData(src, { sampleRate, peakLength });
 
   const renderWaveform = (): JSX.Element => {
     if (type === 'svg') {
