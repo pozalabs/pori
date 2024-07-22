@@ -2,6 +2,7 @@ import CanvasWaveform from './CanvasWaveform';
 import SvgWaveform from './SvgWaveform';
 
 import useAudioData from '../../hooks/useAudioData';
+import SwitchRenderer from '../SwitchRenderer/SwitchRenderer';
 
 interface WaveformProps {
   src: string;
@@ -26,7 +27,14 @@ const Waveform = ({
     return <CanvasWaveform peaks={peaks} />;
   };
 
-  return <div className="w-dvw h-[100px]">{renderWaveform()}</div>;
+  return (
+    <div className="w-dvw h-[100px]">
+      <SwitchRenderer value={type}>
+        <CanvasWaveform data-value="canvas" peaks={peaks} />
+        <SvgWaveform data-value="svg" peaks={peaks} />
+      </SwitchRenderer>
+    </div>
+  );
 };
 
 export default Waveform;
