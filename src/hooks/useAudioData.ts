@@ -11,6 +11,9 @@ interface UseAudioDataParams {
 const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams) => {
   const [audioBuffer, setAudioBuffer] = useState<AudioBuffer | null>(null);
   const [peaks, setPeaks] = useState<number[]>([]);
+  const [error, setError] = useState<unknown>(null);
+
+  if (error) throw error;
 
   const normalizePeaks = useCallback((peaks: number[]): number[] => {
     const peak = Math.max(...peaks);
@@ -48,13 +51,17 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams) => {
     });
 
     (async () => {
-      const arrayBuffer = await fetchAudio<ArrayBuffer>({
-        src,
-        type: 'arrayBuffer',
-      });
-      const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-      setAudioBuffer(audioBuffer);
-      setPeaks(getPeaks(audioBuffer));
+      try {
+        const arrayBuffer = await fetchAudio<ArrayBuffer>({
+          src,
+          type: 'arrayBuffer',
+        });
+        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+        setAudioBuffer(audioBuffer);
+        setPeaks(getPeaks(audioBuffer));
+      } catch (err) {
+        setError(err);
+      }
     })();
 
     return () => {
