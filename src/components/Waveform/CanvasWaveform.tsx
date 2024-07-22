@@ -52,7 +52,7 @@ const CanvasWaveform = ({ peaks }: CanvasWaveformProps) => {
   useEffect(() => {
     setCanvasSize();
     drawWaveform(peaks);
-  }, [peaks]);
+  }, [drawWaveform, peaks, setCanvasSize]);
 
   return <canvas ref={canvasRef} className="bg-transparent" />;
 };

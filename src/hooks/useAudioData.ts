@@ -72,7 +72,7 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams) => {
     return () => {
       audioContext.close();
     };
-  }, [sampleRate]);
+  }, [initPeaks, sampleRate]);
 
   return { audioBuffer, peaks };
 };
