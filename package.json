@@ -35,6 +35,20 @@
         "default": "./dist/components.js"
       }
     },
+    "./hooks": {
+      "require": {
+        "types": "./dist/hooks.d.ts",
+        "default": "./dist/hooks.js"
+      },
+      "import": {
+        "types": "./dist/hooks.d.mts",
+        "default": "./dist/hooks.mjs"
+      },
+      "default": {
+        "types": "./dist/hooks.d.ts",
+        "default": "./dist/hooks.js"
+      }
+    },
     "./utils": {
       "require": {
         "types": "./dist/utils.d.ts",
