@@ -12,7 +12,7 @@ const handlers = [
     });
   }),
   http.get(FILE_SRC['30'], () => {
-    return new HttpResponse(new Blob());
+    return new HttpResponse(new Blob(['1']));
   }),
 
   http.head(FILE_SRC['75'], () => {
