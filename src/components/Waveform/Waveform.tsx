@@ -1,8 +1,5 @@
-import CanvasWaveform from './CanvasWaveform';
-import SvgWaveform from './SvgWaveform';
-
-import useAudioData from '../../hooks/useAudioData';
-import SwitchRenderer from '../SwitchRenderer/SwitchRenderer';
+import { useWaveform } from '../../hooks';
+import { useEffect, useRef } from 'react';
 
 interface WaveformProps {
   src: string;
@@ -11,22 +8,29 @@ interface WaveformProps {
   peakLength?: number;
 }
 
-const Waveform = ({
-  src,
-  type = 'canvas',
-  sampleRate = 8000,
-  peakLength = 1024,
-}: WaveformProps) => {
-  const { peaks } = useAudioData({ src, sampleRate, peakLength });
+const Waveform = ({ src, type, sampleRate, peakLength }: WaveformProps) => {
+  const { waveform } = useWaveform({ src, type, sampleRate, peakLength });
 
-  return (
-    <div className="w-dvw h-[100px]">
-      <SwitchRenderer value={type}>
-        <CanvasWaveform data-value="canvas" peaks={peaks} />
-        <SvgWaveform data-value="svg" peaks={peaks} />
-      </SwitchRenderer>
-    </div>
-  );
+  const containerRef = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    if (!containerRef.current || !waveform) return;
+
+    if (!containerRef.current.hasChildNodes()) {
+      containerRef.current.appendChild(waveform as Node);
+      return;
+    }
+
+    const waveformElement = waveform as Element;
+    waveformElement.setAttribute('role', 'waveform');
+
+    containerRef.current.replaceChild(
+      waveformElement,
+      containerRef.current.firstChild!,
+    );
+  }, [waveform]);
+
+  return <div ref={containerRef} className="w-max h-max" />;
 };
 
 export default Waveform;
