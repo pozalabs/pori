@@ -11,6 +11,7 @@ interface WaveformProps {
   waveColor?: string;
   progressColor?: string;
   bgColor?: string;
+  className?: string;
 }
 
 const Waveform = (props: WaveformProps) => {

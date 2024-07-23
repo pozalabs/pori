@@ -12,6 +12,7 @@ interface UseWaveformParams {
   // TODO: 재생 컨트롤 기능 추가 시 적용 예정
   progressColor?: string;
   bgColor?: string;
+  className?: string;
 }
 
 interface UseWaveformReturns {
@@ -49,6 +50,7 @@ const useWaveform = ({
   waveColor = 'black',
   progressColor = '#0873ff',
   bgColor = 'transparent',
+  className,
 }: UseWaveformParams): UseWaveformReturns => {
   const [waveform, setWaveform] = useState<CanvasImageSource>();
 
@@ -87,6 +89,8 @@ const useWaveform = ({
 
     ctx.stroke();
     ctx.closePath();
+
+    className && canvasElement.setAttribute('class', className);
 
     setWaveform(canvasElement);
   }, [peaks, width, height, waveColor, progressColor, bgColor]);
@@ -129,6 +133,8 @@ const useWaveform = ({
     imageElement.src =
       'data:image/svg+xml;charset=utf-8,' +
       encodeURIComponent(new XMLSerializer().serializeToString(svgElement));
+
+    className && imageElement.setAttribute('class', className);
 
     setWaveform(imageElement);
   }, [peaks, width, height, waveColor, progressColor, bgColor]);
