@@ -6,10 +6,15 @@ interface WaveformProps {
   type?: 'canvas' | 'svg';
   sampleRate?: number;
   peakLength?: number;
+  width?: number;
+  height?: number;
+  waveColor?: string;
+  progressColor?: string;
+  bgColor?: string;
 }
 
-const Waveform = ({ src, type, sampleRate, peakLength }: WaveformProps) => {
-  const { waveform } = useWaveform({ src, type, sampleRate, peakLength });
+const Waveform = (props: WaveformProps) => {
+  const { waveform } = useWaveform(props);
 
   const containerRef = useRef<HTMLDivElement>(null);
 

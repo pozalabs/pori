@@ -6,15 +6,18 @@ interface UseWaveformParams {
   type?: 'canvas' | 'svg';
   sampleRate?: number;
   peakLength?: number;
+  width?: number;
+  height?: number;
+  waveColor?: string;
+  // TODO: 재생 컨트롤 기능 추가 시 적용 예정
+  progressColor?: string;
+  bgColor?: string;
 }
 
 interface UseWaveformReturns {
   waveform?: CanvasImageSource;
   drawWaveform: () => void;
 }
-
-const width = 1000;
-const height = 100;
 
 /**
  * type에 따라 웨이브폼을 그려 반환하는 훅입니다.
@@ -41,6 +44,11 @@ const useWaveform = ({
   type = 'canvas',
   sampleRate = 8000,
   peakLength = 1024,
+  width = 1000,
+  height = 100,
+  waveColor = 'black',
+  progressColor = '#0873ff',
+  bgColor = 'transparent',
 }: UseWaveformParams): UseWaveformReturns => {
   const [waveform, setWaveform] = useState<CanvasImageSource>();
 
@@ -58,10 +66,13 @@ const useWaveform = ({
     const halfHeight = height / 2;
     const barIndexScale = width / peaks.length;
 
-    ctx.clearRect(0, 0, width, height);
     ctx.lineWidth = 1;
     ctx.lineCap = 'round';
-    ctx.strokeStyle = '#000';
+    ctx.strokeStyle = waveColor;
+    ctx.fillStyle = bgColor;
+    ctx.clearRect(0, 0, width, height);
+    ctx.fillRect(0, 0, width, height);
+    ctx.fill();
     ctx.beginPath();
 
     peaks.forEach((peak, index) => {
@@ -78,7 +89,7 @@ const useWaveform = ({
     ctx.closePath();
 
     setWaveform(canvasElement);
-  }, [peaks]);
+  }, [peaks, width, height, waveColor, progressColor, bgColor]);
 
   const drawSvgWaveform = useCallback((): void => {
     const imageElement = document.createElement('img');
@@ -108,9 +119,10 @@ const useWaveform = ({
       })
       .join(' ');
 
+    svgElement.style.background = bgColor;
     polylineElement.setAttribute('points', points);
     polylineElement.style.strokeWidth = '1';
-    polylineElement.style.stroke = 'black';
+    polylineElement.style.stroke = waveColor;
     polylineElement.style.fill = 'none';
 
     svgElement.appendChild(polylineElement);
@@ -119,7 +131,7 @@ const useWaveform = ({
       encodeURIComponent(new XMLSerializer().serializeToString(svgElement));
 
     setWaveform(imageElement);
-  }, [peaks]);
+  }, [peaks, width, height, waveColor, progressColor, bgColor]);
 
   useEffect(() => {
     if (type === 'svg') {
@@ -128,7 +140,7 @@ const useWaveform = ({
     }
 
     drawCanvasWaveform();
-  }, [peaks]);
+  }, [peaks, width, height, waveColor, progressColor, bgColor]);
 
   return {
     waveform,
