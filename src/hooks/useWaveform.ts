@@ -29,6 +29,12 @@ interface UseWaveformReturns {
  *    type?: 'canvas' | 'svg';
  *    sampleRate?: number;
  *    peakLength?: number;
+ *    width?: number;
+ *    height?: number;
+ *    waveColor?: string;
+ *    progressColor?: string;
+ *    bgColor?: string;
+ *    className?: string;
  * }
  * ```
  * @returns
