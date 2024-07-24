@@ -1,7 +1,7 @@
 import { useCallback, useEffect, useState } from 'react';
 import useAudioData from './useAudioData';
 
-interface UseWaveformParams {
+export interface UseWaveformParams {
   src: string;
   type?: 'canvas' | 'svg';
   sampleRate?: number;
@@ -103,14 +103,8 @@ const useWaveform = ({
 
   const drawSvgWaveform = useCallback((): void => {
     const imageElement = document.createElement('img');
-    const svgElement = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'svg',
-    );
-    const polylineElement = document.createElementNS(
-      'http://www.w3.org/2000/svg',
-      'polyline',
-    );
+    const svgElement = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const polylineElement = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
 
     svgElement.setAttribute('width', width.toString());
     svgElement.setAttribute('height', height.toString());
