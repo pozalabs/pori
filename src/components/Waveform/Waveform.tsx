@@ -1,15 +1,8 @@
-import { useWaveform } from '../../hooks';
 import { useEffect, useRef } from 'react';
+import useWaveform, { type UseWaveformParams } from '../../hooks/useWaveform';
 
-interface WaveformProps {
-  src: string;
-  type?: 'canvas' | 'svg';
-  sampleRate?: number;
-  peakLength?: number;
-}
-
-const Waveform = ({ src, type, sampleRate, peakLength }: WaveformProps) => {
-  const { waveform } = useWaveform({ src, type, sampleRate, peakLength });
+const Waveform = (props: UseWaveformParams) => {
+  const { waveform } = useWaveform(props);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -24,10 +17,7 @@ const Waveform = ({ src, type, sampleRate, peakLength }: WaveformProps) => {
     const waveformElement = waveform as Element;
     waveformElement.setAttribute('role', 'waveform');
 
-    containerRef.current.replaceChild(
-      waveformElement,
-      containerRef.current.firstChild!,
-    );
+    containerRef.current.replaceChild(waveformElement, containerRef.current.firstChild!);
   }, [waveform]);
 
   return <div ref={containerRef} className="w-max h-max" />;
