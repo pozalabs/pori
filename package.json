@@ -78,6 +78,7 @@
   "files": [
     "dist",
     "components.d.ts",
+    "hooks.d.ts",
     "utils.d.ts"
   ],
   "devDependencies": {
