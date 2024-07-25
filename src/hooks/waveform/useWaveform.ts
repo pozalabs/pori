@@ -24,9 +24,9 @@ export interface UseWaveformReturns {
   isPlaying: boolean;
   currentTime: number;
   duration: number;
-  play?: () => void;
-  pause?: () => void;
-  changeCurrentTime?: (currentTime: number) => void;
+  play: () => void;
+  pause: () => void;
+  changeCurrentTime: (currentTime: number) => void;
   waveform?: CanvasImageSource;
 }
 
@@ -57,9 +57,9 @@ export interface UseWaveformReturns {
  *    isPlaying: boolean;
  *    currentTime: number;
  *    duration: number;
- *    play?: () => void;
- *    pause?: () => void;
- *    changeCurrentTime?: (currentTime: number) => void;
+ *    play: () => void;
+ *    pause: () => void;
+ *    changeCurrentTime: (currentTime: number) => void;
  *    waveform?: CanvasImageSource;
  * }
  * ```
@@ -79,12 +79,11 @@ const useWaveform = ({
   playhead = WAVEFORM_DEFAULT_VALUE['playhead'],
   autoplay = WAVEFORM_DEFAULT_VALUE['autoplay'],
 }: UseWaveformParams): UseWaveformReturns => {
-  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } =
-    useWaveformAudio({
-      src,
-      controls,
-      autoplay,
-    });
+  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } = useWaveformAudio({
+    src,
+    controls,
+    autoplay,
+  });
 
   const { peaks } = useAudioData({ src, sampleRate, peakLength });
 

@@ -10,9 +10,9 @@ interface UseWaveformAudioReturns {
   isPlaying: boolean;
   currentTime: number;
   duration: number;
-  play?: () => void;
-  pause?: () => void;
-  changeCurrentTime?: (currentTime: number) => void;
+  play: () => void;
+  pause: () => void;
+  changeCurrentTime: (currentTime: number) => void;
 }
 
 const useWaveformAudio = ({
@@ -21,22 +21,20 @@ const useWaveformAudio = ({
   autoplay,
 }: UseWaveformAudioParams): UseWaveformAudioReturns => {
   const audioRef = useAudio();
-  const [
-    { isPlaying, currentTime, duration },
-    { play, pause, changeCurrentTime },
-  ] = useControlAudio({
-    audioRef,
-    src,
-    autoPlay: autoplay,
-  });
+  const [{ isPlaying, currentTime, duration }, { play, pause, changeCurrentTime }] =
+    useControlAudio({
+      audioRef,
+      src,
+      autoPlay: autoplay,
+    });
 
   return {
     isPlaying,
     currentTime,
     duration,
-    play: controls ? play : undefined,
-    pause: controls ? pause : undefined,
-    changeCurrentTime: controls ? changeCurrentTime : undefined,
+    play,
+    pause,
+    changeCurrentTime,
   };
 };
 
