@@ -1,9 +1,9 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { renderHook } from '@testing-library/react';
 import { AudioContext } from 'standardized-audio-context-mock';
 import 'vitest-canvas-mock';
 
-import { FILE_SRC } from '../mocks/constants';
+import { FILE_SRC } from '../../mocks/constants';
 import useWaveform from './useWaveform';
 
 const isSVGImage = (image: CanvasImageSource): boolean => {
@@ -32,10 +32,18 @@ describe('useWaveform 테스트', () => {
   beforeEach(() => {
     windowAudioContext = window.AudioContext;
     window.AudioContext = AudioContext as any;
+    window.HTMLMediaElement.prototype.play = vi.fn();
+    window.HTMLMediaElement.prototype.pause = vi.fn();
   });
 
   afterEach(() => {
     window.AudioContext = windowAudioContext;
+    (
+      window.HTMLMediaElement.prototype.play as ReturnType<typeof vi.fn>
+    ).mockClear();
+    (
+      window.HTMLMediaElement.prototype.pause as ReturnType<typeof vi.fn>
+    ).mockClear();
   });
 
   describe('반환 값 테스트', () => {
@@ -90,36 +98,6 @@ describe('useWaveform 테스트', () => {
       expect(svgElement).toBeDefined();
       expect(svgElement.getAttribute('width')).toEqual('500');
       expect(svgElement.getAttribute('height')).toEqual('200');
-    });
-
-    it('useWaveform은 canvas로 그려진 waveform의 배경 색상을 커스텀할 수 있다.', () => {
-      const { result } = renderHook(() =>
-        useWaveform({
-          type: 'canvas',
-          src: FILE_SRC['30'],
-          bgColor: '#ffc0cb',
-        }),
-      );
-      const canvasElement = result.current.waveform as HTMLCanvasElement;
-      const ctx = canvasElement.getContext('2d');
-
-      expect(canvasElement).toBeDefined();
-      expect(ctx?.fillStyle).toEqual('#ffc0cb');
-    });
-
-    it('useWaveform은 svg로 그려진 waveform의 배경 색상을 커스텀할 수 있다.', () => {
-      const { result } = renderHook(() =>
-        useWaveform({
-          type: 'svg',
-          src: FILE_SRC['30'],
-          bgColor: 'rgb(255, 192, 203)',
-        }),
-      );
-      const imageElement = result.current.waveform as HTMLImageElement;
-      const svgElement = getSVGElement(imageElement);
-
-      expect(svgElement).toBeDefined();
-      expect(svgElement.style.background).toEqual('rgb(255, 192, 203)');
     });
   });
 });

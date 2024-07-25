@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
-import fetchAudio from '../utils/fetchAudio';
+import fetchAudio from '../../utils/fetchAudio';
 
 interface UseAudioDataParams {
   src: string;
@@ -27,18 +27,21 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams) => {
       const channelData = audioBuffer.getChannelData(0);
       const sampleSize = Math.floor(channelData.length / peakLength);
 
-      const peaks = [...Array(peakLength).keys()].reduce<number[]>((acc, peakIndex) => {
-        const samples = channelData.slice(
-          Math.floor(peakIndex * sampleSize),
-          Math.ceil((peakIndex + 1) * sampleSize),
-        );
-        const max = samples.reduce((prevMax, sample) => {
-          if (Math.abs(sample) > Math.abs(prevMax)) return Math.abs(sample);
-          return prevMax;
-        }, 0);
+      const peaks = [...Array(peakLength).keys()].reduce<number[]>(
+        (acc, peakIndex) => {
+          const samples = channelData.slice(
+            Math.floor(peakIndex * sampleSize),
+            Math.ceil((peakIndex + 1) * sampleSize),
+          );
+          const max = samples.reduce((prevMax, sample) => {
+            if (Math.abs(sample) > Math.abs(prevMax)) return Math.abs(sample);
+            return prevMax;
+          }, 0);
 
-        return [...acc, max];
-      }, []);
+          return [...acc, max];
+        },
+        [],
+      );
 
       return normalizePeaks(peaks);
     },
@@ -63,9 +66,11 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams) => {
   );
 
   useEffect(() => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)({
-      sampleRate,
-    });
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)(
+      {
+        sampleRate,
+      },
+    );
 
     initPeaks(audioContext);
 

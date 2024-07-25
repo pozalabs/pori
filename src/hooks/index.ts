@@ -1,1 +1,1 @@
-export { default as useWaveform } from './useWaveform';
+export { default as useWaveform } from './waveform/useWaveform';
