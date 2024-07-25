@@ -64,7 +64,8 @@ const RAW_RUNTIME_STATE =
           ["tsup", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:8.1.1"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
           ["vite", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:5.3.4"],\
-          ["vitest", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:2.0.3"]\
+          ["vitest", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:2.0.3"],\
+          ["vitest-canvas-mock", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:0.3.3"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -3429,7 +3430,8 @@ const RAW_RUNTIME_STATE =
           ["tsup", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:8.1.1"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
           ["vite", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:5.3.4"],\
-          ["vitest", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:2.0.3"]\
+          ["vitest", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:2.0.3"],\
+          ["vitest-canvas-mock", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:0.3.3"]\
         ],\
         "linkType": "SOFT"\
       }]\
@@ -7283,6 +7285,15 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["cssfontparser", [\
+      ["npm:1.2.1", {\
+        "packageLocation": "./.yarn/cache/cssfontparser-npm-1.2.1-f48947509b-ceb9b2976d.zip/node_modules/cssfontparser/",\
+        "packageDependencies": [\
+          ["cssfontparser", "npm:1.2.1"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["cssstyle", [\
       ["npm:4.0.1", {\
         "packageLocation": "./.yarn/cache/cssstyle-npm-4.0.1-b3be47925f-cadf9a8b23.zip/node_modules/cssstyle/",\
@@ -9304,6 +9315,17 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
+    ["jest-canvas-mock", [\
+      ["npm:2.5.2", {\
+        "packageLocation": "./.yarn/cache/jest-canvas-mock-npm-2.5.2-d82f044139-6a4190354b.zip/node_modules/jest-canvas-mock/",\
+        "packageDependencies": [\
+          ["jest-canvas-mock", "npm:2.5.2"],\
+          ["cssfontparser", "npm:1.2.1"],\
+          ["moo-color", "npm:1.0.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
     ["jest-worker", [\
       ["npm:27.5.1", {\
         "packageLocation": "./.yarn/cache/jest-worker-npm-27.5.1-1c110b5894-8c4737ffd0.zip/node_modules/jest-worker/",\
@@ -10147,6 +10169,16 @@ const RAW_RUNTIME_STATE =
           ["pathe", "npm:1.1.2"],\
           ["pkg-types", "npm:1.1.3"],\
           ["ufo", "npm:1.5.4"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["moo-color", [\
+      ["npm:1.0.3", {\
+        "packageLocation": "./.yarn/cache/moo-color-npm-1.0.3-50b8650764-778c82f67f.zip/node_modules/moo-color/",\
+        "packageDependencies": [\
+          ["moo-color", "npm:1.0.3"],\
+          ["color-name", "npm:1.1.4"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -13492,6 +13524,29 @@ const RAW_RUNTIME_STATE =
           "@vitest/ui",\
           "happy-dom",\
           "jsdom"\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["vitest-canvas-mock", [\
+      ["npm:0.3.3", {\
+        "packageLocation": "./.yarn/cache/vitest-canvas-mock-npm-0.3.3-0777269861-c14eec888d.zip/node_modules/vitest-canvas-mock/",\
+        "packageDependencies": [\
+          ["vitest-canvas-mock", "npm:0.3.3"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
+      ["virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:0.3.3", {\
+        "packageLocation": "./.yarn/__virtual__/vitest-canvas-mock-virtual-f11e1aa4d0/0/cache/vitest-canvas-mock-npm-0.3.3-0777269861-c14eec888d.zip/node_modules/vitest-canvas-mock/",\
+        "packageDependencies": [\
+          ["vitest-canvas-mock", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:0.3.3"],\
+          ["@types/vitest", null],\
+          ["jest-canvas-mock", "npm:2.5.2"],\
+          ["vitest", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:2.0.3"]\
+        ],\
+        "packagePeers": [\
+          "@types/vitest",\
+          "vitest"\
         ],\
         "linkType": "HARD"\
       }]\

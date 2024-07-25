@@ -12,6 +12,7 @@ export default defineConfig({
     environmentMatchGlobs: [
       ['./src/utils/**/*.{test,spec}.?(c|m)[jt]s?(x)', 'node'],
       ['./src/components/**/*.{test,spec}.?(c|m)[jt]s?(x)', 'jsdom'],
+      ['./src/hooks/**/*.{test,spec}.?(c|m)[jt]s?(x)', 'jsdom'],
     ],
     coverage: {
       include: ['./src/utils/**/*.{test,spec}.?(c|m)[jt]s?(x)'],
