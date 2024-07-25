@@ -45,9 +45,24 @@ export interface UseWaveformReturns {
  *    progressColor?: string;
  *    bgColor?: string;
  *    className?: string;
+ *    controls?: boolean;
+ *    playhead?: boolean;
+ *    autoplay?: boolean;
  * }
  * ```
- * @returns CanvasImageSource | undefined
+ * @returns
+ * `UseWaveformReturns`
+ * ```ts
+ * interface UseWaveformReturns {
+ *    isPlaying: boolean;
+ *    currentTime: number;
+ *    duration: number;
+ *    play?: () => void;
+ *    pause?: () => void;
+ *    changeCurrentTime?: (currentTime: number) => void;
+ *    waveform?: CanvasImageSource;
+ * }
+ * ```
  */
 const useWaveform = ({
   src,

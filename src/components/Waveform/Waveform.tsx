@@ -3,6 +3,23 @@ import useWaveform, {
   type UseWaveformParams,
 } from '../../hooks/waveform/useWaveform';
 
+/**
+ * useWaveform 훅을 사용하여 렌더링하는 Waveform 컴포넌트입니다.
+ *
+ * 전달하는 ref를 통해 오디오에 대한 정보를 얻거나 제어할 수 있습니다.
+ *
+ * (주의: 전달하는 오디오 상태는 실시간으로 바뀌지 않습니다. 필요할 때 접근해서 사용해주세요.)
+ * ```ts
+ * ref.current = {
+ *    isPlaying: boolean;
+ *    currentTime: number;
+ *    duration: number;
+ *    play: () => void;
+ *    pause: () => void;
+ *    changeCurrentTime: (currentTime: number) => void;
+ * }
+ * ```
+ */
 const Waveform = forwardRef((props: UseWaveformParams, ref) => {
   const {
     waveform,
