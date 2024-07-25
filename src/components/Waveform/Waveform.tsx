@@ -1,8 +1,18 @@
-import { useEffect, useRef } from 'react';
-import useWaveform, { type UseWaveformParams } from '../../hooks/useWaveform';
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import useWaveform, {
+  type UseWaveformParams,
+} from '../../hooks/waveform/useWaveform';
 
-const Waveform = (props: UseWaveformParams) => {
-  const { waveform } = useWaveform(props);
+const Waveform = forwardRef((props: UseWaveformParams, ref) => {
+  const {
+    waveform,
+    isPlaying,
+    currentTime,
+    duration,
+    play,
+    pause,
+    changeCurrentTime,
+  } = useWaveform(props);
 
   const containerRef = useRef<HTMLDivElement>(null);
 
@@ -17,10 +27,26 @@ const Waveform = (props: UseWaveformParams) => {
     const waveformElement = waveform as Element;
     waveformElement.setAttribute('role', 'waveform');
 
-    containerRef.current.replaceChild(waveformElement, containerRef.current.firstChild!);
+    containerRef.current.replaceChild(
+      waveformElement,
+      containerRef.current.firstChild!,
+    );
   }, [waveform]);
 
+  useImperativeHandle(
+    ref,
+    () => ({
+      isPlaying,
+      currentTime,
+      duration,
+      play,
+      pause,
+      changeCurrentTime,
+    }),
+    [isPlaying, currentTime, duration],
+  );
+
   return <div ref={containerRef} className="w-max h-max" />;
-};
+});
 
 export default Waveform;

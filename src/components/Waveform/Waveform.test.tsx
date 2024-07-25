@@ -1,4 +1,4 @@
-import { afterEach, beforeEach, describe, expect, it } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import { AudioContext } from 'standardized-audio-context-mock';
 import 'vitest-canvas-mock';
@@ -23,10 +23,14 @@ describe('Waveform 컴포넌트 렌더링 테스트', () => {
   beforeEach(() => {
     windowAudioContext = window.AudioContext;
     window.AudioContext = AudioContext as any;
+    window.HTMLMediaElement.prototype.pause = vi.fn();
   });
 
   afterEach(() => {
     window.AudioContext = windowAudioContext;
+    (
+      window.HTMLMediaElement.prototype.pause as ReturnType<typeof vi.fn>
+    ).mockClear();
   });
 
   it('Waveform 컴포넌트는 type이 canvas일 때 canvas로 그려진 waveform을 렌더링한다.', async () => {
