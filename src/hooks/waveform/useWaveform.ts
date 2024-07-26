@@ -81,7 +81,6 @@ const useWaveform = ({
 }: UseWaveformParams): UseWaveformReturns => {
   const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } = useWaveformAudio({
     src,
-    controls,
     autoplay,
   });
 

@@ -2,7 +2,6 @@ import { useAudio, useControlAudio } from '@pozalabs/pokit';
 
 interface UseWaveformAudioParams {
   src: string;
-  controls: boolean;
   autoplay: boolean;
 }
 
@@ -15,11 +14,7 @@ interface UseWaveformAudioReturns {
   changeCurrentTime: (currentTime: number) => void;
 }
 
-const useWaveformAudio = ({
-  src,
-  controls,
-  autoplay,
-}: UseWaveformAudioParams): UseWaveformAudioReturns => {
+const useWaveformAudio = ({ src, autoplay }: UseWaveformAudioParams): UseWaveformAudioReturns => {
   const audioRef = useAudio();
   const [{ isPlaying, currentTime, duration }, { play, pause, changeCurrentTime }] =
     useControlAudio({
