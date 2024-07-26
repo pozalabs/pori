@@ -19,10 +19,7 @@ const useUpdateCurrentTimeEvent = ({
   const updateCurrentTime = useCallback(
     (e: MouseEvent): void => {
       if (
-        !(
-          e.target instanceof HTMLCanvasElement ||
-          e.target instanceof HTMLImageElement
-        ) ||
+        !(e.target instanceof HTMLCanvasElement || e.target instanceof HTMLImageElement) ||
         !changeCurrentTime
       )
         return;
@@ -61,26 +58,18 @@ const useUpdateCurrentTimeEvent = ({
     },
     [updateCurrentTime],
   );
-  const onElementDragStart = useCallback(
-    (e: Event): void => e.preventDefault(),
-    [],
-  );
+  const onElementDragStart = useCallback((e: Event): void => e.preventDefault(), []);
 
   const addEventListeners = useCallback(
     (element: HTMLCanvasElement | HTMLImageElement): void => {
       element.addEventListener('click', onElementClick);
       element.addEventListener('mousedown', onElementMouseDown);
       element.addEventListener('mouseup', onElementMouseUp);
+      element.addEventListener('mouseleave', onElementMouseUp);
       element.addEventListener('mousemove', onElementMouseMove);
       element.addEventListener('dragstart', onElementDragStart);
     },
-    [
-      onElementClick,
-      onElementMouseDown,
-      onElementMouseUp,
-      onElementMouseMove,
-      onElementDragStart,
-    ],
+    [onElementClick, onElementMouseDown, onElementMouseUp, onElementMouseMove, onElementDragStart],
   );
 
   const removeEventListeners = useCallback(
@@ -88,16 +77,11 @@ const useUpdateCurrentTimeEvent = ({
       element.removeEventListener('click', onElementClick);
       element.removeEventListener('mousedown', onElementMouseDown);
       element.removeEventListener('mouseup', onElementMouseUp);
+      element.removeEventListener('mouseleave', onElementMouseUp);
       element.removeEventListener('mousemove', onElementMouseMove);
       element.removeEventListener('dragstart', onElementDragStart);
     },
-    [
-      onElementClick,
-      onElementMouseDown,
-      onElementMouseUp,
-      onElementMouseMove,
-      onElementDragStart,
-    ],
+    [onElementClick, onElementMouseDown, onElementMouseUp, onElementMouseMove, onElementDragStart],
   );
 
   return {
