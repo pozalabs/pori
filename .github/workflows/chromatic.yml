@@ -4,7 +4,6 @@ on:
   push:
     branches:
       - main
-      - ip-5321
 
 jobs:
   chromatic:
