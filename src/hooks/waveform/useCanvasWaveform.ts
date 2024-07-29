@@ -9,6 +9,7 @@ const useCanvasWaveform = ({
   progressColor,
   bgColor,
   className,
+  controls,
   playhead,
   peaks,
   currentTime,
@@ -18,15 +19,13 @@ const useCanvasWaveform = ({
 }: UseTypeWaveformParams) => {
   const [waveform, setWaveform] = useState<HTMLCanvasElement>();
   const [initWaveform, setInitWaveform] = useState<HTMLCanvasElement>();
-  const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent(
-    { duration, changeCurrentTime },
-  );
+  const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
+    duration,
+    changeCurrentTime,
+  });
 
   const halfHeight = useMemo(() => height / 2, [height]);
-  const barIndexScale = useMemo(
-    () => width / peaks.length,
-    [width, peaks.length],
-  );
+  const barIndexScale = useMemo(() => width / peaks.length, [width, peaks.length]);
   const playedWidth = useMemo(
     () => (currentTime / duration) * width,
     [currentTime, duration, width],
@@ -100,7 +99,7 @@ const useCanvasWaveform = ({
     drawWaveform(initCtx, peaks);
 
     waveformCanvas.setAttribute('class', className);
-    addEventListeners(waveformCanvas);
+    controls && addEventListeners(waveformCanvas);
 
     setInitWaveform(initWaveformCanvas);
     setWaveform(waveformCanvas);
@@ -111,6 +110,7 @@ const useCanvasWaveform = ({
     waveColor,
     peaks,
     className,
+    controls,
     addEventListeners,
     drawWaveform,
   ]);
@@ -158,7 +158,7 @@ const useCanvasWaveform = ({
     initCanvasWaveform();
 
     return () => {
-      if (!waveform) return;
+      if (!waveform || !controls) return;
 
       removeEventListeners(waveform);
     };

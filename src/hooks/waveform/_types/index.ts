@@ -2,10 +2,7 @@ import { UseWaveformParams } from '../useWaveform';
 
 export interface UseTypeWaveformParams
   extends Required<
-    Omit<
-      UseWaveformParams,
-      'src' | 'type' | 'sampleRate' | 'peakLength' | 'controls' | 'autoplay'
-    >
+    Omit<UseWaveformParams, 'src' | 'type' | 'sampleRate' | 'peakLength' | 'autoplay'>
   > {
   peaks: number[];
   currentTime: number;
