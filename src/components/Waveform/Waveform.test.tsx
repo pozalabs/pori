@@ -1,5 +1,5 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { render, screen } from '@testing-library/react';
+import { render } from '@testing-library/react';
 import { AudioContext } from 'standardized-audio-context-mock';
 import 'vitest-canvas-mock';
 
@@ -28,24 +28,22 @@ describe('Waveform 컴포넌트 렌더링 테스트', () => {
 
   afterEach(() => {
     window.AudioContext = windowAudioContext;
-    (
-      window.HTMLMediaElement.prototype.pause as ReturnType<typeof vi.fn>
-    ).mockClear();
+    (window.HTMLMediaElement.prototype.pause as ReturnType<typeof vi.fn>).mockClear();
   });
 
   it('Waveform 컴포넌트는 type이 canvas일 때 canvas로 그려진 waveform을 렌더링한다.', async () => {
-    render(<Waveform type="canvas" src={FILE_SRC['30']} />);
+    const { container } = render(<Waveform type="canvas" src={FILE_SRC['30']} />);
 
-    const waveformElement = await screen.findByRole('waveform');
+    const waveformElement = container.querySelector('canvas');
 
     expect(waveformElement).toBeDefined();
     expect(waveformElement instanceof HTMLCanvasElement).toBeTruthy();
   });
 
   it('Waveform 컴포넌트는 type이 svg일 때 svg로 그려진 waveform을 렌더링한다.', async () => {
-    render(<Waveform type="svg" src={FILE_SRC['30']} />);
+    const { container } = render(<Waveform type="svg" src={FILE_SRC['30']} />);
 
-    const waveformElement = await screen.findByRole('waveform');
+    const waveformElement = container.querySelector('img');
     const svgElement = getSVGElement(waveformElement as HTMLImageElement);
 
     expect(svgElement).toBeDefined();
