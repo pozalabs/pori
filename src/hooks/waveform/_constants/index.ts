@@ -7,6 +7,7 @@ export const WAVEFORM_DEFAULT_VALUE = {
   waveColor: 'black',
   progressColor: '#0873ff',
   bgColor: 'transparent',
+  playheadColor: 'black',
   className: '',
   controls: true,
   playhead: true,

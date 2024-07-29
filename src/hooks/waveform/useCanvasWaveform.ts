@@ -16,6 +16,7 @@ const useCanvasWaveform = ({
   waveColor,
   progressColor,
   bgColor,
+  playheadColor,
   className,
   controls,
   playhead,
@@ -69,7 +70,7 @@ const useCanvasWaveform = ({
       ctx.beginPath();
       ctx.lineWidth = 0.5;
       ctx.lineCap = 'round';
-      ctx.strokeStyle = 'black';
+      ctx.strokeStyle = playheadColor;
 
       const x = Math.round(playedIndex * barIndexScale);
 
@@ -79,7 +80,7 @@ const useCanvasWaveform = ({
       ctx.stroke();
       ctx.closePath();
     },
-    [playedIndex, barIndexScale, height],
+    [playedIndex, barIndexScale, height, playheadColor],
   );
 
   const configureWaveform = useCallback((): void => {
@@ -173,7 +174,7 @@ const useCanvasWaveform = ({
     if (!enabled) return;
 
     updateCanvasWaveform();
-  }, [initWaveform, progressColor, currentTime, enabled]);
+  }, [initWaveform, progressColor, playheadColor, currentTime, enabled]);
 
   return waveform;
 };

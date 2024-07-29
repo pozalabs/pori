@@ -23,6 +23,7 @@ const useSvgWaveform = ({
   waveColor,
   progressColor,
   bgColor,
+  playheadColor,
   className,
   controls,
   playhead,
@@ -86,12 +87,12 @@ const useSvgWaveform = ({
 
       polylineElement.setAttribute('points', `${formattedX},0 ${formattedX},${height}`);
       polylineElement.style.strokeWidth = '0.5';
-      polylineElement.style.stroke = 'black';
+      polylineElement.style.stroke = playheadColor;
       polylineElement.style.fill = 'none';
 
       svgElement.appendChild(polylineElement);
     },
-    [playedIndex, barIndexScale, height],
+    [playedIndex, barIndexScale, height, playheadColor],
   );
 
   const configureWaveform = useCallback((): void => {
@@ -163,7 +164,7 @@ const useSvgWaveform = ({
     if (!enabled) return;
 
     updateSvgWaveform();
-  }, [initWaveform, progressColor, currentTime, enabled]);
+  }, [initWaveform, progressColor, playheadColor, currentTime, enabled]);
 
   return waveform;
 };

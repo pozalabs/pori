@@ -14,6 +14,7 @@ export interface UseWaveformParams {
   waveColor?: string;
   progressColor?: string;
   bgColor?: string;
+  playheadColor?: string;
   className?: string;
   controls?: boolean;
   playhead?: boolean;
@@ -44,6 +45,7 @@ export interface UseWaveformReturns {
  *    waveColor?: string;
  *    progressColor?: string;
  *    bgColor?: string;
+ *    playheadColor?: string;
  *    className?: string;
  *    controls?: boolean;
  *    playhead?: boolean;
@@ -74,6 +76,7 @@ const useWaveform = ({
   waveColor = WAVEFORM_DEFAULT_VALUE['waveColor'],
   progressColor = WAVEFORM_DEFAULT_VALUE['progressColor'],
   bgColor = WAVEFORM_DEFAULT_VALUE['bgColor'],
+  playheadColor = WAVEFORM_DEFAULT_VALUE['playheadColor'],
   className = WAVEFORM_DEFAULT_VALUE['className'],
   controls = WAVEFORM_DEFAULT_VALUE['controls'],
   playhead = WAVEFORM_DEFAULT_VALUE['playhead'],
@@ -92,6 +95,7 @@ const useWaveform = ({
     waveColor,
     progressColor,
     bgColor,
+    playheadColor,
     className,
     controls,
     playhead,
@@ -108,6 +112,7 @@ const useWaveform = ({
     waveColor,
     progressColor,
     bgColor,
+    playheadColor,
     className,
     controls,
     playhead,
