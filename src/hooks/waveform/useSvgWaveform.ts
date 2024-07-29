@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { UseTypeWaveformParams } from './_types';
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
+import useWaveformSize from './useWaveformSize';
 
 const createSvgElement = (width: number, height: number): SVGSVGElement => {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -35,21 +36,18 @@ const useSvgWaveform = ({
 }: UseTypeWaveformParams) => {
   const [waveform, setWaveform] = useState<HTMLImageElement>();
   const [initWaveform, setInitWaveform] = useState<SVGSVGElement>();
+
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
     duration,
     changeCurrentTime,
   });
-
-  const halfHeight = useMemo(() => height / 2, [height]);
-  const barIndexScale = useMemo(() => width / peaks.length, [width, peaks.length]);
-  const playedWidth = useMemo(
-    () => (currentTime / duration) * width,
-    [currentTime, duration, width],
-  );
-  const playedIndex = useMemo(
-    () => Math.floor(playedWidth / barIndexScale),
-    [playedWidth, barIndexScale],
-  );
+  const { halfHeight, barIndexScale, playedIndex } = useWaveformSize({
+    width,
+    height,
+    peakLength: peaks.length,
+    currentTime,
+    duration,
+  });
 
   const drawWaveform = useCallback(
     (svgElement: SVGSVGElement, peaks: number[], bgColor: string, waveColor: string): void => {

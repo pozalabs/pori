@@ -1,6 +1,7 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { UseTypeWaveformParams } from './_types';
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
+import useWaveformSize from './useWaveformSize';
 
 const createCanvasElement = (width: number, height: number): HTMLCanvasElement => {
   const canvas = document.createElement('canvas');
@@ -28,21 +29,18 @@ const useCanvasWaveform = ({
 }: UseTypeWaveformParams) => {
   const [waveform, setWaveform] = useState<HTMLCanvasElement>();
   const [initWaveform, setInitWaveform] = useState<HTMLCanvasElement>();
+
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
     duration,
     changeCurrentTime,
   });
-
-  const halfHeight = useMemo(() => height / 2, [height]);
-  const barIndexScale = useMemo(() => width / peaks.length, [width, peaks.length]);
-  const playedWidth = useMemo(
-    () => (currentTime / duration) * width,
-    [currentTime, duration, width],
-  );
-  const playedIndex = useMemo(
-    () => Math.floor(playedWidth / barIndexScale),
-    [playedWidth, barIndexScale],
-  );
+  const { halfHeight, barIndexScale, playedIndex } = useWaveformSize({
+    width,
+    height,
+    peakLength: peaks.length,
+    currentTime,
+    duration,
+  });
 
   const drawWaveform = useCallback(
     (ctx: CanvasRenderingContext2D, peaks: number[]): void => {
