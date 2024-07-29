@@ -2,6 +2,21 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { UseTypeWaveformParams } from './_types';
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 
+const createSvgElement = (width: number, height: number): SVGSVGElement => {
+  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+
+  svg.setAttribute('width', width.toString());
+  svg.setAttribute('height', height.toString());
+
+  return svg;
+};
+
+const createPolylineElement = (): SVGPolylineElement => {
+  const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+
+  return polyline;
+};
+
 const useSvgWaveform = ({
   width,
   height,
@@ -37,7 +52,7 @@ const useSvgWaveform = ({
 
   const drawWaveform = useCallback(
     (svgElement: SVGSVGElement, peaks: number[], bgColor: string, waveColor: string): void => {
-      const polylineElement = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      const polylineElement = createPolylineElement();
 
       const points = peaks
         .map((peak, index) => {
@@ -64,7 +79,7 @@ const useSvgWaveform = ({
 
   const drawPlayhead = useCallback(
     (svgElement: SVGSVGElement): void => {
-      const polylineElement = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
+      const polylineElement = createPolylineElement();
 
       const x = Math.round(playedIndex * barIndexScale);
       const formattedX = isNaN(x) ? 0 : x;
@@ -79,46 +94,33 @@ const useSvgWaveform = ({
     [playedIndex, barIndexScale, height],
   );
 
-  const initSvgWaveform = useCallback((): void => {
+  const configureWaveform = useCallback((): void => {
     const waveformImage = document.createElement('img');
-    const initWaveformSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
-    initWaveformSvg.setAttribute('width', width.toString());
-    initWaveformSvg.setAttribute('height', height.toString());
-
-    drawWaveform(initWaveformSvg, peaks, bgColor, waveColor);
 
     waveformImage.setAttribute('class', className);
     controls && addEventListeners(waveformImage);
 
-    setInitWaveform(initWaveformSvg);
     setWaveform(waveformImage);
-  }, [
-    width,
-    height,
-    bgColor,
-    waveColor,
-    peaks,
-    className,
-    controls,
-    addEventListeners,
-    drawWaveform,
-  ]);
+  }, [width, height, className, controls, addEventListeners]);
+
+  const initSvgWaveform = useCallback((): void => {
+    const initWaveformSvg = createSvgElement(width, height);
+
+    drawWaveform(initWaveformSvg, peaks, bgColor, waveColor);
+
+    setInitWaveform(initWaveformSvg);
+  }, [width, height, bgColor, waveColor, peaks, drawWaveform]);
 
   const updateSvgWaveform = useCallback((): void => {
     if (!waveform || !initWaveform) return;
 
-    const playedWaveformSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-    const newWaveformSvg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+    const playedWaveformSvg = createSvgElement(width, height);
+    const newWaveformSvg = createSvgElement(width, height);
 
     newWaveformSvg.style.background = bgColor;
-    newWaveformSvg.setAttribute('width', width.toString());
-    newWaveformSvg.setAttribute('height', height.toString());
-    playedWaveformSvg.setAttribute('width', width.toString());
-    playedWaveformSvg.setAttribute('height', height.toString());
 
     drawWaveform(playedWaveformSvg, peaks.slice(0, playedIndex), 'transparent', progressColor);
-    if (playhead) drawPlayhead(playedWaveformSvg);
+    playhead && drawPlayhead(playedWaveformSvg);
 
     newWaveformSvg.appendChild(initWaveform);
     newWaveformSvg.appendChild(playedWaveformSvg);
@@ -142,13 +144,19 @@ const useSvgWaveform = ({
   useEffect(() => {
     if (!enabled) return;
 
-    initSvgWaveform();
+    configureWaveform();
 
     return () => {
       if (!waveform || !controls) return;
 
       removeEventListeners(waveform);
     };
+  }, [width, height, addEventListeners, removeEventListeners, enabled]);
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    initSvgWaveform();
   }, [peaks, width, height, waveColor, bgColor, enabled]);
 
   useEffect(() => {

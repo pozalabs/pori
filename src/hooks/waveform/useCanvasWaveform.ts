@@ -2,6 +2,14 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { UseTypeWaveformParams } from './_types';
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 
+const createCanvasElement = (width: number, height: number): HTMLCanvasElement => {
+  const canvas = document.createElement('canvas');
+  canvas.width = width;
+  canvas.height = height;
+
+  return canvas;
+};
+
 const useCanvasWaveform = ({
   width,
   height,
@@ -74,18 +82,25 @@ const useCanvasWaveform = ({
     [playedIndex, barIndexScale, height],
   );
 
-  const initCanvasWaveform = useCallback((): void => {
-    const initWaveformCanvas = document.createElement('canvas');
-    initWaveformCanvas.width = width;
-    initWaveformCanvas.height = height;
-    const waveformCanvas = document.createElement('canvas');
-    waveformCanvas.width = width;
-    waveformCanvas.height = height;
+  const configureWaveform = useCallback((): void => {
+    const waveformCanvas = createCanvasElement(width, height);
 
-    const initCtx = initWaveformCanvas.getContext('2d');
     const waveformCtx = waveformCanvas.getContext('2d');
 
-    if (!initCtx || !waveformCtx) return;
+    if (!waveformCtx) return;
+
+    waveformCanvas.setAttribute('class', className);
+    controls && addEventListeners(waveformCanvas);
+
+    setWaveform(waveformCanvas);
+  }, [width, height, className, controls, addEventListeners]);
+
+  const initCanvasWaveform = useCallback((): void => {
+    const initWaveformCanvas = createCanvasElement(width, height);
+
+    const initCtx = initWaveformCanvas.getContext('2d');
+
+    if (!initCtx) return;
 
     initCtx.fillStyle = bgColor;
     initCtx.clearRect(0, 0, width, height);
@@ -98,29 +113,13 @@ const useCanvasWaveform = ({
 
     drawWaveform(initCtx, peaks);
 
-    waveformCanvas.setAttribute('class', className);
-    controls && addEventListeners(waveformCanvas);
-
     setInitWaveform(initWaveformCanvas);
-    setWaveform(waveformCanvas);
-  }, [
-    width,
-    height,
-    bgColor,
-    waveColor,
-    peaks,
-    className,
-    controls,
-    addEventListeners,
-    drawWaveform,
-  ]);
+  }, [width, height, bgColor, waveColor, peaks, drawWaveform]);
 
   const updateCanvasWaveform = useCallback((): void => {
     if (!waveform || !initWaveform) return;
 
-    const playedWaveformCanvas = document.createElement('canvas');
-    playedWaveformCanvas.width = width;
-    playedWaveformCanvas.height = height;
+    const playedWaveformCanvas = createCanvasElement(width, height);
 
     const waveformCtx = waveform.getContext('2d');
     const playedCtx = playedWaveformCanvas.getContext('2d');
@@ -134,7 +133,7 @@ const useCanvasWaveform = ({
     playedCtx.strokeStyle = progressColor;
 
     drawWaveform(playedCtx, peaks.slice(0, playedIndex));
-    if (playhead) drawPlayhead(playedCtx);
+    playhead && drawPlayhead(playedCtx);
 
     waveformCtx.clearRect(0, 0, width, height);
     waveformCtx.drawImage(initWaveform, 0, 0);
@@ -155,13 +154,19 @@ const useCanvasWaveform = ({
   useEffect(() => {
     if (!enabled) return;
 
-    initCanvasWaveform();
+    configureWaveform();
 
     return () => {
       if (!waveform || !controls) return;
 
       removeEventListeners(waveform);
     };
+  }, [width, height, addEventListeners, removeEventListeners, enabled]);
+
+  useEffect(() => {
+    if (!enabled) return;
+
+    initCanvasWaveform();
   }, [peaks, width, height, waveColor, bgColor, enabled]);
 
   useEffect(() => {
