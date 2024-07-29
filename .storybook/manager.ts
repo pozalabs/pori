@@ -10,7 +10,7 @@ const theme = create({
   brandTarget: '_self',
   colorSecondary: '#0873ff',
   appBg: '#E5F1FF',
-  barBg: '#E5F1FF',
+  barBg: '#EFF6FF',
 });
 
 addons.setConfig({

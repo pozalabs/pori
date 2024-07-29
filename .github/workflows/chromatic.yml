@@ -1,0 +1,42 @@
+name: Chromatic
+
+on:
+  push:
+    branches:
+      - main
+      - ip-5321
+
+jobs:
+  chromatic:
+    name: Run Chromatic
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+
+      - name: Use Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '20.x'
+
+      - name: Create .yarnrc.yml file
+        run: |
+          cat << EOF > .yarnrc.yml
+          yarnPath: .yarn/releases/yarn-4.3.1.cjs
+          nodeLinker: pnp
+          enableGlobalCache: false
+          npmScopes:
+            pozalabs:
+              npmRegistryServer: "https://npm.pkg.github.com"
+              npmAlwaysAuth: true
+              npmAuthToken: "${{ secrets.NPM_AUTH_TOKEN }}"
+          EOF
+
+      - name: Install dependencies
+        run: yarn install
+
+      - name: Run Chromatic
+        uses: chromaui/action@latest
+        with:
+          projectToken: ${{ secrets.CHROMATIC_PROJECT_TOKEN }}
+          exitZeroOnChanges: true

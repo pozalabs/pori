@@ -1,5 +1,6 @@
 dist
 coverage
+storybook-static
 
 .yarn/*
 !.yarn/cache
