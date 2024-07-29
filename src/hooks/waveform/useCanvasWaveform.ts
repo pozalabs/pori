@@ -84,22 +84,22 @@ const useCanvasWaveform = ({
   );
 
   const configureWaveform = useCallback((): void => {
-    const waveformCanvas = createCanvasElement(width, height);
+    const mainCanvas = createCanvasElement(width, height);
 
-    const waveformCtx = waveformCanvas.getContext('2d');
+    const waveformCtx = mainCanvas.getContext('2d');
 
     if (!waveformCtx) return;
 
-    waveformCanvas.setAttribute('class', className);
-    controls && addEventListeners(waveformCanvas);
+    mainCanvas.setAttribute('class', className);
+    controls && addEventListeners(mainCanvas);
 
-    setWaveform(waveformCanvas);
+    setWaveform(mainCanvas);
   }, [width, height, className, controls, addEventListeners]);
 
   const initCanvasWaveform = useCallback((): void => {
-    const initWaveformCanvas = createCanvasElement(width, height);
+    const initCanvas = createCanvasElement(width, height);
 
-    const initCtx = initWaveformCanvas.getContext('2d');
+    const initCtx = initCanvas.getContext('2d');
 
     if (!initCtx) return;
 
@@ -114,16 +114,16 @@ const useCanvasWaveform = ({
 
     drawWaveform(initCtx, peaks);
 
-    setInitWaveform(initWaveformCanvas);
+    setInitWaveform(initCanvas);
   }, [width, height, bgColor, waveColor, peaks, drawWaveform]);
 
   const updateCanvasWaveform = useCallback((): void => {
     if (!waveform || !initWaveform) return;
 
-    const playedWaveformCanvas = createCanvasElement(width, height);
+    const playedCanvas = createCanvasElement(width, height);
 
     const waveformCtx = waveform.getContext('2d');
-    const playedCtx = playedWaveformCanvas.getContext('2d');
+    const playedCtx = playedCanvas.getContext('2d');
 
     if (!waveformCtx || !playedCtx) return;
 
@@ -138,7 +138,7 @@ const useCanvasWaveform = ({
 
     waveformCtx.clearRect(0, 0, width, height);
     waveformCtx.drawImage(initWaveform, 0, 0);
-    waveformCtx.drawImage(playedWaveformCanvas, 0, 0);
+    waveformCtx.drawImage(playedCanvas, 0, 0);
   }, [
     width,
     height,

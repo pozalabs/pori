@@ -96,39 +96,39 @@ const useSvgWaveform = ({
   );
 
   const configureWaveform = useCallback((): void => {
-    const waveformImage = document.createElement('img');
+    const mainImage = document.createElement('img');
 
-    waveformImage.setAttribute('class', className);
-    controls && addEventListeners(waveformImage);
+    mainImage.setAttribute('class', className);
+    controls && addEventListeners(mainImage);
 
-    setWaveform(waveformImage);
+    setWaveform(mainImage);
   }, [width, height, className, controls, addEventListeners]);
 
   const initSvgWaveform = useCallback((): void => {
-    const initWaveformSvg = createSvgElement(width, height);
+    const initSvg = createSvgElement(width, height);
 
-    drawWaveform(initWaveformSvg, peaks, bgColor, waveColor);
+    drawWaveform(initSvg, peaks, bgColor, waveColor);
 
-    setInitWaveform(initWaveformSvg);
+    setInitWaveform(initSvg);
   }, [width, height, bgColor, waveColor, peaks, drawWaveform]);
 
   const updateSvgWaveform = useCallback((): void => {
     if (!waveform || !initWaveform) return;
 
-    const playedWaveformSvg = createSvgElement(width, height);
-    const newWaveformSvg = createSvgElement(width, height);
+    const playedSvg = createSvgElement(width, height);
+    const newMainSvg = createSvgElement(width, height);
 
-    newWaveformSvg.style.background = bgColor;
+    newMainSvg.style.background = bgColor;
 
-    drawWaveform(playedWaveformSvg, peaks.slice(0, playedIndex), 'transparent', progressColor);
-    playhead && drawPlayhead(playedWaveformSvg);
+    drawWaveform(playedSvg, peaks.slice(0, playedIndex), 'transparent', progressColor);
+    playhead && drawPlayhead(playedSvg);
 
-    newWaveformSvg.appendChild(initWaveform);
-    newWaveformSvg.appendChild(playedWaveformSvg);
+    newMainSvg.appendChild(initWaveform);
+    newMainSvg.appendChild(playedSvg);
 
     waveform.src =
       'data:image/svg+xml;charset=utf-8,' +
-      encodeURIComponent(new XMLSerializer().serializeToString(newWaveformSvg));
+      encodeURIComponent(new XMLSerializer().serializeToString(newMainSvg));
   }, [
     width,
     height,
