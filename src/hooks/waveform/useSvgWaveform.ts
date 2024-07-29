@@ -58,8 +58,8 @@ const useSvgWaveform = ({
       const points = peaks
         .map((peak, index) => {
           const x = Math.round(index * barIndexScale);
-          const formattedHeight = (height / 10) * 8;
-          const barHeight = Math.round((peak * formattedHeight) / 2);
+          const waveformMaxHeight = (height / 10) * 8;
+          const barHeight = Math.round((peak * waveformMaxHeight) / 2);
           const yTop = halfHeight - barHeight;
           const yBottom = halfHeight + barHeight;
 
