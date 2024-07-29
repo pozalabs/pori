@@ -51,7 +51,7 @@ export const Svg: Story = {
 export const Konva: Story = {
   args: { ...WAVEFORM_DEFAULT_VALUE, type: 'canvas', src },
   render: (props: UseWaveformParams) => {
-    const { waveform, play, pause, changeCurrentTime, isPlaying, duration } = useWaveform(props);
+    const { waveform, play, pause, changeCurrentTime, duration } = useWaveform(props);
     const isDraggingRef = useRef(false);
     const ref = useRef<any>();
 
@@ -72,8 +72,6 @@ export const Konva: Story = {
       let frameId = 0;
 
       const drawLayer = (): void => {
-        if (!isPlaying) return;
-
         ref.current.batchDraw();
         frameId = requestAnimationFrame(drawLayer);
       };
