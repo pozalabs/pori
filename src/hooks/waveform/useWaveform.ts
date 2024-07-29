@@ -89,7 +89,7 @@ const useWaveform = ({
 
   const { peaks } = useAudioData({ src, sampleRate, peakLength });
 
-  const canvasWaveform = useCanvasWaveform({
+  const waveformParams = {
     width,
     height,
     waveColor,
@@ -103,23 +103,15 @@ const useWaveform = ({
     currentTime,
     duration,
     changeCurrentTime,
+  };
+
+  const canvasWaveform = useCanvasWaveform({
+    ...waveformParams,
     enabled: type === 'canvas',
   });
 
   const svgWaveform = useSvgWaveform({
-    width,
-    height,
-    waveColor,
-    progressColor,
-    bgColor,
-    playheadColor,
-    className,
-    controls,
-    playhead,
-    peaks,
-    currentTime,
-    duration,
-    changeCurrentTime,
+    ...waveformParams,
     enabled: type === 'svg',
   });
 
