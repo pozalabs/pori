@@ -3,7 +3,10 @@ import { UseTypeWaveformParams } from './_types';
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
 
-const createCanvasElement = (width: number, height: number): HTMLCanvasElement => {
+const createCanvasElement = (
+  width: number,
+  height: number,
+): HTMLCanvasElement => {
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
@@ -14,6 +17,7 @@ const createCanvasElement = (width: number, height: number): HTMLCanvasElement =
 const useCanvasWaveform = ({
   width,
   height,
+  playheadWidth,
   waveColor,
   progressColor,
   bgColor,
@@ -30,10 +34,12 @@ const useCanvasWaveform = ({
   const [waveform, setWaveform] = useState<HTMLCanvasElement>();
   const [initWaveform, setInitWaveform] = useState<HTMLCanvasElement>();
 
-  const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
-    duration,
-    changeCurrentTime,
-  });
+  const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent(
+    {
+      duration,
+      changeCurrentTime,
+    },
+  );
   const { halfHeight, barIndexScale, playedIndex } = useWaveformSize({
     width,
     height,
@@ -66,7 +72,7 @@ const useCanvasWaveform = ({
   const drawPlayhead = useCallback(
     (ctx: CanvasRenderingContext2D): void => {
       ctx.beginPath();
-      ctx.lineWidth = 0.5;
+      ctx.lineWidth = playheadWidth;
       ctx.lineCap = 'round';
       ctx.strokeStyle = playheadColor;
 
@@ -78,7 +84,7 @@ const useCanvasWaveform = ({
       ctx.stroke();
       ctx.closePath();
     },
-    [playedIndex, barIndexScale, height, playheadColor],
+    [playedIndex, barIndexScale, height, playheadWidth, playheadColor],
   );
 
   const configureWaveform = useCallback((): void => {
@@ -172,7 +178,14 @@ const useCanvasWaveform = ({
     if (!enabled) return;
 
     updateCanvasWaveform();
-  }, [initWaveform, progressColor, playheadColor, currentTime, enabled]);
+  }, [
+    initWaveform,
+    progressColor,
+    playheadWidth,
+    playheadColor,
+    currentTime,
+    enabled,
+  ]);
 
   return waveform;
 };

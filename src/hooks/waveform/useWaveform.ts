@@ -11,6 +11,7 @@ export interface UseWaveformParams {
   peakLength?: number;
   width?: number;
   height?: number;
+  playheadWidth?: number;
   waveColor?: string;
   progressColor?: string;
   bgColor?: string;
@@ -42,6 +43,7 @@ export interface UseWaveformReturns {
  *    peakLength?: number;
  *    width?: number;
  *    height?: number;
+ *    playheadWidth?: number;
  *    waveColor?: string;
  *    progressColor?: string;
  *    bgColor?: string;
@@ -73,6 +75,7 @@ const useWaveform = ({
   peakLength = WAVEFORM_DEFAULT_VALUE['peakLength'],
   width = WAVEFORM_DEFAULT_VALUE['width'],
   height = WAVEFORM_DEFAULT_VALUE['height'],
+  playheadWidth = WAVEFORM_DEFAULT_VALUE['playheadWidth'],
   waveColor = WAVEFORM_DEFAULT_VALUE['waveColor'],
   progressColor = WAVEFORM_DEFAULT_VALUE['progressColor'],
   bgColor = WAVEFORM_DEFAULT_VALUE['bgColor'],
@@ -82,16 +85,18 @@ const useWaveform = ({
   playhead = WAVEFORM_DEFAULT_VALUE['playhead'],
   autoplay = WAVEFORM_DEFAULT_VALUE['autoplay'],
 }: UseWaveformParams): UseWaveformReturns => {
-  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } = useWaveformAudio({
-    src,
-    autoplay,
-  });
+  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } =
+    useWaveformAudio({
+      src,
+      autoplay,
+    });
 
   const { peaks } = useAudioData({ src, sampleRate, peakLength });
 
   const waveformParams = {
     width,
     height,
+    playheadWidth,
     waveColor,
     progressColor,
     bgColor,

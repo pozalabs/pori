@@ -4,6 +4,7 @@ export const WAVEFORM_DEFAULT_VALUE = {
   peakLength: 1024,
   width: 1000,
   height: 100,
+  playheadWidth: 0.5,
   waveColor: 'black',
   progressColor: '#0873ff',
   bgColor: 'transparent',
