@@ -1,7 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
-import { UseTypeWaveformParams } from './_types';
+
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
+
+import { UseTypeWaveformParams } from './_types';
+import { WAVEFORM_HEIGHT_PERCENT } from './_constants';
 
 const createCanvasElement = (
   width: number,
@@ -54,7 +57,7 @@ const useCanvasWaveform = ({
 
       peaks.forEach((peak, index) => {
         const x = Math.round(index * barIndexScale);
-        const waveformMaxHeight = (height / 10) * 8;
+        const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
         const barHeight = Math.round(peak * (waveformMaxHeight / 2));
         const yTop = halfHeight - barHeight;
         const yBottom = halfHeight + barHeight;
