@@ -1,7 +1,10 @@
-import { useCallback, useEffect, useMemo, useState } from 'react';
-import { UseTypeWaveformParams } from './_types';
+import { useCallback, useEffect, useState } from 'react';
+
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
+
+import { UseTypeWaveformParams } from './_types';
+import { WAVEFORM_HEIGHT_PERCENT } from './_constants';
 
 const createSvgElement = (width: number, height: number): SVGSVGElement => {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
@@ -67,7 +70,7 @@ const useSvgWaveform = ({
       const points = peaks
         .map((peak, index) => {
           const x = Math.round(index * barIndexScale);
-          const waveformMaxHeight = (height / 10) * 8;
+          const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
           const barHeight = Math.round((peak * waveformMaxHeight) / 2);
           const yTop = halfHeight - barHeight;
           const yBottom = halfHeight + barHeight;

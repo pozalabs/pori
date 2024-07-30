@@ -1,4 +1,5 @@
 import { DOMAttributes } from 'react';
+
 import { UseWaveformParams } from '../useWaveform';
 
 export interface UseTypeWaveformParams

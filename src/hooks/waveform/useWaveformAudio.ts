@@ -36,7 +36,7 @@ const useWaveformAudio = ({
     if (!audioRef.current) return;
 
     Object.keys(eventHandlers).forEach(eventType => {
-      const eventHandler = convertReactHandlerToNative(
+      const eventHandler = convertReactHandlerToNativeHandler(
         eventHandlers[eventType as keyof HTMLAudioElementEventType],
       );
 
@@ -60,7 +60,7 @@ const useWaveformAudio = ({
   };
 };
 
-const convertReactHandlerToNative = (
+const convertReactHandlerToNativeHandler = (
   handler: HTMLAudioElementEventType[keyof HTMLAudioElementEventType],
 ) => {
   if (!handler) return;

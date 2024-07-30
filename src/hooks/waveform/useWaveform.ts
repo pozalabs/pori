@@ -2,6 +2,7 @@ import useAudioData from './useAudioData';
 import useWaveformAudio from './useWaveformAudio';
 import useCanvasWaveform from './useCanvasWaveform';
 import useSvgWaveform from './useSvgWaveform';
+
 import { WAVEFORM_DEFAULT_VALUE } from './_constants';
 import { HTMLAudioElementEventType } from './_types';
 
