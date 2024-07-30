@@ -65,9 +65,10 @@ const convertReactHandlerToNativeHandler = (
 ) => {
   if (!handler) return;
 
+  type HandlerParam = UnionToIntersection<Parameters<typeof handler>[0]>;
+
   return (event: Event) => {
-    type HandlerParams = UnionToIntersection<Parameters<typeof handler>[0]>;
-    handler(event as unknown as HandlerParams);
+    handler(event as unknown as HandlerParam);
   };
 };
 
