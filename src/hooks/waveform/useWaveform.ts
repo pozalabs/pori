@@ -2,9 +2,11 @@ import useAudioData from './useAudioData';
 import useWaveformAudio from './useWaveformAudio';
 import useCanvasWaveform from './useCanvasWaveform';
 import useSvgWaveform from './useSvgWaveform';
-import { WAVEFORM_DEFAULT_VALUE } from './_constants';
 
-export interface UseWaveformParams {
+import { WAVEFORM_DEFAULT_VALUE } from './_constants';
+import { HTMLAudioElementEventType } from './_types';
+
+export interface UseWaveformParams extends HTMLAudioElementEventType {
   src: string;
   type?: 'canvas' | 'svg';
   sampleRate?: number;
@@ -84,11 +86,13 @@ const useWaveform = ({
   controls = WAVEFORM_DEFAULT_VALUE['controls'],
   playhead = WAVEFORM_DEFAULT_VALUE['playhead'],
   autoplay = WAVEFORM_DEFAULT_VALUE['autoplay'],
+  ...eventHandlers
 }: UseWaveformParams): UseWaveformReturns => {
   const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } =
     useWaveformAudio({
       src,
       autoplay,
+      ...eventHandlers,
     });
 
   const { peaks } = useAudioData({ src, sampleRate, peakLength });

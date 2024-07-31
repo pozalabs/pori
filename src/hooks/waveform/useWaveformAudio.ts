@@ -1,6 +1,9 @@
+import { useEffect } from 'react';
 import { useAudio, useControlAudio } from '@pozalabs/pokit';
 
-interface UseWaveformAudioParams {
+import { HTMLAudioElementEventType, UnionToIntersection } from './_types';
+
+interface UseWaveformAudioParams extends HTMLAudioElementEventType {
   src: string;
   autoplay: boolean;
 }
@@ -14,14 +17,38 @@ interface UseWaveformAudioReturns {
   changeCurrentTime: (currentTime: number) => void;
 }
 
-const useWaveformAudio = ({ src, autoplay }: UseWaveformAudioParams): UseWaveformAudioReturns => {
+const useWaveformAudio = ({
+  src,
+  autoplay,
+  ...eventHandlers
+}: UseWaveformAudioParams): UseWaveformAudioReturns => {
   const audioRef = useAudio();
-  const [{ isPlaying, currentTime, duration }, { play, pause, changeCurrentTime }] =
-    useControlAudio({
-      audioRef,
-      src,
-      autoPlay: autoplay,
+  const [
+    { isPlaying, currentTime, duration },
+    { play, pause, changeCurrentTime },
+  ] = useControlAudio({
+    audioRef,
+    src,
+    autoPlay: autoplay,
+  });
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+
+    Object.keys(eventHandlers).forEach(eventType => {
+      const eventHandler = convertReactHandlerToNativeHandler(
+        eventHandlers[eventType as keyof HTMLAudioElementEventType],
+      );
+
+      if (!eventHandler) return;
+
+      const formattedEventType = eventType
+        .slice(2)
+        .toLocaleLowerCase() as keyof HTMLMediaElementEventMap;
+
+      audioRef.current?.addEventListener(formattedEventType, eventHandler);
     });
+  }, []);
 
   return {
     isPlaying,
@@ -30,6 +57,18 @@ const useWaveformAudio = ({ src, autoplay }: UseWaveformAudioParams): UseWavefor
     play,
     pause,
     changeCurrentTime,
+  };
+};
+
+const convertReactHandlerToNativeHandler = (
+  handler: HTMLAudioElementEventType[keyof HTMLAudioElementEventType],
+) => {
+  if (!handler) return;
+
+  type HandlerParam = UnionToIntersection<Parameters<typeof handler>[0]>;
+
+  return (event: Event) => {
+    handler(event as unknown as HandlerParam);
   };
 };
 

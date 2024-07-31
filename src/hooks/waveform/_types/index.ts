@@ -1,8 +1,22 @@
+import { DOMAttributes } from 'react';
+
 import { UseWaveformParams } from '../useWaveform';
 
 export interface UseTypeWaveformParams
   extends Required<
-    Omit<UseWaveformParams, 'src' | 'type' | 'sampleRate' | 'peakLength' | 'autoplay'>
+    Pick<
+      UseWaveformParams,
+      | 'width'
+      | 'height'
+      | 'playheadWidth'
+      | 'waveColor'
+      | 'progressColor'
+      | 'bgColor'
+      | 'playheadColor'
+      | 'className'
+      | 'controls'
+      | 'playhead'
+    >
   > {
   peaks: number[];
   currentTime: number;
@@ -10,3 +24,14 @@ export interface UseTypeWaveformParams
   changeCurrentTime?: (currentTime: number) => void;
   enabled: boolean;
 }
+
+export type UnionToIntersection<U> = (
+  U extends any ? (x: U) => void : never
+) extends (x: infer I) => void
+  ? I
+  : never;
+
+export type HTMLAudioElementEventType = Omit<
+  DOMAttributes<HTMLAudioElement>,
+  'children' | 'dangerouslySetInnerHTML'
+>;
