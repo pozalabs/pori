@@ -8,8 +8,15 @@ interface UseAudioDataParams {
   peakLength: number;
 }
 
-const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams) => {
+interface UseAudioDataReturns {
+  audioUrl: string;
+  audioBuffer: AudioBuffer | null;
+  peaks: number[];
+}
+
+const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams): UseAudioDataReturns => {
   const [audioBuffer, setAudioBuffer] = useState<AudioBuffer | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string>('');
   const [peaks, setPeaks] = useState<number[]>([]);
   const [error, setError] = useState<unknown>(null);
 
@@ -27,21 +34,18 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams) => {
       const channelData = audioBuffer.getChannelData(0);
       const sampleSize = Math.floor(channelData.length / peakLength);
 
-      const peaks = [...Array(peakLength).keys()].reduce<number[]>(
-        (acc, peakIndex) => {
-          const samples = channelData.slice(
-            Math.floor(peakIndex * sampleSize),
-            Math.ceil((peakIndex + 1) * sampleSize),
-          );
-          const max = samples.reduce((prevMax, sample) => {
-            if (Math.abs(sample) > Math.abs(prevMax)) return Math.abs(sample);
-            return prevMax;
-          }, 0);
+      const peaks = [...Array(peakLength).keys()].reduce<number[]>((acc, peakIndex) => {
+        const samples = channelData.slice(
+          Math.floor(peakIndex * sampleSize),
+          Math.ceil((peakIndex + 1) * sampleSize),
+        );
+        const max = samples.reduce((prevMax, sample) => {
+          if (Math.abs(sample) > Math.abs(prevMax)) return Math.abs(sample);
+          return prevMax;
+        }, 0);
 
-          return [...acc, max];
-        },
-        [],
-      );
+        return [...acc, max];
+      }, []);
 
       return normalizePeaks(peaks);
     },
@@ -51,13 +55,14 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams) => {
   const initPeaks = useCallback(
     async (audioContext: AudioContext): Promise<void> => {
       try {
-        const arrayBuffer = await fetchAudio<ArrayBuffer>({
+        const { url, arrayBuffer } = await fetchAudio({
           src,
-          type: 'arrayBuffer',
         });
         const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
+
         setAudioBuffer(audioBuffer);
         setPeaks(getPeaks(audioBuffer));
+        setAudioUrl(url);
       } catch (err) {
         setError(err);
       }
@@ -66,11 +71,9 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams) => {
   );
 
   useEffect(() => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)(
-      {
-        sampleRate,
-      },
-    );
+    const audioContext = new (window.AudioContext || window.webkitAudioContext)({
+      sampleRate,
+    });
 
     initPeaks(audioContext);
 
@@ -79,7 +82,7 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams) => {
     };
   }, [initPeaks, sampleRate]);
 
-  return { audioBuffer, peaks };
+  return { audioUrl, audioBuffer, peaks };
 };
 
 export default useAudioData;

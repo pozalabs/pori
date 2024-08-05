@@ -88,14 +88,12 @@ const useWaveform = ({
   autoplay = WAVEFORM_DEFAULT_VALUE['autoplay'],
   ...eventHandlers
 }: UseWaveformParams): UseWaveformReturns => {
-  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } =
-    useWaveformAudio({
-      src,
-      autoplay,
-      ...eventHandlers,
-    });
-
-  const { peaks } = useAudioData({ src, sampleRate, peakLength });
+  const { audioUrl, peaks } = useAudioData({ src, sampleRate, peakLength });
+  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } = useWaveformAudio({
+    src: audioUrl,
+    autoplay,
+    ...eventHandlers,
+  });
 
   const waveformParams = {
     width,
