@@ -33,29 +33,36 @@ const fetchChunkFileToBlob = async ({
 
 interface FetchAudioParams {
   src: string;
-  type?: 'url' | 'blob' | 'arrayBuffer';
   chunkSize?: number;
+}
+
+interface FetchAudioReturns {
+  url: string;
+  blob: Blob;
+  arrayBuffer: ArrayBuffer;
 }
 
 /**
  * 오디오 파일을 청크로 나누어 병렬 다운로드 후 반환하는 유틸 함수입니다.
- * 반환 타입은 url, blob, arrayBuffer 중에서 선택할 수 있습니다.
+ * url, blob, arrayBuffer 각각의 형태로 만들어 반환합니다.
  * @param FetchAudioParams
  * ```
  * interface FetchAudioParams {
  *    src: string;
- *    type?: 'url' | 'blob' | 'arrayBuffer';
  *    chunkSize?: number;
  * }
  * ```
- * - type default : `url`
- * @returns `Promise<T>`
+ * @returns
+ * `Promise<FetchAudioReturns>`
+ * ```
+ * interface FetchAudioReturns {
+ *    url: string;
+ *    blob: Blob;
+ *    arrayBuffer: ArrayBuffer;
+ * }
+ * ```
  */
-const fetchAudio = async <T extends string | Blob | ArrayBuffer>({
-  src,
-  type = 'url',
-  chunkSize,
-}: FetchAudioParams): Promise<T> => {
+const fetchAudio = async ({ src, chunkSize }: FetchAudioParams): Promise<FetchAudioReturns> => {
   const { audioType, audioSize } = await getAudioFileInformation(src);
 
   const computedChunkSize = chunkSize ?? getChunkSize(audioSize);
@@ -74,14 +81,11 @@ const fetchAudio = async <T extends string | Blob | ArrayBuffer>({
     new Blob(),
   );
 
-  if (type === 'blob') {
-    return audioBlob as T;
-  }
-  if (type === 'arrayBuffer') {
-    return (await audioBlob.arrayBuffer()) as T;
-  }
-
-  return URL.createObjectURL(audioBlob) as T;
+  return {
+    blob: audioBlob,
+    arrayBuffer: await audioBlob.arrayBuffer(),
+    url: URL.createObjectURL(audioBlob),
+  };
 };
 
 export default fetchAudio;
