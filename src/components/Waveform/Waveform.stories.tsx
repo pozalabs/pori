@@ -4,7 +4,9 @@ import { KonvaEventObject } from 'konva/lib/Node';
 import { Image, Layer, Stage } from 'react-konva';
 
 import Waveform, { WaveformHandles } from './Waveform';
-import useWaveform, { UseWaveformParams } from '../../hooks/waveform/useWaveform';
+import useWaveform, {
+  UseWaveformParams,
+} from '../../hooks/waveform/useWaveform';
 import { WAVEFORM_DEFAULT_VALUE } from '../../hooks/waveform/_constants';
 
 const WaveformWithControlButton = (props: UseWaveformParams) => {
@@ -51,8 +53,8 @@ export const Svg: Story = {
 export const Konva: Story = {
   args: { ...WAVEFORM_DEFAULT_VALUE, type: 'canvas', src },
   render: (props: UseWaveformParams) => {
-    const { waveform, play, pause, changeCurrentTime, duration } = useWaveform(props);
-    const isDraggingRef = useRef(false);
+    const { waveform, play, pause, changeCurrentTime, duration } =
+      useWaveform(props);
     const ref = useRef<any>();
 
     const updateCurrentTime = (e: KonvaEventObject<MouseEvent>): void => {
@@ -80,18 +82,6 @@ export const Konva: Story = {
       return () => cancelAnimationFrame(frameId);
     }, []);
 
-    const onElementMouseDown = (): void => {
-      isDraggingRef.current = true;
-    };
-    const onElementMouseUp = (): void => {
-      isDraggingRef.current = false;
-    };
-    const onElementMouseMove = (e: KonvaEventObject<MouseEvent>): void => {
-      if (!isDraggingRef.current) return;
-
-      updateCurrentTime(e);
-    };
-
     return (
       <div className="flex flex-col gap-[1rem] w-fit">
         <Stage width={props.width} height={props.height! * 2}>
@@ -100,10 +90,6 @@ export const Konva: Story = {
               image={waveform}
               alt="waveform"
               onClick={updateCurrentTime}
-              onMouseDown={onElementMouseDown}
-              onMouseUp={onElementMouseUp}
-              onMouseLeave={onElementMouseUp}
-              onMouseMove={onElementMouseMove}
               y={50}
             />
           </Layer>
