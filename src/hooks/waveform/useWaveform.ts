@@ -9,6 +9,7 @@ import { HTMLAudioElementEventType } from './_types';
 export interface UseWaveformParams extends HTMLAudioElementEventType {
   src: string;
   type?: 'canvas' | 'svg';
+  variant?: 'line' | 'bar';
   sampleRate?: number;
   peakLength?: number;
   width?: number;
@@ -41,6 +42,7 @@ export interface UseWaveformReturns {
  * interface UseWaveformParams {
  *    src: string;
  *    type?: 'canvas' | 'svg';
+ *    variant?: 'line' | 'bar';
  *    sampleRate?: number;
  *    peakLength?: number;
  *    width?: number;
@@ -73,6 +75,7 @@ export interface UseWaveformReturns {
 const useWaveform = ({
   src,
   type = WAVEFORM_DEFAULT_VALUE['type'],
+  variant = WAVEFORM_DEFAULT_VALUE['variant'],
   sampleRate = WAVEFORM_DEFAULT_VALUE['sampleRate'],
   peakLength = WAVEFORM_DEFAULT_VALUE['peakLength'],
   width = WAVEFORM_DEFAULT_VALUE['width'],
@@ -89,13 +92,15 @@ const useWaveform = ({
   ...eventHandlers
 }: UseWaveformParams): UseWaveformReturns => {
   const { audioUrl, peaks } = useAudioData({ src, sampleRate, peakLength });
-  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } = useWaveformAudio({
-    src: audioUrl,
-    autoplay,
-    ...eventHandlers,
-  });
+  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } =
+    useWaveformAudio({
+      src: audioUrl,
+      autoplay,
+      ...eventHandlers,
+    });
 
   const waveformParams = {
+    variant,
     width,
     height,
     playheadWidth,

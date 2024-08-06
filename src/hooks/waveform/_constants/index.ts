@@ -1,5 +1,27 @@
-export const WAVEFORM_DEFAULT_VALUE = {
+import { UseWaveformParams } from '../useWaveform';
+
+export const WAVEFORM_DEFAULT_VALUE: Required<
+  Pick<
+    UseWaveformParams,
+    | 'type'
+    | 'variant'
+    | 'sampleRate'
+    | 'peakLength'
+    | 'width'
+    | 'height'
+    | 'playheadWidth'
+    | 'waveColor'
+    | 'bgColor'
+    | 'progressColor'
+    | 'playheadColor'
+    | 'className'
+    | 'controls'
+    | 'playhead'
+    | 'autoplay'
+  >
+> = {
   type: 'canvas',
+  variant: 'line',
   sampleRate: 8000,
   peakLength: 1024,
   width: 1000,
@@ -16,3 +38,4 @@ export const WAVEFORM_DEFAULT_VALUE = {
 } as const;
 
 export const WAVEFORM_HEIGHT_PERCENT = 80;
+export const BAR_WIDTH = 1;

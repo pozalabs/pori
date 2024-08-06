@@ -6,6 +6,7 @@ export interface UseTypeWaveformParams
   extends Required<
     Pick<
       UseWaveformParams,
+      | 'variant'
       | 'width'
       | 'height'
       | 'playheadWidth'
