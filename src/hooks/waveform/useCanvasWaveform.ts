@@ -4,9 +4,12 @@ import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
 
 import { UseTypeWaveformParams } from './_types';
-import { WAVEFORM_HEIGHT_PERCENT } from './_constants';
+import { BAR_WIDTH, WAVEFORM_HEIGHT_PERCENT } from './_constants';
 
-const createCanvasElement = (width: number, height: number): HTMLCanvasElement => {
+const createCanvasElement = (
+  width: number,
+  height: number,
+): HTMLCanvasElement => {
   const canvas = document.createElement('canvas');
   canvas.width = width;
   canvas.height = height;
@@ -33,12 +36,15 @@ const useCanvasWaveform = ({
 }: UseTypeWaveformParams) => {
   const [waveform, setWaveform] = useState<HTMLCanvasElement>();
   const [initWaveform, setInitWaveform] = useState<HTMLCanvasElement>();
+  const [playedWaveform, setPlayedWaveform] = useState<HTMLCanvasElement>();
 
-  const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
-    duration,
-    changeCurrentTime,
-  });
-  const { halfHeight, barIndexScale, playedIndex } = useWaveformSize({
+  const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent(
+    {
+      duration,
+      changeCurrentTime,
+    },
+  );
+  const { halfHeight, barIndexScale, playedWidth } = useWaveformSize({
     width,
     height,
     peakLength: peaks.length,
@@ -47,7 +53,7 @@ const useCanvasWaveform = ({
   });
 
   const drawWaveform = useCallback(
-    (ctx: CanvasRenderingContext2D, peaks: number[]): void => {
+    (ctx: CanvasRenderingContext2D): void => {
       ctx.beginPath();
 
       peaks.forEach((peak, index) => {
@@ -64,7 +70,7 @@ const useCanvasWaveform = ({
       ctx.stroke();
       ctx.closePath();
     },
-    [halfHeight, barIndexScale, height],
+    [peaks, halfHeight, barIndexScale, height],
   );
 
   const drawPlayhead = useCallback(
@@ -74,15 +80,13 @@ const useCanvasWaveform = ({
       ctx.lineCap = 'round';
       ctx.strokeStyle = playheadColor;
 
-      const x = Math.round(playedIndex * barIndexScale);
-
-      ctx.moveTo(x, 0);
-      ctx.lineTo(x, height);
+      ctx.moveTo(playedWidth, 0);
+      ctx.lineTo(playedWidth, height);
 
       ctx.stroke();
       ctx.closePath();
     },
-    [playedIndex, barIndexScale, height, playheadWidth, playheadColor],
+    [playedWidth, barIndexScale, height, playheadWidth, playheadColor],
   );
 
   const configureWaveform = useCallback((): void => {
@@ -100,58 +104,64 @@ const useCanvasWaveform = ({
 
   const initCanvasWaveform = useCallback((): void => {
     const initCanvas = createCanvasElement(width, height);
+    const playedCanvas = createCanvasElement(width, height);
 
     const initCtx = initCanvas.getContext('2d');
+    const playedCtx = playedCanvas.getContext('2d');
 
-    if (!initCtx) return;
+    if (!initCtx || !playedCtx) return;
 
     initCtx.fillStyle = bgColor;
     initCtx.clearRect(0, 0, width, height);
     initCtx.fillRect(0, 0, width, height);
     initCtx.fill();
 
-    initCtx.lineWidth = 1;
-    initCtx.lineCap = 'round';
+    initCtx.lineWidth = BAR_WIDTH;
     initCtx.strokeStyle = waveColor;
 
-    drawWaveform(initCtx, peaks);
+    drawWaveform(initCtx);
 
-    setInitWaveform(initCanvas);
-  }, [width, height, bgColor, waveColor, peaks, drawWaveform]);
-
-  const updateCanvasWaveform = useCallback((): void => {
-    if (!waveform || !initWaveform) return;
-
-    const playedCanvas = createCanvasElement(width, height);
-
-    const waveformCtx = waveform.getContext('2d');
-    const playedCtx = playedCanvas.getContext('2d');
-
-    if (!waveformCtx || !playedCtx) return;
-
-    playedCtx.lineWidth = 1;
-    playedCtx.lineCap = 'round';
+    playedCtx.lineWidth = BAR_WIDTH;
     playedCtx.clearRect(0, 0, width, height);
 
     playedCtx.strokeStyle = progressColor;
 
-    drawWaveform(playedCtx, peaks.slice(0, playedIndex));
-    playhead && drawPlayhead(playedCtx);
+    drawWaveform(playedCtx);
+
+    setInitWaveform(initCanvas);
+    setPlayedWaveform(playedCanvas);
+  }, [width, height, bgColor, waveColor, progressColor, drawWaveform]);
+
+  const updateCanvasWaveform = useCallback((): void => {
+    if (!waveform || !initWaveform || !playedWaveform) return;
+
+    const waveformCtx = waveform.getContext('2d');
+
+    if (!waveformCtx) return;
 
     waveformCtx.clearRect(0, 0, width, height);
     waveformCtx.drawImage(initWaveform, 0, 0);
-    waveformCtx.drawImage(playedCanvas, 0, 0);
+    waveformCtx.drawImage(
+      playedWaveform,
+      0,
+      0,
+      playedWidth,
+      height,
+      0,
+      0,
+      playedWidth,
+      height,
+    );
+    playhead && drawPlayhead(waveformCtx);
   }, [
     width,
     height,
-    peaks,
-    progressColor,
+    playedWidth,
     playhead,
     waveform,
     initWaveform,
-    playedIndex,
+    playedWaveform,
     drawPlayhead,
-    drawWaveform,
   ]);
 
   useEffect(() => {
@@ -170,13 +180,29 @@ const useCanvasWaveform = ({
     if (!enabled) return;
 
     initCanvasWaveform();
-  }, [peaks, width, height, waveColor, bgColor, duration, enabled]);
+  }, [
+    peaks,
+    width,
+    height,
+    waveColor,
+    bgColor,
+    progressColor,
+    duration,
+    enabled,
+  ]);
 
   useEffect(() => {
     if (!enabled) return;
 
     updateCanvasWaveform();
-  }, [initWaveform, progressColor, playheadWidth, playheadColor, currentTime, enabled]);
+  }, [
+    initWaveform,
+    playedWaveform,
+    playheadWidth,
+    playheadColor,
+    currentTime,
+    enabled,
+  ]);
 
   return waveform;
 };

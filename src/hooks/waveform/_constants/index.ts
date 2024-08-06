@@ -16,3 +16,4 @@ export const WAVEFORM_DEFAULT_VALUE = {
 } as const;
 
 export const WAVEFORM_HEIGHT_PERCENT = 80;
+export const BAR_WIDTH = 1;
