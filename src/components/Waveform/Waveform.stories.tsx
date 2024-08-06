@@ -1,10 +1,12 @@
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useRef } from 'react';
 import type { Meta, StoryObj } from '@storybook/react';
 import { KonvaEventObject } from 'konva/lib/Node';
 import { Image, Layer, Stage } from 'react-konva';
 
 import Waveform, { WaveformHandles } from './Waveform';
-import useWaveform, { UseWaveformParams } from '../../hooks/waveform/useWaveform';
+import useWaveform, {
+  UseWaveformParams,
+} from '../../hooks/waveform/useWaveform';
 import { WAVEFORM_DEFAULT_VALUE } from '../../hooks/waveform/_constants';
 
 const WaveformWithControlButton = (props: UseWaveformParams) => {
@@ -51,9 +53,11 @@ export const Svg: Story = {
 export const Konva: Story = {
   args: { ...WAVEFORM_DEFAULT_VALUE, type: 'canvas', src },
   render: (props: UseWaveformParams) => {
-    const { waveform, play, pause, changeCurrentTime, duration } = useWaveform(props);
+    const { waveform, play, pause, changeCurrentTime, duration } =
+      useWaveform(props);
     const isDraggingRef = useRef(false);
     const ref = useRef<any>();
+    const dpr = useMemo(() => window.devicePixelRatio ?? 1, []);
 
     const updateCurrentTime = (e: KonvaEventObject<MouseEvent>): void => {
       const rect = e.target.getClientRect();
@@ -62,7 +66,8 @@ export const Konva: Story = {
       if (!clickPosition) return;
 
       const targetWidth = rect.width;
-      const percent = (clickPosition.x / targetWidth) * 100;
+      const clickX = clickPosition.x / dpr;
+      const percent = (clickX / targetWidth) * 100;
       const newCurrentTime = (percent * duration) / 100;
 
       changeCurrentTime(newCurrentTime);
@@ -104,7 +109,7 @@ export const Konva: Story = {
               onMouseUp={onElementMouseUp}
               onMouseLeave={onElementMouseUp}
               onMouseMove={onElementMouseMove}
-              y={50}
+              scale={{ x: 1 / dpr, y: 1 / dpr }}
             />
           </Layer>
         </Stage>
