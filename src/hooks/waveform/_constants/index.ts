@@ -15,5 +15,5 @@ export const WAVEFORM_DEFAULT_VALUE = {
   autoplay: false,
 } as const;
 
-export const WAVEFORM_HEIGHT_PERCENT = 80;
+export const WAVEFORM_HEIGHT_PERCENT = 90;
 export const BAR_WIDTH = 1;
