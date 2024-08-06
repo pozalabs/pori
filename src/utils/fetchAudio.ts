@@ -25,26 +25,35 @@ const fetchChunkFileToBlobWithRetries = async ({
   end: number;
   retry: number;
 }): Promise<Blob> => {
-  let returnBlob: Blob = new Blob();
+  const attempts = Array.from({ length: retry });
 
-  for (let i = 0; i < retry; i++) {
-    try {
-      const response = await fetch(src, {
-        method: 'GET',
-        headers: {
-          Range: `bytes=${start}-${end}`,
-        },
-      });
+  return attempts.reduce(
+    async (prev: Promise<Blob>, _, index): Promise<Blob> => {
+      try {
+        const blob = await prev;
 
-      if (!response.ok) throw new Error('Failed to fetch chunk file');
-      returnBlob = await response.blob();
-      break;
-    } catch (error) {
-      if (i === retry - 1) throw error;
-    }
-  }
+        if (blob instanceof Blob && blob.size > 0) {
+          return blob;
+        }
 
-  return returnBlob;
+        const response = await fetch(src, {
+          method: 'GET',
+          headers: {
+            Range: `bytes=${start}-${end}`,
+          },
+        });
+
+        if (!response.ok) throw new Error('Failed to fetch chunk file');
+
+        return await response.blob();
+      } catch (error) {
+        if (index === retry - 1) throw error;
+
+        return new Blob();
+      }
+    },
+    Promise.resolve(new Blob()),
+  );
 };
 
 const fetchChunksWithConcurrentLimit = async ({
