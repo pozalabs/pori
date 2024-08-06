@@ -1,0 +1,2 @@
+export const FETCH_CONCURRENT_LIMIT_DEFAULT = 6;
+export const FETCH_RETRY_DEFAULT = 3;

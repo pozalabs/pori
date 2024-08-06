@@ -1,3 +1,7 @@
+import {
+  FETCH_CONCURRENT_LIMIT_DEFAULT,
+  FETCH_RETRY_DEFAULT,
+} from './_constants';
 import getAudioFileInformation from './getAudioFileInformation';
 
 const getChunkSize = (fileSize: number): number => {
@@ -10,30 +14,85 @@ const getChunkSize = (fileSize: number): number => {
   return 1 * 1024 * 1024;
 };
 
-const fetchChunkFileToBlob = async ({
+const fetchChunkFileToBlobWithRetries = async ({
   src,
   start,
   end,
+  retry,
 }: {
   src: string;
   start: number;
   end: number;
+  retry: number;
 }): Promise<Blob> => {
-  const response = await fetch(src, {
-    method: 'GET',
-    headers: {
-      Range: `bytes=${start}-${end}`,
-    },
-  });
+  let returnBlob: Blob = new Blob();
 
-  if (!response.ok) throw new Error('Failed to fetch chunk file');
+  for (let i = 0; i < retry; i++) {
+    try {
+      const response = await fetch(src, {
+        method: 'GET',
+        headers: {
+          Range: `bytes=${start}-${end}`,
+        },
+      });
 
-  return response.blob();
+      if (!response.ok) throw new Error('Failed to fetch chunk file');
+      returnBlob = await response.blob();
+      break;
+    } catch (error) {
+      if (i === retry - 1) throw error;
+    }
+  }
+
+  return returnBlob;
+};
+
+const fetchChunksWithConcurrentLimit = async ({
+  src,
+  ranges,
+  limit,
+  retry,
+}: {
+  src: string;
+  ranges: { start: number; end: number }[];
+  limit: number;
+  retry: number;
+}): Promise<Blob[]> => {
+  const results: Blob[] = new Array(ranges.length);
+  const executing: Promise<void>[] = [];
+
+  const allPromises = ranges.map((range, index) =>
+    (async () => {
+      while (executing.length >= limit) {
+        await Promise.race(executing);
+      }
+
+      const fetchPromise = (async () => {
+        const blob = await fetchChunkFileToBlobWithRetries({
+          src,
+          start: range.start,
+          end: range.end,
+          retry,
+        });
+        results[index] = blob;
+      })();
+
+      executing.push(fetchPromise);
+      await fetchPromise;
+
+      executing.splice(executing.indexOf(fetchPromise), 1);
+    })(),
+  );
+  await Promise.all(allPromises);
+
+  return results;
 };
 
 interface FetchAudioParams {
   src: string;
   chunkSize?: number;
+  limit?: number;
+  retry?: number;
 }
 
 interface FetchAudioReturns {
@@ -50,6 +109,8 @@ interface FetchAudioReturns {
  * interface FetchAudioParams {
  *    src: string;
  *    chunkSize?: number;
+ *    limit?: number;
+ *    retry?: number;
  * }
  * ```
  * @returns
@@ -62,19 +123,30 @@ interface FetchAudioReturns {
  * }
  * ```
  */
-const fetchAudio = async ({ src, chunkSize }: FetchAudioParams): Promise<FetchAudioReturns> => {
+const fetchAudio = async ({
+  src,
+  chunkSize,
+  limit = FETCH_CONCURRENT_LIMIT_DEFAULT,
+  retry = FETCH_RETRY_DEFAULT,
+}: FetchAudioParams): Promise<FetchAudioReturns> => {
   const { audioType, audioSize } = await getAudioFileInformation(src);
 
   const computedChunkSize = chunkSize ?? getChunkSize(audioSize);
 
-  const chunks = [...Array(Math.ceil(audioSize / computedChunkSize)).keys()];
-  const chunkBlobPromises = chunks.map(chunk => {
-    const start = chunk * computedChunkSize;
-    const end = Math.min(start + computedChunkSize - 1, audioSize - 1);
+  const totalChunks = Math.ceil(audioSize / computedChunkSize);
 
-    return fetchChunkFileToBlob({ src, start, end });
+  const chunkRanges = Array.from({ length: totalChunks }, (_, i) => {
+    const start = i * computedChunkSize;
+    const end = Math.min(start + computedChunkSize - 1, audioSize - 1);
+    return { start, end };
   });
-  const chunkBlobs = await Promise.all(chunkBlobPromises);
+
+  const chunkBlobs = await fetchChunksWithConcurrentLimit({
+    src,
+    ranges: chunkRanges,
+    limit,
+    retry,
+  });
 
   const audioBlob = chunkBlobs.reduce(
     (blob, chunkBlob) => new Blob([blob, chunkBlob], { type: audioType }),
