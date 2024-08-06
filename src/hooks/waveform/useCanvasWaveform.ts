@@ -1,21 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useMemo, useState } from 'react';
 
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
 
 import { UseTypeWaveformParams } from './_types';
 import { BAR_WIDTH, WAVEFORM_HEIGHT_PERCENT } from './_constants';
-
-const createCanvasElement = (
-  width: number,
-  height: number,
-): HTMLCanvasElement => {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-
-  return canvas;
-};
+import { createCanvasElement } from './_utils/createElement';
 
 const useCanvasWaveform = ({
   width,
@@ -38,6 +28,8 @@ const useCanvasWaveform = ({
   const [initWaveform, setInitWaveform] = useState<HTMLCanvasElement>();
   const [playedWaveform, setPlayedWaveform] = useState<HTMLCanvasElement>();
 
+  const dpr = useMemo(() => window.devicePixelRatio ?? 1, []);
+
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent(
     {
       duration,
@@ -57,11 +49,11 @@ const useCanvasWaveform = ({
       ctx.beginPath();
 
       peaks.forEach((peak, index) => {
-        const x = Math.round(index * barIndexScale);
+        const x = Math.round(index * barIndexScale) / dpr;
         const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
         const barHeight = Math.round(peak * (waveformMaxHeight / 2));
-        const yTop = halfHeight - barHeight;
-        const yBottom = halfHeight + barHeight;
+        const yTop = (halfHeight - barHeight) / dpr;
+        const yBottom = (halfHeight + barHeight) / dpr;
 
         ctx.lineTo(x, yTop);
         ctx.lineTo(x, yBottom);
@@ -90,7 +82,7 @@ const useCanvasWaveform = ({
   );
 
   const configureWaveform = useCallback((): void => {
-    const mainCanvas = createCanvasElement(width, height);
+    const mainCanvas = createCanvasElement(width, height, dpr);
 
     const waveformCtx = mainCanvas.getContext('2d');
 
@@ -103,8 +95,8 @@ const useCanvasWaveform = ({
   }, [width, height, className, controls, addEventListeners]);
 
   const initCanvasWaveform = useCallback((): void => {
-    const initCanvas = createCanvasElement(width, height);
-    const playedCanvas = createCanvasElement(width, height);
+    const initCanvas = createCanvasElement(width, height, dpr);
+    const playedCanvas = createCanvasElement(width, height, dpr);
 
     const initCtx = initCanvas.getContext('2d');
     const playedCtx = playedCanvas.getContext('2d');
@@ -116,12 +108,12 @@ const useCanvasWaveform = ({
     initCtx.fillRect(0, 0, width, height);
     initCtx.fill();
 
-    initCtx.lineWidth = BAR_WIDTH;
+    initCtx.lineWidth = BAR_WIDTH / dpr;
     initCtx.strokeStyle = waveColor;
 
     drawWaveform(initCtx);
 
-    playedCtx.lineWidth = BAR_WIDTH;
+    playedCtx.lineWidth = BAR_WIDTH / dpr;
     playedCtx.clearRect(0, 0, width, height);
 
     playedCtx.strokeStyle = progressColor;
