@@ -55,7 +55,7 @@ const useCanvasWaveform = ({
       ctx.beginPath();
 
       peaks.forEach((peak, index) => {
-        const x = Math.round(index * barIndexScale) / dpr;
+        const x = (index * barIndexScale) / dpr;
         const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
         const barHeight = Math.round(peak * (waveformMaxHeight / 2));
         const yTop = (halfHeight - barHeight) / dpr;
