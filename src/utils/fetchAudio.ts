@@ -70,9 +70,8 @@ const waitForQueueAndFetchChunk = async ({
   const fetchPromise = (async () => {
     const blob = await fetchChunkFileToBlobWithRetries({
       src,
-      start: range.start,
-      end: range.end,
       retry,
+      ...range,
     });
     return blob;
   })();
