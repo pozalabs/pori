@@ -13,22 +13,26 @@ export interface UseTypeWaveformParams
       | 'waveColor'
       | 'progressColor'
       | 'bgColor'
-      | 'playheadColor'
+      | 'playheadBgColor'
+      | 'playheadTextColor'
       | 'className'
       | 'controls'
-      | 'playhead'
     >
   > {
+  enabled: boolean;
   peaks: number[];
   currentTime: number;
   duration: number;
+  isPlayheadShowing: boolean;
+  playheadPosition: number;
+  showPlayhead: (e: Event) => void;
+  hidePlayhead: () => void;
   changeCurrentTime?: (currentTime: number) => void;
-  enabled: boolean;
 }
 
-export type UnionToIntersection<U> = (
-  U extends any ? (x: U) => void : never
-) extends (x: infer I) => void
+export type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (
+  x: infer I,
+) => void
   ? I
   : never;
 

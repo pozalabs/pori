@@ -1,7 +1,30 @@
-export const createCanvasElement = (width: number, height: number): HTMLCanvasElement => {
+export const createCanvasElement = (
+  width: number,
+  height: number,
+  dpr: number,
+): HTMLCanvasElement => {
   const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
+  const ctx = canvas.getContext('2d');
+
+  canvas.width = width * dpr;
+  canvas.height = height * dpr;
+  canvas.style.width = `${width}px`;
+  canvas.style.height = `${height}px`;
+
+  ctx?.scale(dpr, dpr);
+
+  return canvas;
+};
+
+export const createOffscreenCanvas = (
+  width: number,
+  height: number,
+  dpr: number,
+): OffscreenCanvas => {
+  const canvas = new OffscreenCanvas(width * dpr, height * dpr);
+  const ctx = canvas.getContext('2d');
+
+  ctx?.scale(dpr, dpr);
 
   return canvas;
 };
@@ -23,6 +46,12 @@ export const createPolylineElement = (): SVGPolylineElement => {
 
 export const createRectElement = (): SVGRectElement => {
   const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
+
+  return rect;
+};
+
+export const createTextElement = (): SVGTextElement => {
+  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 
   return rect;
 };

@@ -1,3 +1,5 @@
+import { useCallback, useState } from 'react';
+
 import useAudioData from './useAudioData';
 import useWaveformAudio from './useWaveformAudio';
 import useCanvasWaveform from './useCanvasWaveform';
@@ -18,10 +20,10 @@ export interface UseWaveformParams extends HTMLAudioElementEventType {
   waveColor?: string;
   progressColor?: string;
   bgColor?: string;
-  playheadColor?: string;
+  playheadBgColor?: string;
+  playheadTextColor?: string;
   className?: string;
   controls?: boolean;
-  playhead?: boolean;
   autoplay?: boolean;
 }
 
@@ -32,6 +34,8 @@ export interface UseWaveformReturns {
   play: () => void;
   pause: () => void;
   changeCurrentTime: (currentTime: number) => void;
+  showPlayhead: (e: Event) => void;
+  hidePlayhead: () => void;
   waveform?: CanvasImageSource;
 }
 
@@ -51,10 +55,10 @@ export interface UseWaveformReturns {
  *    waveColor?: string;
  *    progressColor?: string;
  *    bgColor?: string;
- *    playheadColor?: string;
+ *    playheadBgColor?: string;
+ *    playheadTextColor?: string;
  *    className?: string;
  *    controls?: boolean;
- *    playhead?: boolean;
  *    autoplay?: boolean;
  * }
  * ```
@@ -68,6 +72,8 @@ export interface UseWaveformReturns {
  *    play: () => void;
  *    pause: () => void;
  *    changeCurrentTime: (currentTime: number) => void;
+ *    showPlayhead: (e: Event) => void;
+ *    hidePlayhead: () => void;
  *    waveform?: CanvasImageSource;
  * }
  * ```
@@ -84,10 +90,10 @@ const useWaveform = ({
   waveColor = WAVEFORM_DEFAULT_VALUE['waveColor'],
   progressColor = WAVEFORM_DEFAULT_VALUE['progressColor'],
   bgColor = WAVEFORM_DEFAULT_VALUE['bgColor'],
-  playheadColor = WAVEFORM_DEFAULT_VALUE['playheadColor'],
+  playheadBgColor = WAVEFORM_DEFAULT_VALUE['playheadBgColor'],
+  playheadTextColor = WAVEFORM_DEFAULT_VALUE['playheadTextColor'],
   className = WAVEFORM_DEFAULT_VALUE['className'],
   controls = WAVEFORM_DEFAULT_VALUE['controls'],
-  playhead = WAVEFORM_DEFAULT_VALUE['playhead'],
   autoplay = WAVEFORM_DEFAULT_VALUE['autoplay'],
   ...eventHandlers
 }: UseWaveformParams): UseWaveformReturns => {
@@ -99,6 +105,28 @@ const useWaveform = ({
       ...eventHandlers,
     });
 
+  const [isPlayheadShowing, setIsPlayheadShowing] = useState(false);
+  const [playheadPosition, setPlayheadPosition] = useState(0);
+
+  const showPlayhead = useCallback((e: Event): void => {
+    if (
+      !(e instanceof MouseEvent) ||
+      !(e.target instanceof HTMLCanvasElement || e.target instanceof HTMLImageElement)
+    )
+      return;
+
+    const rect = e.target.getBoundingClientRect();
+
+    const clickX = e.clientX - rect.left;
+
+    setPlayheadPosition(Math.max(0, clickX));
+    setIsPlayheadShowing(true);
+  }, []);
+
+  const hidePlayhead = useCallback((): void => {
+    setIsPlayheadShowing(false);
+  }, []);
+
   const waveformParams = {
     variant,
     width,
@@ -107,14 +135,18 @@ const useWaveform = ({
     waveColor,
     progressColor,
     bgColor,
-    playheadColor,
+    playheadBgColor,
+    playheadTextColor,
     className,
     controls,
-    playhead,
     peaks,
     currentTime,
     duration,
     changeCurrentTime,
+    isPlayheadShowing,
+    playheadPosition,
+    showPlayhead,
+    hidePlayhead,
   };
 
   const canvasWaveform = useCanvasWaveform({
@@ -134,6 +166,8 @@ const useWaveform = ({
     play,
     pause,
     changeCurrentTime,
+    showPlayhead,
+    hidePlayhead,
     waveform: type === 'svg' ? svgWaveform : canvasWaveform,
   };
 };

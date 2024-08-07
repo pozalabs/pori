@@ -13,10 +13,10 @@ export const WAVEFORM_DEFAULT_VALUE: Required<
     | 'waveColor'
     | 'bgColor'
     | 'progressColor'
-    | 'playheadColor'
+    | 'playheadBgColor'
+    | 'playheadTextColor'
     | 'className'
     | 'controls'
-    | 'playhead'
     | 'autoplay'
   >
 > = {
@@ -26,16 +26,20 @@ export const WAVEFORM_DEFAULT_VALUE: Required<
   peakLength: 1024,
   width: 1000,
   height: 100,
-  playheadWidth: 0.25,
+  playheadWidth: 1,
   waveColor: 'black',
   progressColor: '#0873ff',
   bgColor: 'transparent',
-  playheadColor: 'black',
+  playheadBgColor: 'black',
+  playheadTextColor: 'white',
   className: '',
   controls: true,
-  playhead: true,
   autoplay: false,
 } as const;
 
-export const WAVEFORM_HEIGHT_PERCENT = 80;
+export const PLAYHEAD_TIME = {
+  fontSize: 10,
+  padding: 2,
+};
+export const WAVEFORM_HEIGHT_PERCENT = 90;
 export const BAR_WIDTH = 1;
