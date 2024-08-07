@@ -4,7 +4,7 @@ export const WAVEFORM_DEFAULT_VALUE = {
   peakLength: 1024,
   width: 1000,
   height: 100,
-  playheadWidth: 0.25,
+  playheadWidth: 1,
   waveColor: 'black',
   progressColor: '#0873ff',
   bgColor: 'transparent',
@@ -15,4 +15,5 @@ export const WAVEFORM_DEFAULT_VALUE = {
   autoplay: false,
 } as const;
 
-export const WAVEFORM_HEIGHT_PERCENT = 80;
+export const WAVEFORM_HEIGHT_PERCENT = 90;
+export const BAR_WIDTH = 1;
