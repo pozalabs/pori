@@ -4,21 +4,23 @@ import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
 
 import { UseTypeWaveformParams } from './_types';
-import { WAVEFORM_HEIGHT_PERCENT } from './_constants';
+import { PLAYHEAD_TIME, WAVEFORM_HEIGHT_PERCENT } from './_constants';
+import formatTime from './_utils/formatTime';
+import {
+  createPolylineElement,
+  createRectElement,
+  createSvgElement,
+  createTextElement,
+} from './_utils/createElement';
 
-const createSvgElement = (width: number, height: number): SVGSVGElement => {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
+const getTextWidth = (text: string, font: string): number => {
+  const element = document.createElement('canvas');
+  const ctx = element.getContext('2d');
 
-  svg.setAttribute('width', width.toString());
-  svg.setAttribute('height', height.toString());
+  if (!ctx) return 0;
 
-  return svg;
-};
-
-const createPolylineElement = (): SVGPolylineElement => {
-  const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
-
-  return polyline;
+  ctx.font = font;
+  return ctx.measureText(text).width;
 };
 
 const useSvgWaveform = ({
@@ -28,13 +30,17 @@ const useSvgWaveform = ({
   waveColor,
   progressColor,
   bgColor,
-  playheadColor,
+  playheadBgColor,
+  playheadTextColor,
   className,
   controls,
-  playhead,
   peaks,
   currentTime,
   duration,
+  isPlayheadShowing,
+  playheadPosition,
+  showPlayhead,
+  hidePlayhead,
   changeCurrentTime,
   enabled,
 }: UseTypeWaveformParams) => {
@@ -43,6 +49,8 @@ const useSvgWaveform = ({
 
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
     duration,
+    showPlayhead,
+    hidePlayhead,
     changeCurrentTime,
   });
   const { halfHeight, barIndexScale, playedIndex } = useWaveformSize({
@@ -84,17 +92,46 @@ const useSvgWaveform = ({
     (svgElement: SVGSVGElement): void => {
       const polylineElement = createPolylineElement();
 
-      const x = Math.round(playedIndex * barIndexScale);
-      const formattedX = isNaN(x) ? 0 : x;
-
-      polylineElement.setAttribute('points', `${formattedX},0 ${formattedX},${height}`);
+      polylineElement.setAttribute('points', `${playheadPosition},0 ${playheadPosition},${height}`);
       polylineElement.style.strokeWidth = `${playheadWidth}`;
-      polylineElement.style.stroke = playheadColor;
+      polylineElement.style.stroke = playheadBgColor;
       polylineElement.style.fill = 'none';
 
+      const rectElement = createRectElement();
+      const textElement = createTextElement();
+
+      const percent = (playheadPosition / width) * 100;
+      const playheadTime = (percent * duration) / 100;
+      const formattedPlayheadTime = formatTime(playheadTime > 0 ? playheadTime : 0);
+
+      const textWidth =
+        getTextWidth(formattedPlayheadTime, `${PLAYHEAD_TIME.fontSize}px Arial`) +
+        PLAYHEAD_TIME.padding * 2;
+      const textHeight = PLAYHEAD_TIME.fontSize + PLAYHEAD_TIME.padding * 2;
+
+      const playheadTimePosition =
+        playheadPosition > textWidth ? playheadPosition - textWidth : playheadPosition;
+
+      textElement.setAttribute('x', `${playheadTimePosition + PLAYHEAD_TIME.padding}`);
+      textElement.setAttribute('y', `${PLAYHEAD_TIME.fontSize}`);
+      textElement.setAttribute('font-size', `${PLAYHEAD_TIME.fontSize}`);
+      textElement.setAttribute('font-family', 'Arial');
+      textElement.style.fill = playheadTextColor;
+      textElement.textContent = formattedPlayheadTime;
+
+      rectElement.setAttribute('x', `${playheadTimePosition}`);
+      rectElement.setAttribute('y', '0');
+      rectElement.setAttribute('width', `${textWidth}`);
+      rectElement.setAttribute('height', `${textHeight}`);
+      rectElement.setAttribute('letter-spacing', '-0.2');
+      rectElement.setAttribute('rx', '3');
+      rectElement.style.fill = playheadBgColor;
+
       svgElement.appendChild(polylineElement);
+      svgElement.appendChild(rectElement);
+      svgElement.appendChild(textElement);
     },
-    [playedIndex, barIndexScale, height, playheadWidth, playheadColor],
+    [playheadPosition, height, playheadWidth, playheadBgColor, playheadTextColor],
   );
 
   const configureWaveform = useCallback((): void => {
@@ -123,7 +160,7 @@ const useSvgWaveform = ({
     newMainSvg.style.background = bgColor;
 
     drawWaveform(playedSvg, peaks.slice(0, playedIndex), 'transparent', progressColor);
-    playhead && drawPlayhead(playedSvg);
+    isPlayheadShowing && drawPlayhead(playedSvg);
 
     newMainSvg.appendChild(initWaveform);
     newMainSvg.appendChild(playedSvg);
@@ -136,7 +173,7 @@ const useSvgWaveform = ({
     height,
     peaks,
     progressColor,
-    playhead,
+    isPlayheadShowing,
     waveform,
     initWaveform,
     playedIndex,
@@ -166,7 +203,17 @@ const useSvgWaveform = ({
     if (!enabled) return;
 
     updateSvgWaveform();
-  }, [initWaveform, progressColor, playheadWidth, playheadColor, currentTime, enabled]);
+  }, [
+    initWaveform,
+    progressColor,
+    playheadWidth,
+    playheadBgColor,
+    playheadTextColor,
+    playheadPosition,
+    isPlayheadShowing,
+    currentTime,
+    enabled,
+  ]);
 
   return waveform;
 };

@@ -2,6 +2,8 @@ import { useCallback, useRef } from 'react';
 
 interface UseUpdateCurrentTimeEventParams {
   duration: number;
+  showPlayhead: (e: Event) => void;
+  hidePlayhead: () => void;
   changeCurrentTime?: (currentTime: number) => void;
 }
 
@@ -12,6 +14,8 @@ interface UseUpdateCurrentTimeEventReturns {
 
 const useUpdateCurrentTimeEvent = ({
   duration,
+  showPlayhead,
+  hidePlayhead,
   changeCurrentTime,
 }: UseUpdateCurrentTimeEventParams): UseUpdateCurrentTimeEventReturns => {
   const isDraggingRef = useRef(false);
@@ -44,44 +48,23 @@ const useUpdateCurrentTimeEvent = ({
     },
     [updateCurrentTime],
   );
-  const onElementMouseDown = useCallback((): void => {
-    isDraggingRef.current = true;
-  }, []);
-  const onElementMouseUp = useCallback((): void => {
-    isDraggingRef.current = false;
-  }, []);
-  const onElementMouseMove = useCallback(
-    (e: Event): void => {
-      if (!(e instanceof MouseEvent) || !isDraggingRef.current) return;
-
-      updateCurrentTime(e);
-    },
-    [updateCurrentTime],
-  );
-  const onElementDragStart = useCallback((e: Event): void => e.preventDefault(), []);
 
   const addEventListeners = useCallback(
     (element: HTMLCanvasElement | HTMLImageElement): void => {
       element.addEventListener('click', onElementClick);
-      element.addEventListener('mousedown', onElementMouseDown);
-      element.addEventListener('mouseup', onElementMouseUp);
-      element.addEventListener('mouseleave', onElementMouseUp);
-      element.addEventListener('mousemove', onElementMouseMove);
-      element.addEventListener('dragstart', onElementDragStart);
+      element.addEventListener('mousemove', showPlayhead);
+      element.addEventListener('mouseout', hidePlayhead);
     },
-    [onElementClick, onElementMouseDown, onElementMouseUp, onElementMouseMove, onElementDragStart],
+    [onElementClick, showPlayhead, hidePlayhead],
   );
 
   const removeEventListeners = useCallback(
     (element: HTMLCanvasElement | HTMLImageElement): void => {
       element.removeEventListener('click', onElementClick);
-      element.removeEventListener('mousedown', onElementMouseDown);
-      element.removeEventListener('mouseup', onElementMouseUp);
-      element.removeEventListener('mouseleave', onElementMouseUp);
-      element.removeEventListener('mousemove', onElementMouseMove);
-      element.removeEventListener('dragstart', onElementDragStart);
+      element.removeEventListener('mousemove', showPlayhead);
+      element.removeEventListener('mouseout', hidePlayhead);
     },
-    [onElementClick, onElementMouseDown, onElementMouseUp, onElementMouseMove, onElementDragStart],
+    [onElementClick, showPlayhead, hidePlayhead],
   );
 
   return {
