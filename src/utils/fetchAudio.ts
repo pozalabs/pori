@@ -1,7 +1,4 @@
-import {
-  FETCH_CONCURRENT_LIMIT_DEFAULT,
-  FETCH_RETRY_DEFAULT,
-} from './_constants';
+import { FETCH_CONCURRENT_LIMIT_DEFAULT, FETCH_RETRY_DEFAULT } from './_constants';
 import getAudioFileInformation from './getAudioFileInformation';
 
 const getChunkSize = (fileSize: number): number => {
@@ -27,33 +24,65 @@ const fetchChunkFileToBlobWithRetries = async ({
 }): Promise<Blob> => {
   const attempts = Array.from({ length: retry });
 
-  return attempts.reduce(
-    async (prev: Promise<Blob>, _, index): Promise<Blob> => {
-      try {
-        const blob = await prev;
+  return attempts.reduce(async (prev: Promise<Blob>, _, index): Promise<Blob> => {
+    try {
+      const blob = await prev;
 
-        if (blob instanceof Blob && blob.size > 0) {
-          return blob;
-        }
-
-        const response = await fetch(src, {
-          method: 'GET',
-          headers: {
-            Range: `bytes=${start}-${end}`,
-          },
-        });
-
-        if (!response.ok) throw new Error('Failed to fetch chunk file');
-
-        return await response.blob();
-      } catch (error) {
-        if (index === retry - 1) throw error;
-
-        return new Blob();
+      if (blob instanceof Blob && blob.size > 0) {
+        return blob;
       }
-    },
-    Promise.resolve(new Blob()),
-  );
+
+      const response = await fetch(src, {
+        method: 'GET',
+        headers: {
+          Range: `bytes=${start}-${end}`,
+        },
+      });
+
+      if (!response.ok) throw new Error('Failed to fetch chunk file');
+
+      return await response.blob();
+    } catch (error) {
+      if (index === retry - 1) throw error;
+
+      return new Blob();
+    }
+  }, Promise.resolve(new Blob()));
+};
+
+const waitForQueueAndFetchChunk = async ({
+  executing,
+  limit,
+  src,
+  range,
+  retry,
+}: {
+  executing: Promise<Blob>[];
+  limit: number;
+  src: string;
+  range: { start: number; end: number };
+  retry: number;
+}): Promise<Blob> => {
+  while (executing.length >= limit) {
+    await Promise.race(executing);
+  }
+
+  const fetchPromise = (async () => {
+    const blob = await fetchChunkFileToBlobWithRetries({
+      src,
+      start: range.start,
+      end: range.end,
+      retry,
+    });
+    return blob;
+  })();
+
+  executing.push(fetchPromise);
+  const blob = await fetchPromise;
+
+  executing.splice(executing.indexOf(fetchPromise), 1);
+
+  return blob;
 };
 
 const fetchChunksWithConcurrentLimit = async ({
@@ -68,30 +97,11 @@ const fetchChunksWithConcurrentLimit = async ({
   retry: number;
 }): Promise<Blob[]> => {
   const results: Blob[] = new Array(ranges.length);
-  const executing: Promise<void>[] = [];
+  const executing: Promise<Blob>[] = [];
 
-  const allPromises = ranges.map((range, index) =>
-    (async () => {
-      while (executing.length >= limit) {
-        await Promise.race(executing);
-      }
-
-      const fetchPromise = (async () => {
-        const blob = await fetchChunkFileToBlobWithRetries({
-          src,
-          start: range.start,
-          end: range.end,
-          retry,
-        });
-        results[index] = blob;
-      })();
-
-      executing.push(fetchPromise);
-      await fetchPromise;
-
-      executing.splice(executing.indexOf(fetchPromise), 1);
-    })(),
-  );
+  const allPromises = ranges.map(async (range, index) => {
+    results[index] = await waitForQueueAndFetchChunk({ executing, limit, src, range, retry });
+  });
   await Promise.all(allPromises);
 
   return results;
