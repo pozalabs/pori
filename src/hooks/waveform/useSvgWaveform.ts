@@ -5,30 +5,7 @@ import useWaveformSize from './useWaveformSize';
 
 import { UseTypeWaveformParams } from './_types';
 import { BAR_WIDTH, WAVEFORM_HEIGHT_PERCENT } from './_constants';
-
-const createSvgElement = (width: number, height: number): SVGSVGElement => {
-  const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
-
-  svg.setAttribute('width', width.toString());
-  svg.setAttribute('height', height.toString());
-
-  return svg;
-};
-
-const createPolylineElement = (): SVGPolylineElement => {
-  const polyline = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'polyline',
-  );
-
-  return polyline;
-};
-
-const createRectElement = (): SVGRectElement => {
-  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'rect');
-
-  return rect;
-};
+import { createPolylineElement, createRectElement, createSvgElement } from './_utils/createElement';
 
 const useSvgWaveform = ({
   variant,
@@ -51,12 +28,10 @@ const useSvgWaveform = ({
   const [waveform, setWaveform] = useState<HTMLImageElement>();
   const [initWaveform, setInitWaveform] = useState<SVGSVGElement>();
 
-  const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent(
-    {
-      duration,
-      changeCurrentTime,
-    },
-  );
+  const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
+    duration,
+    changeCurrentTime,
+  });
   const { halfHeight, barIndexScale, playedIndex } = useWaveformSize({
     width,
     height,
@@ -66,12 +41,7 @@ const useSvgWaveform = ({
   });
 
   const drawLineWaveform = useCallback(
-    (
-      svgElement: SVGSVGElement,
-      peaks: number[],
-      bgColor: string,
-      waveColor: string,
-    ): void => {
+    (svgElement: SVGSVGElement, peaks: number[], bgColor: string, waveColor: string): void => {
       const polylineElement = createPolylineElement();
 
       const points = peaks
@@ -98,12 +68,7 @@ const useSvgWaveform = ({
   );
 
   const drawBarWaveform = useCallback(
-    (
-      svgElement: SVGSVGElement,
-      peaks: number[],
-      bgColor: string,
-      waveColor: string,
-    ): void => {
+    (svgElement: SVGSVGElement, peaks: number[], bgColor: string, waveColor: string): void => {
       svgElement.style.background = bgColor;
 
       peaks.forEach((peak, index) => {
@@ -137,10 +102,7 @@ const useSvgWaveform = ({
       const x = Math.round(playedIndex * barIndexScale);
       const formattedX = isNaN(x) ? 0 : x;
 
-      polylineElement.setAttribute(
-        'points',
-        `${formattedX},0 ${formattedX},${height}`,
-      );
+      polylineElement.setAttribute('points', `${formattedX},0 ${formattedX},${height}`);
       polylineElement.style.strokeWidth = `${playheadWidth}`;
       polylineElement.style.stroke = playheadColor;
       polylineElement.style.fill = 'none';
@@ -175,12 +137,7 @@ const useSvgWaveform = ({
 
     newMainSvg.style.background = bgColor;
 
-    drawWaveform(
-      playedSvg,
-      peaks.slice(0, playedIndex),
-      'transparent',
-      progressColor,
-    );
+    drawWaveform(playedSvg, peaks.slice(0, playedIndex), 'transparent', progressColor);
     playhead && drawPlayhead(playedSvg);
 
     newMainSvg.appendChild(initWaveform);
@@ -224,14 +181,7 @@ const useSvgWaveform = ({
     if (!enabled) return;
 
     updateSvgWaveform();
-  }, [
-    initWaveform,
-    progressColor,
-    playheadWidth,
-    playheadColor,
-    currentTime,
-    enabled,
-  ]);
+  }, [initWaveform, progressColor, playheadWidth, playheadColor, currentTime, enabled]);
 
   return waveform;
 };

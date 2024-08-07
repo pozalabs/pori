@@ -5,17 +5,7 @@ import useWaveformSize from './useWaveformSize';
 
 import { UseTypeWaveformParams } from './_types';
 import { WAVEFORM_HEIGHT_PERCENT } from './_constants';
-
-const createCanvasElement = (
-  width: number,
-  height: number,
-): HTMLCanvasElement => {
-  const canvas = document.createElement('canvas');
-  canvas.width = width;
-  canvas.height = height;
-
-  return canvas;
-};
+import { createCanvasElement } from './_utils/createElement';
 
 const useCanvasWaveform = ({
   variant,
@@ -38,12 +28,10 @@ const useCanvasWaveform = ({
   const [waveform, setWaveform] = useState<HTMLCanvasElement>();
   const [initWaveform, setInitWaveform] = useState<HTMLCanvasElement>();
 
-  const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent(
-    {
-      duration,
-      changeCurrentTime,
-    },
-  );
+  const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
+    duration,
+    changeCurrentTime,
+  });
   const { halfHeight, barIndexScale, playedIndex } = useWaveformSize({
     width,
     height,
@@ -182,14 +170,7 @@ const useCanvasWaveform = ({
     if (!enabled) return;
 
     updateCanvasWaveform();
-  }, [
-    initWaveform,
-    progressColor,
-    playheadWidth,
-    playheadColor,
-    currentTime,
-    enabled,
-  ]);
+  }, [initWaveform, progressColor, playheadWidth, playheadColor, currentTime, enabled]);
 
   return waveform;
 };
