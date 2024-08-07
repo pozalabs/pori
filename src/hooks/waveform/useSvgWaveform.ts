@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useEffect, useState, useMemo } from 'react';
 
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
@@ -24,6 +24,7 @@ const getTextWidth = (text: string, font: string): number => {
 };
 
 const useSvgWaveform = ({
+  variant,
   width,
   height,
   playheadWidth,
@@ -62,13 +63,13 @@ const useSvgWaveform = ({
     duration,
   });
 
-  const drawWaveform = useCallback(
+  const drawLineWaveform = useCallback(
     (svgElement: SVGSVGElement, bgColor: string, waveColor: string): void => {
       const polylineElement = createPolylineElement();
 
       const points = peaks
         .map((peak, index) => {
-          const x = Math.round(index * barIndexScale);
+          const x = index * barIndexScale;
           const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
           const barHeight = Math.round((peak * waveformMaxHeight) / 2);
           const yTop = halfHeight - barHeight;
@@ -87,6 +88,34 @@ const useSvgWaveform = ({
       svgElement.appendChild(polylineElement);
     },
     [peaks, halfHeight, barIndexScale, height],
+  );
+
+  const drawBarWaveform = useCallback(
+    (svgElement: SVGSVGElement, bgColor: string, waveColor: string): void => {
+      svgElement.style.background = bgColor;
+
+      peaks.forEach((peak, index) => {
+        const rectElement = createRectElement();
+        const x = index * barIndexScale;
+        const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
+        const barHeight = Math.round((peak * waveformMaxHeight) / 2);
+        const yTop = halfHeight - barHeight;
+
+        rectElement.setAttribute('x', `${x}`);
+        rectElement.setAttribute('y', `${yTop}`);
+        rectElement.setAttribute('width', `${BAR_WIDTH}`);
+        rectElement.setAttribute('height', `${2 * barHeight}`);
+        rectElement.style.fill = waveColor;
+
+        svgElement.appendChild(rectElement);
+      });
+    },
+    [peaks, halfHeight, barIndexScale, height],
+  );
+
+  const drawWaveform = useMemo(
+    () => (variant === 'line' ? drawLineWaveform : drawBarWaveform),
+    [variant, drawLineWaveform, drawBarWaveform],
   );
 
   const drawPlayhead = useCallback(
@@ -197,7 +226,7 @@ const useSvgWaveform = ({
     if (!enabled) return;
 
     initSvgWaveform();
-  }, [peaks, width, height, waveColor, progressColor, bgColor, duration, enabled]);
+  }, [peaks, variant, width, height, waveColor, progressColor, bgColor, duration, enabled]);
 
   useEffect(() => {
     if (!enabled) return;

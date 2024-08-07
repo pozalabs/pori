@@ -52,6 +52,7 @@ export const Konva: Story = {
   args: {
     ...WAVEFORM_DEFAULT_VALUE,
     type: 'canvas',
+    variant: 'bar',
     width: 400,
     height: 50,
     peakLength: 100,

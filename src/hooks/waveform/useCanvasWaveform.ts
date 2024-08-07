@@ -9,6 +9,7 @@ import { createCanvasElement, createOffscreenCanvas } from './_utils/createEleme
 import formatTime from './_utils/formatTime';
 
 const useCanvasWaveform = ({
+  variant,
   width,
   height,
   playheadWidth,
@@ -54,20 +55,20 @@ const useCanvasWaveform = ({
       ctx.beginPath();
 
       peaks.forEach((peak, index) => {
-        const x = Math.round(index * barIndexScale) / dpr;
+        const x = (index * barIndexScale) / dpr;
         const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
         const barHeight = Math.round(peak * (waveformMaxHeight / 2));
         const yTop = (halfHeight - barHeight) / dpr;
         const yBottom = (halfHeight + barHeight) / dpr;
 
-        ctx.lineTo(x, yTop);
+        variant === 'line' ? ctx.lineTo(x, yTop) : ctx.moveTo(x, yTop);
         ctx.lineTo(x, yBottom);
       });
 
       ctx.stroke();
       ctx.closePath();
     },
-    [peaks, halfHeight, barIndexScale, height],
+    [variant, peaks, halfHeight, barIndexScale, height],
   );
 
   const drawPlayhead = useCallback(
@@ -206,7 +207,7 @@ const useCanvasWaveform = ({
     if (!enabled) return;
 
     initCanvasWaveform();
-  }, [peaks, width, height, waveColor, bgColor, progressColor, duration, enabled]);
+  }, [peaks, variant, width, height, waveColor, bgColor, progressColor, duration, enabled]);
 
   useEffect(() => {
     if (!enabled) return;
