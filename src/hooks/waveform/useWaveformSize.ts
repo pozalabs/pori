@@ -11,7 +11,7 @@ interface UseWaveformSizeParams {
 interface UseWaveformSizeReturns {
   halfHeight: number;
   barIndexScale: number;
-  playedIndex: number;
+  playedWidth: number;
 }
 
 const useWaveformSize = ({
@@ -23,19 +23,15 @@ const useWaveformSize = ({
 }: UseWaveformSizeParams): UseWaveformSizeReturns => {
   const halfHeight = useMemo(() => height / 2, [height]);
   const barIndexScale = useMemo(() => width / peakLength, [width, peakLength]);
-  const playedWidth = useMemo(
-    () => (currentTime / duration) * width,
-    [currentTime, duration, width],
-  );
-  const playedIndex = useMemo(
-    () => Math.floor(playedWidth / barIndexScale),
-    [playedWidth, barIndexScale],
-  );
+  const playedWidth = useMemo(() => {
+    const playedWidth = Math.round((currentTime / duration) * width);
+    return isNaN(playedWidth) ? 0 : Math.min(width, playedWidth);
+  }, [currentTime, duration, width]);
 
   return {
     halfHeight,
     barIndexScale,
-    playedIndex,
+    playedWidth,
   };
 };
 

@@ -34,6 +34,22 @@ describe('useWaveform 테스트', () => {
     window.AudioContext = AudioContext as any;
     window.HTMLMediaElement.prototype.play = vi.fn();
     window.HTMLMediaElement.prototype.pause = vi.fn();
+    window.OffscreenCanvas = vi
+      .fn()
+      .mockImplementation((width: number, height: number) => {
+        return {
+          height,
+          width,
+          oncontextlost: vi.fn(),
+          oncontextrestored: vi.fn(),
+          getContext: vi.fn(() => undefined),
+          convertToBlob: vi.fn(),
+          transferToImageBitmap: vi.fn(),
+          addEventListener: vi.fn(),
+          removeEventListener: vi.fn(),
+          dispatchEvent: vi.fn(),
+        } as unknown as OffscreenCanvas;
+      });
   });
 
   afterEach(() => {
@@ -44,6 +60,7 @@ describe('useWaveform 테스트', () => {
     (
       window.HTMLMediaElement.prototype.pause as ReturnType<typeof vi.fn>
     ).mockClear();
+    (window.OffscreenCanvas as ReturnType<typeof vi.fn>).mockClear();
   });
 
   describe('반환 값 테스트', () => {
