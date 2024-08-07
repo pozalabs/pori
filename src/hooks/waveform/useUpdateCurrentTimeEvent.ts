@@ -1,4 +1,4 @@
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 
 interface UseUpdateCurrentTimeEventParams {
   duration: number;
@@ -18,10 +18,9 @@ const useUpdateCurrentTimeEvent = ({
   hidePlayhead,
   changeCurrentTime,
 }: UseUpdateCurrentTimeEventParams): UseUpdateCurrentTimeEventReturns => {
-  const isDraggingRef = useRef(false);
-
-  const updateCurrentTime = useCallback(
-    (e: MouseEvent): void => {
+  const onElementClick = useCallback(
+    (e: Event): void => {
+      if (!(e instanceof MouseEvent)) return;
       if (
         !(e.target instanceof HTMLCanvasElement || e.target instanceof HTMLImageElement) ||
         !changeCurrentTime
@@ -38,15 +37,6 @@ const useUpdateCurrentTimeEvent = ({
       changeCurrentTime(newCurrentTime);
     },
     [duration, changeCurrentTime],
-  );
-
-  const onElementClick = useCallback(
-    (e: Event): void => {
-      if (!(e instanceof MouseEvent)) return;
-
-      updateCurrentTime(e);
-    },
-    [updateCurrentTime],
   );
 
   const addEventListeners = useCallback(

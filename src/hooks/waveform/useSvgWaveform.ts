@@ -4,7 +4,7 @@ import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
 
 import { UseTypeWaveformParams } from './_types';
-import { PLAYHEAD_TIME, WAVEFORM_HEIGHT_PERCENT } from './_constants';
+import { BAR_WIDTH, PLAYHEAD_TIME, WAVEFORM_HEIGHT_PERCENT } from './_constants';
 import formatTime from './_utils/formatTime';
 import {
   createPolylineElement,
@@ -46,6 +46,7 @@ const useSvgWaveform = ({
 }: UseTypeWaveformParams) => {
   const [waveform, setWaveform] = useState<HTMLImageElement>();
   const [initWaveform, setInitWaveform] = useState<SVGSVGElement>();
+  const [playedWaveform, setPlayedWaveform] = useState<SVGSVGElement>();
 
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
     duration,
@@ -53,7 +54,7 @@ const useSvgWaveform = ({
     hidePlayhead,
     changeCurrentTime,
   });
-  const { halfHeight, barIndexScale, playedIndex } = useWaveformSize({
+  const { halfHeight, barIndexScale, playedWidth } = useWaveformSize({
     width,
     height,
     peakLength: peaks.length,
@@ -62,7 +63,7 @@ const useSvgWaveform = ({
   });
 
   const drawWaveform = useCallback(
-    (svgElement: SVGSVGElement, peaks: number[], bgColor: string, waveColor: string): void => {
+    (svgElement: SVGSVGElement, bgColor: string, waveColor: string): void => {
       const polylineElement = createPolylineElement();
 
       const points = peaks
@@ -79,13 +80,13 @@ const useSvgWaveform = ({
 
       svgElement.style.background = bgColor;
       polylineElement.setAttribute('points', points);
-      polylineElement.style.strokeWidth = '1';
+      polylineElement.style.strokeWidth = `${BAR_WIDTH}`;
       polylineElement.style.stroke = waveColor;
       polylineElement.style.fill = 'none';
 
       svgElement.appendChild(polylineElement);
     },
-    [halfHeight, barIndexScale, height],
+    [peaks, halfHeight, barIndexScale, height],
   );
 
   const drawPlayhead = useCallback(
@@ -145,25 +146,26 @@ const useSvgWaveform = ({
 
   const initSvgWaveform = useCallback((): void => {
     const initSvg = createSvgElement(width, height);
+    const playedSvg = createSvgElement(width, height);
 
-    drawWaveform(initSvg, peaks, bgColor, waveColor);
+    drawWaveform(initSvg, bgColor, waveColor);
+    drawWaveform(playedSvg, 'transparent', progressColor);
 
     setInitWaveform(initSvg);
-  }, [width, height, bgColor, waveColor, peaks, drawWaveform]);
+    setPlayedWaveform(playedSvg);
+  }, [width, height, bgColor, waveColor, progressColor, drawWaveform]);
 
   const updateSvgWaveform = useCallback((): void => {
-    if (!waveform || !initWaveform) return;
+    if (!waveform || !initWaveform || !playedWaveform) return;
 
-    const playedSvg = createSvgElement(width, height);
     const newMainSvg = createSvgElement(width, height);
 
     newMainSvg.style.background = bgColor;
-
-    drawWaveform(playedSvg, peaks.slice(0, playedIndex), 'transparent', progressColor);
-    isPlayheadShowing && drawPlayhead(playedSvg);
+    playedWaveform.setAttribute('width', `${playedWidth}`);
 
     newMainSvg.appendChild(initWaveform);
-    newMainSvg.appendChild(playedSvg);
+    newMainSvg.appendChild(playedWaveform);
+    isPlayheadShowing && drawPlayhead(newMainSvg);
 
     waveform.src =
       'data:image/svg+xml;charset=utf-8,' +
@@ -171,14 +173,12 @@ const useSvgWaveform = ({
   }, [
     width,
     height,
-    peaks,
-    progressColor,
+    playedWidth,
     isPlayheadShowing,
     waveform,
     initWaveform,
-    playedIndex,
+    playedWaveform,
     drawPlayhead,
-    drawWaveform,
   ]);
 
   useEffect(() => {
@@ -197,7 +197,7 @@ const useSvgWaveform = ({
     if (!enabled) return;
 
     initSvgWaveform();
-  }, [peaks, width, height, waveColor, bgColor, duration, enabled]);
+  }, [peaks, width, height, waveColor, progressColor, bgColor, duration, enabled]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -211,6 +211,8 @@ const useSvgWaveform = ({
     playheadTextColor,
     playheadPosition,
     isPlayheadShowing,
+    playedWaveform,
+    playheadWidth,
     currentTime,
     enabled,
   ]);
