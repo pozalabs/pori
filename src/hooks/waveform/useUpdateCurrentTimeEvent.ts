@@ -1,7 +1,9 @@
-import { useCallback, useRef } from 'react';
+import { useCallback } from 'react';
 
 interface UseUpdateCurrentTimeEventParams {
   duration: number;
+  showPlayhead: (e: Event) => void;
+  hidePlayhead: () => void;
   changeCurrentTime?: (currentTime: number) => void;
 }
 
@@ -12,16 +14,15 @@ interface UseUpdateCurrentTimeEventReturns {
 
 const useUpdateCurrentTimeEvent = ({
   duration,
+  showPlayhead,
+  hidePlayhead,
   changeCurrentTime,
 }: UseUpdateCurrentTimeEventParams): UseUpdateCurrentTimeEventReturns => {
   const onElementClick = useCallback(
     (e: Event): void => {
       if (!(e instanceof MouseEvent)) return;
       if (
-        !(
-          e.target instanceof HTMLCanvasElement ||
-          e.target instanceof HTMLImageElement
-        ) ||
+        !(e.target instanceof HTMLCanvasElement || e.target instanceof HTMLImageElement) ||
         !changeCurrentTime
       )
         return;
@@ -41,15 +42,19 @@ const useUpdateCurrentTimeEvent = ({
   const addEventListeners = useCallback(
     (element: HTMLCanvasElement | HTMLImageElement): void => {
       element.addEventListener('click', onElementClick);
+      element.addEventListener('mousemove', showPlayhead);
+      element.addEventListener('mouseout', hidePlayhead);
     },
-    [onElementClick],
+    [onElementClick, showPlayhead, hidePlayhead],
   );
 
   const removeEventListeners = useCallback(
     (element: HTMLCanvasElement | HTMLImageElement): void => {
       element.removeEventListener('click', onElementClick);
+      element.removeEventListener('mousemove', showPlayhead);
+      element.removeEventListener('mouseout', hidePlayhead);
     },
-    [onElementClick],
+    [onElementClick, showPlayhead, hidePlayhead],
   );
 
   return {

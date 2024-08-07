@@ -29,10 +29,7 @@ export const createOffscreenCanvas = (
   return canvas;
 };
 
-export const createSvgElement = (
-  width: number,
-  height: number,
-): SVGSVGElement => {
+export const createSvgElement = (width: number, height: number): SVGSVGElement => {
   const svg = document.createElementNS('http://www.w3.org/2000/svg', 'svg');
 
   svg.setAttribute('width', width.toString());
@@ -42,10 +39,7 @@ export const createSvgElement = (
 };
 
 export const createPolylineElement = (): SVGPolylineElement => {
-  const polyline = document.createElementNS(
-    'http://www.w3.org/2000/svg',
-    'polyline',
-  );
+  const polyline = document.createElementNS('http://www.w3.org/2000/svg', 'polyline');
 
   return polyline;
 };
