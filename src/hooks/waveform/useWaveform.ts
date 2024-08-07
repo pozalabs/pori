@@ -33,6 +33,8 @@ export interface UseWaveformReturns {
   play: () => void;
   pause: () => void;
   changeCurrentTime: (currentTime: number) => void;
+  showPlayhead: (e: Event) => void;
+  hidePlayhead: () => void;
   waveform?: CanvasImageSource;
 }
 
@@ -68,6 +70,8 @@ export interface UseWaveformReturns {
  *    play: () => void;
  *    pause: () => void;
  *    changeCurrentTime: (currentTime: number) => void;
+ *    showPlayhead: (e: Event) => void;
+ *    hidePlayhead: () => void;
  *    waveform?: CanvasImageSource;
  * }
  * ```
@@ -157,6 +161,8 @@ const useWaveform = ({
     play,
     pause,
     changeCurrentTime,
+    showPlayhead,
+    hidePlayhead,
     waveform: type === 'svg' ? svgWaveform : canvasWaveform,
   };
 };
