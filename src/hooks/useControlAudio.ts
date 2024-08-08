@@ -46,7 +46,7 @@ interface UseControlAudioReturns {
  * }
  * ```
  */
-export const useControlAudio = ({
+const useControlAudio = ({
   audioRef,
   src,
   autoPlay = false,
@@ -135,7 +135,7 @@ export const useControlAudio = ({
       if (!audioRef?.current) return;
 
       audioRef.current.src = newCurrentSrc;
-      setCurrentSrc(audioRef.current.src);
+      setCurrentSrc(newCurrentSrc);
     },
     [audioRef],
   );
@@ -196,3 +196,5 @@ export const useControlAudio = ({
     changeCurrentTime,
   };
 };
+
+export default useControlAudio;

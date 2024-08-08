@@ -72,7 +72,7 @@ const useControlAudioTime = ({
     setProgress(getProgress(audio.duration, audio.currentTime));
   }, [audioRef.current, audioRef.current?.duration, audioRef.current?.src, audioRef.current?.currentTime, dragModeRef.current]);
 
-  const onMetadataLoaded = useCallback((): void => {
+  const resetAudioTime = useCallback((): void => {
     setDragTime(0);
     setCurrentTime(0);
     setProgress(0);
@@ -99,29 +99,31 @@ const useControlAudioTime = ({
     (value: number): void => {
       if (!audioRef.current || !audioRef.current.src || !audioRef.current.duration) return;
 
-      setDragTime((value / progressMaxValue) * audioRef.current.duration);
+      setProgress(value);
+
+      if (dragModeRef.current) {
+        setDragTime((value / progressMaxValue) * audioRef.current.duration);
+        return;
+      }
+
+      audioRef.current.currentTime = (value / progressMaxValue) * audioRef.current.duration;
     },
     [audioRef.current, progressMaxValue],
   );
 
-  const resetAudioTime = useCallback(() => {
-    setCurrentTime(0);
-    setProgress(0);
-  }, []);
-
   useEffect(() => {
     if (!audioRef.current) return;
 
-    audioRef.current.addEventListener("loadedmetadata", onMetadataLoaded);
+    audioRef.current.addEventListener("loadedmetadata", resetAudioTime);
     audioRef.current.addEventListener("timeupdate", updateProgress);
 
     return () => {
       if (!audioRef.current) return;
 
-      audioRef.current.removeEventListener("loadedmetadata", onMetadataLoaded);
+      audioRef.current.removeEventListener("loadedmetadata", resetAudioTime);
       audioRef.current.removeEventListener("timeupdate", updateProgress);
     };
-  }, [audioRef.current, onMetadataLoaded, updateProgress]);
+  }, [audioRef.current, resetAudioTime, updateProgress]);
 
   useEffect(() => {
     if (!audioRef.current || !audioRef.current.paused) return;

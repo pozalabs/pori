@@ -6,7 +6,7 @@ import { useEffect, useRef } from 'react';
  * @returns 재생할 audio element 혹은 null ref
  */
 
-export const useAudio = (): MutableRefObject<HTMLAudioElement | null> => {
+const useAudio = (): MutableRefObject<HTMLAudioElement | null> => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
 
   useEffect(() => {
@@ -24,3 +24,5 @@ export const useAudio = (): MutableRefObject<HTMLAudioElement | null> => {
 
   return audioRef;
 };
+
+export default useAudio;

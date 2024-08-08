@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-import { useAudio } from '../useAudio';
-import { useControlAudio } from '../useControlAudio';
+import useAudio from '../useAudio';
+import useControlAudio from '../useControlAudio';
 
 import { HTMLAudioElementEventType, UnionToIntersection } from './_types';
 
