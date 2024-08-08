@@ -99,12 +99,13 @@ const useSvgWaveform = ({
         const x = index * barIndexScale;
         const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
         const barHeight = Math.round((peak * waveformMaxHeight) / 2);
-        const yTop = halfHeight - barHeight;
+        const formattedBarHeight = barHeight > 0 ? barHeight : BAR_WIDTH / 2;
+        const yTop = halfHeight - formattedBarHeight;
 
         rectElement.setAttribute('x', `${x}`);
         rectElement.setAttribute('y', `${yTop}`);
         rectElement.setAttribute('width', `${BAR_WIDTH}`);
-        rectElement.setAttribute('height', `${2 * barHeight}`);
+        rectElement.setAttribute('height', `${2 * formattedBarHeight}`);
         rectElement.style.fill = waveColor;
 
         svgElement.appendChild(rectElement);

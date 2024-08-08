@@ -62,6 +62,10 @@ const useCanvasWaveform = ({
         const yBottom = (halfHeight + barHeight) / dpr;
 
         variant === 'line' ? ctx.lineTo(x, yTop) : ctx.moveTo(x, yTop);
+        if (variant === 'bar' && barHeight <= 0) {
+          ctx.moveTo(x, yTop - BAR_WIDTH / 2);
+          ctx.lineTo(x, yTop + BAR_WIDTH / 2);
+        }
         ctx.lineTo(x, yBottom);
       });
 
