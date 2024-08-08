@@ -34,7 +34,7 @@ export interface UseWaveformReturns {
   play: () => void;
   pause: () => void;
   changeCurrentTime: (currentTime: number) => void;
-  showPlayhead: (e: Event) => void;
+  showPlayhead: (e: Event, position?: number) => void;
   hidePlayhead: () => void;
   waveform?: CanvasImageSource;
 }
@@ -72,7 +72,7 @@ export interface UseWaveformReturns {
  *    play: () => void;
  *    pause: () => void;
  *    changeCurrentTime: (currentTime: number) => void;
- *    showPlayhead: (e: Event) => void;
+ *    showPlayhead: (e: Event, position?: number) => void;
  *    hidePlayhead: () => void;
  *    waveform?: CanvasImageSource;
  * }
@@ -108,7 +108,7 @@ const useWaveform = ({
   const [isPlayheadShowing, setIsPlayheadShowing] = useState(false);
   const [playheadPosition, setPlayheadPosition] = useState(0);
 
-  const showPlayhead = useCallback((e: Event): void => {
+  const showPlayhead = useCallback((e: Event, position?: number): void => {
     if (
       !(e instanceof MouseEvent) ||
       !(e.target instanceof HTMLCanvasElement || e.target instanceof HTMLImageElement)
@@ -117,9 +117,9 @@ const useWaveform = ({
 
     const rect = e.target.getBoundingClientRect();
 
-    const clickX = e.clientX - rect.left;
+    const playheadPosition = e.clientX - rect.left;
 
-    setPlayheadPosition(Math.max(0, clickX));
+    setPlayheadPosition(Math.max(0, position ?? playheadPosition));
     setIsPlayheadShowing(true);
   }, []);
 
