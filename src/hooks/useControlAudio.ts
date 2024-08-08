@@ -1,4 +1,3 @@
-'use client';
 import type { MutableRefObject } from 'react';
 import { useCallback, useEffect, useState } from 'react';
 
@@ -8,14 +7,11 @@ interface UseControlAudioParams {
   autoPlay?: boolean;
 }
 
-interface IAudioState {
+interface UseControlAudioReturns {
   isPlaying: boolean;
   duration: number;
   currentTime: number;
   currentSrc?: string;
-}
-
-interface IAudioController {
   play: VoidFunction;
   pause: VoidFunction;
   togglePlay: (newCurrentSrc?: string) => void;
@@ -24,51 +20,37 @@ interface IAudioController {
 }
 
 /**
- * audio를 제어하는 hook입니다.
- * @param param
+ * audio 재생을 제어하는 hook입니다.
+ * @param UseControlAudioParams
  * ```typescript
  * interface UseControlAudioParams {
- *  audioRef: MutableRefObject<HTMLAudioElement | null>;
- *  src?: string;
- *  autoPlay?: boolean; // default: false
+ *   audioRef: MutableRefObject<HTMLAudioElement | null>;
+ *   src?: string;
+ *   autoPlay?: boolean;
  * }
  * ```
- * - `audioRef` : 제어할 오디오 ref
- * - `src` : 재생할 음원 url
- * - `autoPlay` : 자동 재생 여부
+ * - autoPlay default : `false`
  * @returns
+ * `UseControlAudioReturns`
  * ```typescript
- * interface IAudioState {
+ * interface UseControlAudioReturns {
  *   isPlaying: boolean;
  *   duration: number;
  *   currentTime: number;
  *   currentSrc?: string;
- * };
- * interface IAudioController {
  *   play: VoidFunction;
  *   pause: VoidFunction;
  *   togglePlay: (src?: string) => void;
  *   changeCurrentSrc: (newCurrentSrc: string) => void;
  *   changeCurrentTime: (newCurrentTime: number) => void;
- * };
+ * }
  * ```
- * - state (readonly)
- *   - `isPlaying` : 현재 오디오가 재생 중인지 여부
- *   - `duration` : 현재 오디오에 있는 음원의 길이 (초 단위)
- *   - `currentTime` : 현재 오디오에서 재생 중인 시간 (초 단위)
- *   - `currentSrc` : 현재 오디오에 있는 음원의 url
- * - controller
- *   - `play` : 오디오 재생
- *   - `pause` : 오디오 일시정지
- *   - `togglePlay` : 오디오를 재생 또는 일시정지 하거나, 새로운 음원을 처음부터 재생
- *   - `changeCurrentSrc` : 오디오 src를 바꾸는 함수
- *   - `changeCurrentTime` : 현재 오디오 재생 시간을 바꾸는 함수
  */
 export const useControlAudio = ({
   audioRef,
   src,
   autoPlay = false,
-}: UseControlAudioParams): [Readonly<IAudioState>, IAudioController] => {
+}: UseControlAudioParams): UseControlAudioReturns => {
   const [isPlaying, setIsPlaying] = useState(false);
   const [duration, setDuration] = useState(0);
   const [currentSrc, setCurrentSrc] = useState<string | undefined>(src);
@@ -202,19 +184,15 @@ export const useControlAudio = ({
     autoPlay,
   ]);
 
-  const audioState: Readonly<IAudioState> = {
+  return {
     isPlaying,
     duration,
     currentTime,
     currentSrc,
-  };
-  const audioController: IAudioController = {
     play: onPlay,
     pause: onPause,
     togglePlay,
     changeCurrentSrc,
     changeCurrentTime,
   };
-
-  return [audioState, audioController] as const;
 };

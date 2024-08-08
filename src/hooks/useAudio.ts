@@ -1,10 +1,9 @@
-'use client';
 import type { MutableRefObject } from 'react';
 import { useEffect, useRef } from 'react';
 
 /**
  * useRef를 통해, 화면에 나타나지 않는 audio element를 생성합니다.
- * @returns 재생할 audio element 혹은 null
+ * @returns 재생할 audio element 혹은 null ref
  */
 
 export const useAudio = (): MutableRefObject<HTMLAudioElement | null> => {
