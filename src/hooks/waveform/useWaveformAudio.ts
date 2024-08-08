@@ -1,5 +1,7 @@
 import { useEffect } from 'react';
-import { useAudio, useControlAudio } from '@pozalabs/pokit';
+
+import { useAudio } from '../useAudio';
+import { useControlAudio } from '../useControlAudio';
 
 import { HTMLAudioElementEventType, UnionToIntersection } from './_types';
 
