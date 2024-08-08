@@ -8,6 +8,14 @@ import { BAR_WIDTH, PLAYHEAD_TIME, WAVEFORM_HEIGHT_PERCENT } from './_constants'
 import { createCanvasElement, createOffscreenCanvas } from './_utils/createElement';
 import formatTime from './_utils/formatTime';
 
+const createCanvas = (width: number, height: number, dpr: number): HTMLCanvasElement | OffscreenCanvas => {
+  if (typeof window.OffscreenCanvas === 'undefined') {
+    return createCanvasElement(width, height, dpr);
+  }
+
+  return createOffscreenCanvas(width, height, dpr);
+};
+
 const useCanvasWaveform = ({
   variant,
   width,
@@ -31,8 +39,8 @@ const useCanvasWaveform = ({
   changeCurrentTime,
 }: UseTypeWaveformParams) => {
   const [waveform, setWaveform] = useState<HTMLCanvasElement>();
-  const [initWaveform, setInitWaveform] = useState<OffscreenCanvas>();
-  const [playedWaveform, setPlayedWaveform] = useState<OffscreenCanvas>();
+  const [initWaveform, setInitWaveform] = useState<HTMLCanvasElement | OffscreenCanvas>();
+  const [playedWaveform, setPlayedWaveform] = useState<HTMLCanvasElement | OffscreenCanvas>();
 
   const dpr = useMemo(() => window.devicePixelRatio ?? 1, []);
 
@@ -51,7 +59,7 @@ const useCanvasWaveform = ({
   });
 
   const drawWaveform = useCallback(
-    (ctx: OffscreenCanvasRenderingContext2D): void => {
+    (ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D): void => {
       ctx.beginPath();
 
       peaks.forEach((peak, index) => {
@@ -144,8 +152,8 @@ const useCanvasWaveform = ({
   }, [width, height, className, controls, addEventListeners]);
 
   const initCanvasWaveform = useCallback((): void => {
-    const initCanvas = createOffscreenCanvas(width, height, dpr);
-    const playedCanvas = createOffscreenCanvas(width, height, dpr);
+    const initCanvas = createCanvas(width, height, dpr);
+    const playedCanvas = createCanvas(width, height, dpr);
 
     const initCtx = initCanvas.getContext('2d');
     const playedCtx = playedCanvas.getContext('2d');
