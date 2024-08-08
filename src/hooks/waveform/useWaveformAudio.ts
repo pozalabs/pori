@@ -25,10 +25,7 @@ const useWaveformAudio = ({
   ...eventHandlers
 }: UseWaveformAudioParams): UseWaveformAudioReturns => {
   const audioRef = useAudio();
-  const [
-    { isPlaying, currentTime, duration },
-    { play, pause, changeCurrentTime },
-  ] = useControlAudio({
+  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } = useControlAudio({
     audioRef,
     src,
     autoPlay: autoplay,
