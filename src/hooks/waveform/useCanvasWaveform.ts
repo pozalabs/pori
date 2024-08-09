@@ -8,7 +8,11 @@ import { BAR_WIDTH, PLAYHEAD_TIME, WAVEFORM_HEIGHT_PERCENT } from './_constants'
 import { createCanvasElement, createOffscreenCanvas } from './_utils/createElement';
 import formatTime from './_utils/formatTime';
 
-const createCanvas = (width: number, height: number, dpr: number): HTMLCanvasElement | OffscreenCanvas => {
+const createCanvas = (
+  width: number,
+  height: number,
+  dpr: number,
+): HTMLCanvasElement | OffscreenCanvas => {
   if (typeof window.OffscreenCanvas === 'undefined') {
     return createCanvasElement(width, height, dpr);
   }
@@ -20,6 +24,7 @@ const useCanvasWaveform = ({
   variant,
   width,
   height,
+  gap,
   playheadWidth,
   waveColor,
   progressColor,
@@ -50,7 +55,7 @@ const useCanvasWaveform = ({
     hidePlayhead,
     changeCurrentTime,
   });
-  const { halfHeight, barIndexScale, playedWidth } = useWaveformSize({
+  const { halfHeight, halfBarOffset, playedWidth } = useWaveformSize({
     width,
     height,
     peakLength: peaks.length,
@@ -63,7 +68,7 @@ const useCanvasWaveform = ({
       ctx.beginPath();
 
       peaks.forEach((peak, index) => {
-        const x = (index * barIndexScale) / dpr;
+        const x = (index * (gap + BAR_WIDTH) + halfBarOffset) / dpr;
         const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
         const barHeight = Math.round(peak * (waveformMaxHeight / 2));
         const yTop = (halfHeight - barHeight) / dpr;
@@ -80,7 +85,7 @@ const useCanvasWaveform = ({
       ctx.stroke();
       ctx.closePath();
     },
-    [variant, peaks, halfHeight, barIndexScale, height],
+    [variant, peaks, halfHeight, height, gap],
   );
 
   const drawPlayhead = useCallback(
@@ -155,8 +160,14 @@ const useCanvasWaveform = ({
     const initCanvas = createCanvas(width, height, dpr);
     const playedCanvas = createCanvas(width, height, dpr);
 
-    const initCtx = initCanvas.getContext('2d');
-    const playedCtx = playedCanvas.getContext('2d');
+    const initCtx = initCanvas.getContext('2d') as
+      | OffscreenCanvasRenderingContext2D
+      | CanvasRenderingContext2D
+      | null;
+    const playedCtx = playedCanvas.getContext('2d') as
+      | OffscreenCanvasRenderingContext2D
+      | CanvasRenderingContext2D
+      | null;
 
     if (!initCtx || !playedCtx) return;
 

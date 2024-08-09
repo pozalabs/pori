@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+import { BAR_WIDTH } from './_constants';
 
 interface UseWaveformSizeParams {
   width: number;
@@ -10,7 +11,7 @@ interface UseWaveformSizeParams {
 
 interface UseWaveformSizeReturns {
   halfHeight: number;
-  barIndexScale: number;
+  halfBarOffset: number;
   playedWidth: number;
 }
 
@@ -22,7 +23,7 @@ const useWaveformSize = ({
   duration,
 }: UseWaveformSizeParams): UseWaveformSizeReturns => {
   const halfHeight = useMemo(() => height / 2, [height]);
-  const barIndexScale = useMemo(() => width / peakLength, [width, peakLength]);
+  const halfBarOffset = useMemo(() => BAR_WIDTH / 2, []);
   const playedWidth = useMemo(() => {
     const playedWidth = Math.round((currentTime / duration) * width);
     return isNaN(playedWidth) ? 0 : Math.min(width, playedWidth);
@@ -30,7 +31,7 @@ const useWaveformSize = ({
 
   return {
     halfHeight,
-    barIndexScale,
+    halfBarOffset,
     playedWidth,
   };
 };

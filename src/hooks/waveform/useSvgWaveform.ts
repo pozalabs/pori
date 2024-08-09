@@ -27,6 +27,7 @@ const useSvgWaveform = ({
   variant,
   width,
   height,
+  gap,
   playheadWidth,
   waveColor,
   progressColor,
@@ -55,7 +56,7 @@ const useSvgWaveform = ({
     hidePlayhead,
     changeCurrentTime,
   });
-  const { halfHeight, barIndexScale, playedWidth } = useWaveformSize({
+  const { halfHeight, halfBarOffset, playedWidth } = useWaveformSize({
     width,
     height,
     peakLength: peaks.length,
@@ -69,7 +70,7 @@ const useSvgWaveform = ({
 
       const points = peaks
         .map((peak, index) => {
-          const x = index * barIndexScale;
+          const x = index * (gap + BAR_WIDTH);
           const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
           const barHeight = Math.round((peak * waveformMaxHeight) / 2);
           const yTop = halfHeight - barHeight;
@@ -87,7 +88,7 @@ const useSvgWaveform = ({
 
       svgElement.appendChild(polylineElement);
     },
-    [peaks, halfHeight, barIndexScale, height],
+    [peaks, halfHeight, height, gap],
   );
 
   const drawBarWaveform = useCallback(
@@ -96,7 +97,7 @@ const useSvgWaveform = ({
 
       peaks.forEach((peak, index) => {
         const rectElement = createRectElement();
-        const x = index * barIndexScale;
+        const x = index * (gap + BAR_WIDTH);
         const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
         const barHeight = Math.round((peak * waveformMaxHeight) / 2);
         const formattedBarHeight = barHeight > 0 ? barHeight : BAR_WIDTH / 2;
@@ -111,7 +112,7 @@ const useSvgWaveform = ({
         svgElement.appendChild(rectElement);
       });
     },
-    [peaks, halfHeight, barIndexScale, height],
+    [peaks, halfHeight, height, gap],
   );
 
   const drawWaveform = useMemo(
