@@ -49,9 +49,3 @@ export const createRectElement = (): SVGRectElement => {
 
   return rect;
 };
-
-export const createTextElement = (): SVGTextElement => {
-  const rect = document.createElementNS('http://www.w3.org/2000/svg', 'text');
-
-  return rect;
-};

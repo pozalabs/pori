@@ -4,24 +4,8 @@ import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
 
 import { UseTypeWaveformParams } from './_types';
-import { BAR_WIDTH, PLAYHEAD_TIME, WAVEFORM_HEIGHT_PERCENT } from './_constants';
-import formatTime from './_utils/formatTime';
-import {
-  createPolylineElement,
-  createRectElement,
-  createSvgElement,
-  createTextElement,
-} from './_utils/createElement';
-
-const getTextWidth = (text: string, font: string): number => {
-  const element = document.createElement('canvas');
-  const ctx = element.getContext('2d');
-
-  if (!ctx) return 0;
-
-  ctx.font = font;
-  return ctx.measureText(text).width;
-};
+import { BAR_WIDTH, WAVEFORM_HEIGHT_PERCENT } from './_constants';
+import { createPolylineElement, createRectElement, createSvgElement } from './_utils/createElement';
 
 const useSvgWaveform = ({
   variant,
@@ -30,6 +14,7 @@ const useSvgWaveform = ({
   playheadWidth,
   waveColor,
   progressColor,
+  hoveredColor,
   bgColor,
   playheadBgColor,
   playheadTextColor,
@@ -38,21 +23,22 @@ const useSvgWaveform = ({
   peaks,
   currentTime,
   duration,
-  isPlayheadShowing,
-  playheadPosition,
-  showPlayhead,
-  hidePlayhead,
+  isHovering,
+  hoveredWidth,
+  showHoveredWaveform,
+  hideHoveredWaveform,
   changeCurrentTime,
   enabled,
 }: UseTypeWaveformParams) => {
   const [waveform, setWaveform] = useState<HTMLImageElement>();
   const [initWaveform, setInitWaveform] = useState<SVGSVGElement>();
   const [playedWaveform, setPlayedWaveform] = useState<SVGSVGElement>();
+  const [hoveredWaveform, setHoveredWaveform] = useState<SVGSVGElement>();
 
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
     duration,
-    showPlayhead,
-    hidePlayhead,
+    showHoveredWaveform,
+    hideHoveredWaveform,
     changeCurrentTime,
   });
   const { halfHeight, barIndexScale, playedWidth } = useWaveformSize({
@@ -119,52 +105,6 @@ const useSvgWaveform = ({
     [variant, drawLineWaveform, drawBarWaveform],
   );
 
-  const drawPlayhead = useCallback(
-    (svgElement: SVGSVGElement): void => {
-      const polylineElement = createPolylineElement();
-
-      polylineElement.setAttribute('points', `${playheadPosition},0 ${playheadPosition},${height}`);
-      polylineElement.style.strokeWidth = `${playheadWidth}`;
-      polylineElement.style.stroke = playheadBgColor;
-      polylineElement.style.fill = 'none';
-
-      const rectElement = createRectElement();
-      const textElement = createTextElement();
-
-      const percent = (playheadPosition / width) * 100;
-      const playheadTime = (percent * duration) / 100;
-      const formattedPlayheadTime = formatTime(playheadTime > 0 ? playheadTime : 0);
-
-      const textWidth =
-        getTextWidth(formattedPlayheadTime, `${PLAYHEAD_TIME.fontSize}px Arial`) +
-        PLAYHEAD_TIME.padding * 2;
-      const textHeight = PLAYHEAD_TIME.fontSize + PLAYHEAD_TIME.padding * 2;
-
-      const playheadTimePosition =
-        playheadPosition > textWidth ? playheadPosition - textWidth : playheadPosition;
-
-      textElement.setAttribute('x', `${playheadTimePosition + PLAYHEAD_TIME.padding}`);
-      textElement.setAttribute('y', `${PLAYHEAD_TIME.fontSize}`);
-      textElement.setAttribute('font-size', `${PLAYHEAD_TIME.fontSize}`);
-      textElement.setAttribute('font-family', 'Arial');
-      textElement.style.fill = playheadTextColor;
-      textElement.textContent = formattedPlayheadTime;
-
-      rectElement.setAttribute('x', `${playheadTimePosition}`);
-      rectElement.setAttribute('y', '0');
-      rectElement.setAttribute('width', `${textWidth}`);
-      rectElement.setAttribute('height', `${textHeight}`);
-      rectElement.setAttribute('letter-spacing', '-0.2');
-      rectElement.setAttribute('rx', '3');
-      rectElement.style.fill = playheadBgColor;
-
-      svgElement.appendChild(polylineElement);
-      svgElement.appendChild(rectElement);
-      svgElement.appendChild(textElement);
-    },
-    [playheadPosition, height, playheadWidth, playheadBgColor, playheadTextColor],
-  );
-
   const configureWaveform = useCallback((): void => {
     const mainImage = document.createElement('img');
 
@@ -177,25 +117,29 @@ const useSvgWaveform = ({
   const initSvgWaveform = useCallback((): void => {
     const initSvg = createSvgElement(width, height);
     const playedSvg = createSvgElement(width, height);
+    const hoveredSvg = createSvgElement(width, height);
 
     drawWaveform(initSvg, bgColor, waveColor);
     drawWaveform(playedSvg, 'transparent', progressColor);
+    drawWaveform(hoveredSvg, 'transparent', hoveredColor);
 
     setInitWaveform(initSvg);
     setPlayedWaveform(playedSvg);
-  }, [width, height, bgColor, waveColor, progressColor, drawWaveform]);
+    setHoveredWaveform(hoveredSvg);
+  }, [width, height, bgColor, waveColor, progressColor, hoveredColor, drawWaveform]);
 
   const updateSvgWaveform = useCallback((): void => {
-    if (!waveform || !initWaveform || !playedWaveform) return;
+    if (!waveform || !initWaveform || !playedWaveform || !hoveredWaveform) return;
 
     const newMainSvg = createSvgElement(width, height);
 
     newMainSvg.style.background = bgColor;
     playedWaveform.setAttribute('width', `${playedWidth}`);
+    hoveredWaveform.setAttribute('width', `${hoveredWidth}`);
 
     newMainSvg.appendChild(initWaveform);
+    isHovering && newMainSvg.appendChild(hoveredWaveform);
     newMainSvg.appendChild(playedWaveform);
-    isPlayheadShowing && drawPlayhead(newMainSvg);
 
     waveform.src =
       'data:image/svg+xml;charset=utf-8,' +
@@ -204,11 +148,12 @@ const useSvgWaveform = ({
     width,
     height,
     playedWidth,
-    isPlayheadShowing,
+    hoveredWidth,
+    isHovering,
     waveform,
     initWaveform,
     playedWaveform,
-    drawPlayhead,
+    hoveredWaveform,
   ]);
 
   useEffect(() => {
@@ -227,7 +172,18 @@ const useSvgWaveform = ({
     if (!enabled) return;
 
     initSvgWaveform();
-  }, [peaks, variant, width, height, waveColor, progressColor, bgColor, duration, enabled]);
+  }, [
+    peaks,
+    variant,
+    width,
+    height,
+    waveColor,
+    progressColor,
+    hoveredColor,
+    bgColor,
+    duration,
+    enabled,
+  ]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -239,9 +195,10 @@ const useSvgWaveform = ({
     playheadWidth,
     playheadBgColor,
     playheadTextColor,
-    playheadPosition,
-    isPlayheadShowing,
+    hoveredWidth,
+    isHovering,
     playedWaveform,
+    hoveredWaveform,
     playheadWidth,
     currentTime,
     enabled,

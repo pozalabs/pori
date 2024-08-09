@@ -12,6 +12,7 @@ export interface UseTypeWaveformParams
       | 'playheadWidth'
       | 'waveColor'
       | 'progressColor'
+      | 'hoveredColor'
       | 'bgColor'
       | 'playheadBgColor'
       | 'playheadTextColor'
@@ -23,10 +24,10 @@ export interface UseTypeWaveformParams
   peaks: number[];
   currentTime: number;
   duration: number;
-  isPlayheadShowing: boolean;
-  playheadPosition: number;
-  showPlayhead: (e: Event) => void;
-  hidePlayhead: () => void;
+  isHovering: boolean;
+  hoveredWidth: number;
+  showHoveredWaveform: (e: Event) => void;
+  hideHoveredWaveform: () => void;
   changeCurrentTime?: (currentTime: number) => void;
 }
 

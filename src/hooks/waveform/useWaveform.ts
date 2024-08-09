@@ -19,6 +19,7 @@ export interface UseWaveformParams extends HTMLAudioElementEventType {
   playheadWidth?: number;
   waveColor?: string;
   progressColor?: string;
+  hoveredColor?: string;
   bgColor?: string;
   playheadBgColor?: string;
   playheadTextColor?: string;
@@ -34,8 +35,8 @@ export interface UseWaveformReturns {
   play: () => void;
   pause: () => void;
   changeCurrentTime: (currentTime: number) => void;
-  showPlayhead: (e: Event, positionX?: number) => void;
-  hidePlayhead: () => void;
+  showHoveredWaveform: (e: Event, positionX?: number) => void;
+  hideHoveredWaveform: () => void;
   waveform?: CanvasImageSource;
 }
 
@@ -72,8 +73,8 @@ export interface UseWaveformReturns {
  *    play: () => void;
  *    pause: () => void;
  *    changeCurrentTime: (currentTime: number) => void;
- *    showPlayhead: (e: Event, positionX?: number) => void;
- *    hidePlayhead: () => void;
+ *    showHoveredWaveform: (e: Event, positionX?: number) => void;
+ *    hideHoveredWaveform: () => void;
  *    waveform?: CanvasImageSource;
  * }
  * ```
@@ -89,6 +90,7 @@ const useWaveform = ({
   playheadWidth = WAVEFORM_DEFAULT_VALUE['playheadWidth'],
   waveColor = WAVEFORM_DEFAULT_VALUE['waveColor'],
   progressColor = WAVEFORM_DEFAULT_VALUE['progressColor'],
+  hoveredColor = WAVEFORM_DEFAULT_VALUE['hoveredColor'],
   bgColor = WAVEFORM_DEFAULT_VALUE['bgColor'],
   playheadBgColor = WAVEFORM_DEFAULT_VALUE['playheadBgColor'],
   playheadTextColor = WAVEFORM_DEFAULT_VALUE['playheadTextColor'],
@@ -98,17 +100,16 @@ const useWaveform = ({
   ...eventHandlers
 }: UseWaveformParams): UseWaveformReturns => {
   const { audioUrl, peaks } = useAudioData({ src, sampleRate, peakLength });
-  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } =
-    useWaveformAudio({
-      src: audioUrl,
-      autoplay,
-      ...eventHandlers,
-    });
+  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } = useWaveformAudio({
+    src: audioUrl,
+    autoplay,
+    ...eventHandlers,
+  });
 
-  const [isPlayheadShowing, setIsPlayheadShowing] = useState(false);
-  const [playheadPosition, setPlayheadPosition] = useState(0);
+  const [isHovering, setIsHovering] = useState(false);
+  const [hoveredWidth, setHoveredWidth] = useState(0);
 
-  const showPlayhead = useCallback((e: Event, positionX?: number): void => {
+  const showHoveredWaveform = useCallback((e: Event, positionX?: number): void => {
     if (
       !(e instanceof MouseEvent) ||
       !(e.target instanceof HTMLCanvasElement || e.target instanceof HTMLImageElement)
@@ -119,12 +120,12 @@ const useWaveform = ({
 
     const playheadPosition = e.clientX - rect.left;
 
-    setPlayheadPosition(Math.max(0, positionX ?? playheadPosition));
-    setIsPlayheadShowing(true);
+    setHoveredWidth(Math.max(0, positionX ?? playheadPosition));
+    setIsHovering(true);
   }, []);
 
-  const hidePlayhead = useCallback((): void => {
-    setIsPlayheadShowing(false);
+  const hideHoveredWaveform = useCallback((): void => {
+    setIsHovering(false);
   }, []);
 
   const waveformParams = {
@@ -134,6 +135,7 @@ const useWaveform = ({
     playheadWidth,
     waveColor,
     progressColor,
+    hoveredColor,
     bgColor,
     playheadBgColor,
     playheadTextColor,
@@ -143,10 +145,10 @@ const useWaveform = ({
     currentTime,
     duration,
     changeCurrentTime,
-    isPlayheadShowing,
-    playheadPosition,
-    showPlayhead,
-    hidePlayhead,
+    isHovering,
+    hoveredWidth,
+    showHoveredWaveform,
+    hideHoveredWaveform,
   };
 
   const canvasWaveform = useCanvasWaveform({
@@ -166,8 +168,8 @@ const useWaveform = ({
     play,
     pause,
     changeCurrentTime,
-    showPlayhead,
-    hidePlayhead,
+    showHoveredWaveform,
+    hideHoveredWaveform,
     waveform: type === 'svg' ? svgWaveform : canvasWaveform,
   };
 };
