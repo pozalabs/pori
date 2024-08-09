@@ -4,7 +4,7 @@ import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
 
 import { UseTypeWaveformParams } from './_types';
-import { BAR_WIDTH, PLAYHEAD_TIME, WAVEFORM_HEIGHT_PERCENT } from './_constants';
+import { BAR_WIDTH, PLAYHEAD_TIME } from './_constants';
 import { createCanvasElement, createOffscreenCanvas } from './_utils/createElement';
 import formatTime from './_utils/formatTime';
 
@@ -55,10 +55,9 @@ const useCanvasWaveform = ({
     hidePlayhead,
     changeCurrentTime,
   });
-  const { halfHeight, halfBarOffset, playedWidth } = useWaveformSize({
+  const { halfHeight, maxHeight, halfBarOffset, playedWidth } = useWaveformSize({
     width,
     height,
-    peakLength: peaks.length,
     currentTime,
     duration,
   });
@@ -69,8 +68,7 @@ const useCanvasWaveform = ({
 
       peaks.forEach((peak, index) => {
         const x = (index * (gap + BAR_WIDTH) + halfBarOffset) / dpr;
-        const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
-        const barHeight = Math.round(peak * (waveformMaxHeight / 2));
+        const barHeight = Math.round((peak * maxHeight) / 2);
         const yTop = (halfHeight - barHeight) / dpr;
         const yBottom = (halfHeight + barHeight) / dpr;
 
@@ -85,7 +83,7 @@ const useCanvasWaveform = ({
       ctx.stroke();
       ctx.closePath();
     },
-    [variant, peaks, halfHeight, height, gap],
+    [variant, peaks, halfHeight, maxHeight, gap],
   );
 
   const drawPlayhead = useCallback(

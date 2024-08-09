@@ -41,5 +41,5 @@ export const PLAYHEAD_TIME = {
   fontSize: 10,
   padding: 2,
 };
-export const WAVEFORM_HEIGHT_PERCENT = 90;
+export const WAVEFORM_HEIGHT_RATIO = 0.9;
 export const BAR_WIDTH = 1;

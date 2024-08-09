@@ -4,7 +4,7 @@ import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
 
 import { UseTypeWaveformParams } from './_types';
-import { BAR_WIDTH, PLAYHEAD_TIME, WAVEFORM_HEIGHT_PERCENT } from './_constants';
+import { BAR_WIDTH, PLAYHEAD_TIME } from './_constants';
 import formatTime from './_utils/formatTime';
 import {
   createPolylineElement,
@@ -56,10 +56,9 @@ const useSvgWaveform = ({
     hidePlayhead,
     changeCurrentTime,
   });
-  const { halfHeight, halfBarOffset, playedWidth } = useWaveformSize({
+  const { halfHeight, maxHeight, playedWidth } = useWaveformSize({
     width,
     height,
-    peakLength: peaks.length,
     currentTime,
     duration,
   });
@@ -71,8 +70,7 @@ const useSvgWaveform = ({
       const points = peaks
         .map((peak, index) => {
           const x = index * (gap + BAR_WIDTH);
-          const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
-          const barHeight = Math.round((peak * waveformMaxHeight) / 2);
+          const barHeight = Math.round((peak * maxHeight) / 2);
           const yTop = halfHeight - barHeight;
           const yBottom = halfHeight + barHeight;
 
@@ -88,7 +86,7 @@ const useSvgWaveform = ({
 
       svgElement.appendChild(polylineElement);
     },
-    [peaks, halfHeight, height, gap],
+    [peaks, halfHeight, maxHeight, gap],
   );
 
   const drawBarWaveform = useCallback(
@@ -98,8 +96,7 @@ const useSvgWaveform = ({
       peaks.forEach((peak, index) => {
         const rectElement = createRectElement();
         const x = index * (gap + BAR_WIDTH);
-        const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
-        const barHeight = Math.round((peak * waveformMaxHeight) / 2);
+        const barHeight = Math.round((peak * maxHeight) / 2);
         const formattedBarHeight = barHeight > 0 ? barHeight : BAR_WIDTH / 2;
         const yTop = halfHeight - formattedBarHeight;
 
@@ -112,7 +109,7 @@ const useSvgWaveform = ({
         svgElement.appendChild(rectElement);
       });
     },
-    [peaks, halfHeight, height, gap],
+    [peaks, halfHeight, maxHeight, gap],
   );
 
   const drawWaveform = useMemo(
