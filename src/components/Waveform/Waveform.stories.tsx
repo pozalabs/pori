@@ -6,7 +6,6 @@ import { Image, Layer, Stage } from 'react-konva';
 import Waveform, { WaveformHandles } from './Waveform';
 import useWaveform, { UseWaveformParams } from '../../hooks/waveform/useWaveform';
 import { WAVEFORM_DEFAULT_VALUE } from '../../hooks/waveform/_constants';
-import formatTime from '../../hooks/waveform/_utils/formatTime';
 
 const WaveformWithControlButton = (props: UseWaveformParams) => {
   const ref = useRef<WaveformHandles>(null);
@@ -58,7 +57,6 @@ export const Konva: Story = {
     gap: 2,
     waveColor: '#E0E1E6',
     progressColor: '#BBF500',
-    playheadBgColor: '#FF5924',
     bgColor: '#8D8D86',
     src,
   },
@@ -68,8 +66,8 @@ export const Konva: Story = {
       play,
       pause,
       changeCurrentTime,
-      showPlayhead,
-      hidePlayhead,
+      showHoveredWaveform,
+      hideHoveredWaveform,
       duration,
       currentTime,
     } = useWaveform(props);
@@ -77,7 +75,7 @@ export const Konva: Story = {
     const dpr = useMemo(() => window.devicePixelRatio || 1, []);
 
     const handleMouseMove = (e: KonvaEventObject<MouseEvent>) => {
-      showPlayhead(e.evt);
+      showHoveredWaveform(e.evt);
     };
 
     const updateCurrentTime = (e: KonvaEventObject<MouseEvent>): void => {
@@ -116,15 +114,12 @@ export const Konva: Story = {
               alt="waveform"
               onClick={updateCurrentTime}
               onMouseMove={handleMouseMove}
-              onMouseOut={hidePlayhead}
+              onMouseOut={hideHoveredWaveform}
               scale={{ x: 1 / dpr, y: 1 / dpr }}
             />
           </Layer>
         </Stage>
         <div className="flex justify-between items-center w-full">
-          <span className="text-white tracking-widest w-[40px] text-[14px] font-light">
-            {formatTime(currentTime)}
-          </span>
           <div className="flex gap-[8px]">
             <button
               className="bg-[#E0E1E6] hover:bg-[#CDCED6] py-[0.5rem] px-[1rem] rounded-[8px] transition duration-100 ease-in-out"
@@ -139,9 +134,6 @@ export const Konva: Story = {
               일시정지
             </button>
           </div>
-          <span className="text-white tracking-widest w-[40px] text-[14px] font-light">
-            {formatTime(duration)}
-          </span>
         </div>
       </div>
     );

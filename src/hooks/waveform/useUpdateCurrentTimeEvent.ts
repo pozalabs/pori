@@ -2,8 +2,8 @@ import { useCallback } from 'react';
 
 interface UseUpdateCurrentTimeEventParams {
   duration: number;
-  showPlayhead: (e: Event) => void;
-  hidePlayhead: () => void;
+  showHoveredWaveform: (e: Event) => void;
+  hideHoveredWaveform: () => void;
   changeCurrentTime?: (currentTime: number) => void;
 }
 
@@ -14,8 +14,8 @@ interface UseUpdateCurrentTimeEventReturns {
 
 const useUpdateCurrentTimeEvent = ({
   duration,
-  showPlayhead,
-  hidePlayhead,
+  showHoveredWaveform,
+  hideHoveredWaveform,
   changeCurrentTime,
 }: UseUpdateCurrentTimeEventParams): UseUpdateCurrentTimeEventReturns => {
   const onElementClick = useCallback(
@@ -42,19 +42,19 @@ const useUpdateCurrentTimeEvent = ({
   const addEventListeners = useCallback(
     (element: HTMLCanvasElement | HTMLImageElement): void => {
       element.addEventListener('click', onElementClick);
-      element.addEventListener('mousemove', showPlayhead);
-      element.addEventListener('mouseout', hidePlayhead);
+      element.addEventListener('mousemove', showHoveredWaveform);
+      element.addEventListener('mouseout', hideHoveredWaveform);
     },
-    [onElementClick, showPlayhead, hidePlayhead],
+    [onElementClick, showHoveredWaveform, hideHoveredWaveform],
   );
 
   const removeEventListeners = useCallback(
     (element: HTMLCanvasElement | HTMLImageElement): void => {
       element.removeEventListener('click', onElementClick);
-      element.removeEventListener('mousemove', showPlayhead);
-      element.removeEventListener('mouseout', hidePlayhead);
+      element.removeEventListener('mousemove', showHoveredWaveform);
+      element.removeEventListener('mouseout', hideHoveredWaveform);
     },
-    [onElementClick, showPlayhead, hidePlayhead],
+    [onElementClick, showHoveredWaveform, hideHoveredWaveform],
   );
 
   return {
