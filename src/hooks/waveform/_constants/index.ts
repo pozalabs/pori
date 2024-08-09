@@ -6,9 +6,9 @@ export const WAVEFORM_DEFAULT_VALUE: Required<
     | 'type'
     | 'variant'
     | 'sampleRate'
-    | 'peakLength'
     | 'width'
     | 'height'
+    | 'gap'
     | 'playheadWidth'
     | 'waveColor'
     | 'bgColor'
@@ -23,9 +23,9 @@ export const WAVEFORM_DEFAULT_VALUE: Required<
   type: 'canvas',
   variant: 'line',
   sampleRate: 8000,
-  peakLength: 1024,
   width: 1000,
   height: 100,
+  gap: 1,
   playheadWidth: 1,
   waveColor: 'black',
   progressColor: '#0873ff',

@@ -9,6 +9,7 @@ export interface UseTypeWaveformParams
       | 'variant'
       | 'width'
       | 'height'
+      | 'gap'
       | 'playheadWidth'
       | 'waveColor'
       | 'progressColor'

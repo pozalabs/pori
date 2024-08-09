@@ -7,15 +7,16 @@ import useSvgWaveform from './useSvgWaveform';
 
 import { WAVEFORM_DEFAULT_VALUE } from './_constants';
 import { HTMLAudioElementEventType } from './_types';
+import getPeakLength from './_utils/getPeakLength';
 
 export interface UseWaveformParams extends HTMLAudioElementEventType {
   src: string;
   type?: 'canvas' | 'svg';
   variant?: 'line' | 'bar';
   sampleRate?: number;
-  peakLength?: number;
   width?: number;
   height?: number;
+  gap?: number;
   playheadWidth?: number;
   waveColor?: string;
   progressColor?: string;
@@ -48,9 +49,9 @@ export interface UseWaveformReturns {
  *    type?: 'canvas' | 'svg';
  *    variant?: 'line' | 'bar';
  *    sampleRate?: number;
- *    peakLength?: number;
  *    width?: number;
  *    height?: number;
+ *    gap?: number;
  *    playheadWidth?: number;
  *    waveColor?: string;
  *    progressColor?: string;
@@ -83,9 +84,9 @@ const useWaveform = ({
   type = WAVEFORM_DEFAULT_VALUE['type'],
   variant = WAVEFORM_DEFAULT_VALUE['variant'],
   sampleRate = WAVEFORM_DEFAULT_VALUE['sampleRate'],
-  peakLength = WAVEFORM_DEFAULT_VALUE['peakLength'],
   width = WAVEFORM_DEFAULT_VALUE['width'],
   height = WAVEFORM_DEFAULT_VALUE['height'],
+  gap = WAVEFORM_DEFAULT_VALUE['gap'],
   playheadWidth = WAVEFORM_DEFAULT_VALUE['playheadWidth'],
   waveColor = WAVEFORM_DEFAULT_VALUE['waveColor'],
   progressColor = WAVEFORM_DEFAULT_VALUE['progressColor'],
@@ -97,13 +98,16 @@ const useWaveform = ({
   autoplay = WAVEFORM_DEFAULT_VALUE['autoplay'],
   ...eventHandlers
 }: UseWaveformParams): UseWaveformReturns => {
-  const { audioUrl, peaks } = useAudioData({ src, sampleRate, peakLength });
-  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } =
-    useWaveformAudio({
-      src: audioUrl,
-      autoplay,
-      ...eventHandlers,
-    });
+  const { audioUrl, peaks } = useAudioData({
+    src,
+    sampleRate,
+    peakLength: getPeakLength(width, gap),
+  });
+  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } = useWaveformAudio({
+    src: audioUrl,
+    autoplay,
+    ...eventHandlers,
+  });
 
   const [isPlayheadShowing, setIsPlayheadShowing] = useState(false);
   const [playheadPosition, setPlayheadPosition] = useState(0);
@@ -131,6 +135,7 @@ const useWaveform = ({
     variant,
     width,
     height,
+    gap,
     playheadWidth,
     waveColor,
     progressColor,
