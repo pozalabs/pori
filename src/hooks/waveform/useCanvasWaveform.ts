@@ -4,9 +4,8 @@ import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
 
 import { UseTypeWaveformParams } from './_types';
-import { BAR_WIDTH, PLAYHEAD_TIME } from './_constants';
+import { BAR_WIDTH } from './_constants';
 import { createCanvasElement, createOffscreenCanvas } from './_utils/createElement';
-import formatTime from './_utils/formatTime';
 
 const createCanvas = (
   width: number,
@@ -25,34 +24,33 @@ const useCanvasWaveform = ({
   width,
   height,
   gap,
-  playheadWidth,
   waveColor,
   progressColor,
+  hoveredColor,
   bgColor,
-  playheadBgColor,
-  playheadTextColor,
   className,
   controls,
   peaks,
   currentTime,
   duration,
-  isPlayheadShowing,
-  playheadPosition,
-  showPlayhead,
-  hidePlayhead,
+  isHovering,
+  hoveredWidth,
+  showHoveredWaveform,
+  hideHoveredWaveform,
   enabled,
   changeCurrentTime,
 }: UseTypeWaveformParams) => {
   const [waveform, setWaveform] = useState<HTMLCanvasElement>();
   const [initWaveform, setInitWaveform] = useState<HTMLCanvasElement | OffscreenCanvas>();
   const [playedWaveform, setPlayedWaveform] = useState<HTMLCanvasElement | OffscreenCanvas>();
+  const [hoveredWaveform, setHoveredWaveform] = useState<HTMLCanvasElement | OffscreenCanvas>();
 
   const dpr = useMemo(() => window.devicePixelRatio ?? 1, []);
 
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
     duration,
-    showPlayhead,
-    hidePlayhead,
+    showHoveredWaveform,
+    hideHoveredWaveform,
     changeCurrentTime,
   });
   const { halfHeight, maxHeight, halfBarOffset, playedWidth } = useWaveformSize({
@@ -86,61 +84,6 @@ const useCanvasWaveform = ({
     [variant, peaks, halfHeight, maxHeight, gap],
   );
 
-  const drawPlayhead = useCallback(
-    (ctx: CanvasRenderingContext2D): void => {
-      ctx.beginPath();
-      ctx.lineWidth = playheadWidth;
-      ctx.lineCap = 'round';
-      ctx.strokeStyle = playheadBgColor;
-
-      ctx.moveTo(playheadPosition, 0);
-      ctx.lineTo(playheadPosition, height);
-
-      ctx.stroke();
-      ctx.closePath();
-
-      const percent = (playheadPosition / width) * 100;
-      const playheadTime = (percent * duration) / 100;
-      const formattedPlayheadTime = formatTime(playheadTime > 0 ? playheadTime : 0);
-      const playheadTimeWidth =
-        ctx.measureText(formattedPlayheadTime).width + PLAYHEAD_TIME.padding * 2;
-      const playheadTimeHeight = PLAYHEAD_TIME.fontSize + PLAYHEAD_TIME.padding * 2;
-
-      ctx.beginPath();
-
-      const playheadTimePosition =
-        playheadPosition > playheadTimeWidth
-          ? playheadPosition - playheadTimeWidth
-          : playheadPosition;
-
-      ctx.fillStyle = playheadBgColor;
-      ctx.roundRect(playheadTimePosition, 0, playheadTimeWidth, playheadTimeHeight, [3]);
-      ctx.fill();
-
-      ctx.font = `${PLAYHEAD_TIME.fontSize}px Arial`;
-      ctx.letterSpacing = '-0.2px';
-      ctx.strokeStyle = playheadTextColor;
-      ctx.lineWidth = 0.7;
-      ctx.strokeText(
-        `${formattedPlayheadTime}`,
-        playheadTimePosition + PLAYHEAD_TIME.padding,
-        PLAYHEAD_TIME.fontSize,
-      );
-
-      ctx.closePath();
-    },
-    [
-      width,
-      height,
-      height,
-      playheadWidth,
-      playheadBgColor,
-      playheadTextColor,
-      playheadPosition,
-      duration,
-    ],
-  );
-
   const configureWaveform = useCallback((): void => {
     const mainCanvas = createCanvasElement(width, height, dpr);
 
@@ -157,6 +100,7 @@ const useCanvasWaveform = ({
   const initCanvasWaveform = useCallback((): void => {
     const initCanvas = createCanvas(width, height, dpr);
     const playedCanvas = createCanvas(width, height, dpr);
+    const hoveredCanvas = createCanvas(width, height, dpr);
 
     const initCtx = initCanvas.getContext('2d') as
       | OffscreenCanvasRenderingContext2D
@@ -166,8 +110,12 @@ const useCanvasWaveform = ({
       | OffscreenCanvasRenderingContext2D
       | CanvasRenderingContext2D
       | null;
+    const hoveredCtx = hoveredCanvas.getContext('2d') as
+      | OffscreenCanvasRenderingContext2D
+      | CanvasRenderingContext2D
+      | null;
 
-    if (!initCtx || !playedCtx) return;
+    if (!initCtx || !playedCtx || !hoveredCtx) return;
 
     initCtx.fillStyle = bgColor;
     initCtx.clearRect(0, 0, width, height);
@@ -186,12 +134,20 @@ const useCanvasWaveform = ({
 
     drawWaveform(playedCtx);
 
+    hoveredCtx.lineWidth = BAR_WIDTH / dpr;
+    hoveredCtx.clearRect(0, 0, width, height);
+
+    hoveredCtx.strokeStyle = hoveredColor;
+
+    drawWaveform(hoveredCtx);
+
     setInitWaveform(initCanvas);
     setPlayedWaveform(playedCanvas);
-  }, [width, height, bgColor, waveColor, progressColor, drawWaveform]);
+    setHoveredWaveform(hoveredCanvas);
+  }, [width, height, bgColor, waveColor, progressColor, hoveredColor, drawWaveform]);
 
   const updateCanvasWaveform = useCallback((): void => {
-    if (!waveform || !initWaveform || !playedWaveform) return;
+    if (!waveform || !initWaveform || !playedWaveform || !hoveredWaveform) return;
 
     const waveformCtx = waveform.getContext('2d');
 
@@ -200,17 +156,29 @@ const useCanvasWaveform = ({
     waveformCtx.imageSmoothingEnabled = false;
     waveformCtx.clearRect(0, 0, width, height);
     waveformCtx.drawImage(initWaveform, 0, 0);
+    isHovering &&
+      waveformCtx.drawImage(
+        hoveredWaveform,
+        0,
+        0,
+        hoveredWidth,
+        height,
+        0,
+        0,
+        hoveredWidth,
+        height,
+      );
     waveformCtx.drawImage(playedWaveform, 0, 0, playedWidth, height, 0, 0, playedWidth, height);
-    isPlayheadShowing && drawPlayhead(waveformCtx);
   }, [
     width,
     height,
     playedWidth,
-    isPlayheadShowing,
     waveform,
+    isHovering,
     initWaveform,
     playedWaveform,
-    drawPlayhead,
+    hoveredWaveform,
+    hoveredWidth,
   ]);
 
   useEffect(() => {
@@ -229,7 +197,18 @@ const useCanvasWaveform = ({
     if (!enabled) return;
 
     initCanvasWaveform();
-  }, [peaks, variant, width, height, waveColor, bgColor, progressColor, duration, enabled]);
+  }, [
+    peaks,
+    variant,
+    width,
+    height,
+    waveColor,
+    bgColor,
+    progressColor,
+    hoveredColor,
+    duration,
+    enabled,
+  ]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -238,13 +217,10 @@ const useCanvasWaveform = ({
   }, [
     initWaveform,
     progressColor,
-    playheadWidth,
-    playheadBgColor,
-    playheadTextColor,
-    playheadPosition,
-    isPlayheadShowing,
+    hoveredWidth,
+    isHovering,
     playedWaveform,
-    playheadWidth,
+    hoveredWaveform,
     currentTime,
     enabled,
   ]);
