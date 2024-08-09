@@ -197,6 +197,7 @@ const useCanvasWaveform = ({
 
     if (!waveformCtx) return;
 
+    waveformCtx.imageSmoothingEnabled = false;
     waveformCtx.clearRect(0, 0, width, height);
     waveformCtx.drawImage(initWaveform, 0, 0);
     waveformCtx.drawImage(playedWaveform, 0, 0, playedWidth, height, 0, 0, playedWidth, height);
