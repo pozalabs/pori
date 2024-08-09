@@ -57,7 +57,6 @@ export const Konva: Story = {
     gap: 2,
     waveColor: '#E0E1E6',
     progressColor: '#BBF500',
-    playheadBgColor: '#FF5924',
     bgColor: '#8D8D86',
     src,
   },
