@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { BAR_WIDTH } from './_constants';
+import type { UseTypeWaveformParams } from './_types';
+import { createCanvasElement, createOffscreenCanvas } from './_utils/createElement';
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
-
-import { UseTypeWaveformParams } from './_types';
-import { BAR_WIDTH } from './_constants';
-import { createCanvasElement, createOffscreenCanvas } from './_utils/createElement';
 
 const createCanvas = (
   width: number,
@@ -70,7 +69,11 @@ const useCanvasWaveform = ({
         const yTop = (halfHeight - barHeight) / dpr;
         const yBottom = (halfHeight + barHeight) / dpr;
 
-        variant === 'line' ? ctx.lineTo(x, yTop) : ctx.moveTo(x, yTop);
+        if (variant === 'line') {
+          ctx.lineTo(x, yTop);
+        }
+        ctx.moveTo(x, yTop);
+
         if (variant === 'bar' && barHeight <= 0) {
           ctx.moveTo(x, yTop - BAR_WIDTH / 2);
           ctx.lineTo(x, yTop + BAR_WIDTH / 2);
@@ -81,7 +84,7 @@ const useCanvasWaveform = ({
       ctx.stroke();
       ctx.closePath();
     },
-    [variant, peaks, halfHeight, maxHeight, gap],
+    [peaks, gap, halfBarOffset, dpr, maxHeight, halfHeight, variant],
   );
 
   const configureWaveform = useCallback((): void => {
@@ -92,10 +95,10 @@ const useCanvasWaveform = ({
     if (!waveformCtx) return;
 
     mainCanvas.setAttribute('class', className);
-    controls && addEventListeners(mainCanvas);
+    if (controls) addEventListeners(mainCanvas);
 
     setWaveform(mainCanvas);
-  }, [width, height, className, controls, addEventListeners]);
+  }, [width, height, dpr, className, controls, addEventListeners]);
 
   const initCanvasWaveform = useCallback((): void => {
     const initCanvas = createCanvas(width, height, dpr);
@@ -144,7 +147,7 @@ const useCanvasWaveform = ({
     setInitWaveform(initCanvas);
     setPlayedWaveform(playedCanvas);
     setHoveredWaveform(hoveredCanvas);
-  }, [width, height, bgColor, waveColor, progressColor, hoveredColor, drawWaveform]);
+  }, [width, height, dpr, bgColor, waveColor, drawWaveform, progressColor, hoveredColor]);
 
   const updateCanvasWaveform = useCallback((): void => {
     if (!waveform || !initWaveform || !playedWaveform || !hoveredWaveform) return;
@@ -156,7 +159,7 @@ const useCanvasWaveform = ({
     waveformCtx.imageSmoothingEnabled = false;
     waveformCtx.clearRect(0, 0, width, height);
     waveformCtx.drawImage(initWaveform, 0, 0);
-    isHovering &&
+    if (isHovering)
       waveformCtx.drawImage(
         hoveredWaveform,
         0,
@@ -191,12 +194,14 @@ const useCanvasWaveform = ({
 
       removeEventListeners(waveform);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, height, addEventListeners, removeEventListeners, enabled]);
 
   useEffect(() => {
     if (!enabled) return;
 
     initCanvasWaveform();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     peaks,
     variant,
@@ -214,6 +219,7 @@ const useCanvasWaveform = ({
     if (!enabled) return;
 
     updateCanvasWaveform();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     initWaveform,
     progressColor,

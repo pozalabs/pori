@@ -1,11 +1,10 @@
 import { useCallback, useEffect, useState, useMemo } from 'react';
 
+import { BAR_WIDTH } from './_constants';
+import type { UseTypeWaveformParams } from './_types';
+import { createPolylineElement, createRectElement, createSvgElement } from './_utils/createElement';
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
-
-import { UseTypeWaveformParams } from './_types';
-import { BAR_WIDTH } from './_constants';
-import { createPolylineElement, createRectElement, createSvgElement } from './_utils/createElement';
 
 const useSvgWaveform = ({
   variant,
@@ -104,10 +103,10 @@ const useSvgWaveform = ({
     const mainImage = document.createElement('img');
 
     mainImage.setAttribute('class', className);
-    controls && addEventListeners(mainImage);
+    if (controls) addEventListeners(mainImage);
 
     setWaveform(mainImage);
-  }, [width, height, className, controls, addEventListeners]);
+  }, [className, controls, addEventListeners]);
 
   const initSvgWaveform = useCallback((): void => {
     const initSvg = createSvgElement(width, height);
@@ -133,22 +132,23 @@ const useSvgWaveform = ({
     hoveredWaveform.setAttribute('width', `${hoveredWidth}`);
 
     newMainSvg.appendChild(initWaveform);
-    isHovering && newMainSvg.appendChild(hoveredWaveform);
+    if (isHovering) newMainSvg.appendChild(hoveredWaveform);
     newMainSvg.appendChild(playedWaveform);
 
     waveform.src =
       'data:image/svg+xml;charset=utf-8,' +
       encodeURIComponent(new XMLSerializer().serializeToString(newMainSvg));
   }, [
-    width,
-    height,
-    playedWidth,
-    hoveredWidth,
-    isHovering,
     waveform,
     initWaveform,
     playedWaveform,
     hoveredWaveform,
+    width,
+    height,
+    bgColor,
+    playedWidth,
+    hoveredWidth,
+    isHovering,
   ]);
 
   useEffect(() => {
@@ -161,12 +161,14 @@ const useSvgWaveform = ({
 
       removeEventListeners(waveform);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, height, addEventListeners, removeEventListeners, enabled]);
 
   useEffect(() => {
     if (!enabled) return;
 
     initSvgWaveform();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     peaks,
     variant,
@@ -184,6 +186,7 @@ const useSvgWaveform = ({
     if (!enabled) return;
 
     updateSvgWaveform();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     initWaveform,
     progressColor,

@@ -1,4 +1,4 @@
-name: Type Check
+name: Type, Lint Check
 
 on:
   pull_request:
@@ -35,3 +35,6 @@ jobs:
 
       - name: TS check
         run: yarn tsc
+
+      - name: Check lint
+        run: yarn lint

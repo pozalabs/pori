@@ -1,27 +1,31 @@
+/* eslint-disable react-hooks/rules-of-hooks */
 import { useEffect, useMemo, useRef } from 'react';
+
 import type { Meta, StoryObj } from '@storybook/react';
-import { KonvaEventObject } from 'konva/lib/Node';
+import type { KonvaEventObject } from 'konva/lib/Node';
 import { Image, Layer, Stage } from 'react-konva';
 
-import Waveform, { WaveformHandles } from './Waveform';
-import useWaveform, { UseWaveformParams } from '../../hooks/waveform/useWaveform';
+import type { WaveformHandles } from './Waveform';
+import Waveform from './Waveform';
 import { WAVEFORM_DEFAULT_VALUE } from '../../hooks/waveform/_constants';
+import type { UseWaveformParams } from '../../hooks/waveform/useWaveform';
+import useWaveform from '../../hooks/waveform/useWaveform';
 
 const WaveformWithControlButton = (props: UseWaveformParams) => {
   const ref = useRef<WaveformHandles>(null);
 
   return (
-    <div className="flex flex-col gap-[1rem] w-fit">
+    <div className="flex w-fit flex-col gap-4">
       <Waveform ref={ref} {...props} />
-      <div className="flex justify-between px-[12rem]">
+      <div className="flex justify-between px-48">
         <button
-          className="bg-blue-50 hover:bg-blue-100 py-[0.5rem] px-[1rem] border border-blue-100 rounded-[8px] transition duration-100 ease-in-out"
+          className="rounded-[8px] border border-blue-100 bg-blue-50 px-4 py-2 transition duration-100 ease-in-out hover:bg-blue-100"
           onClick={() => ref.current?.play()}
         >
           재생
         </button>
         <button
-          className="bg-blue-50 hover:bg-blue-100 py-[0.5rem] px-[1rem] border border-blue-100 rounded-[8px] transition duration-100 ease-in-out"
+          className="rounded-[8px] border border-blue-100 bg-blue-50 px-4 py-2 transition duration-100 ease-in-out hover:bg-blue-100"
           onClick={() => ref.current?.pause()}
         >
           일시정지
@@ -69,8 +73,8 @@ export const Konva: Story = {
       showHoveredWaveform,
       hideHoveredWaveform,
       duration,
-      currentTime,
     } = useWaveform(props);
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
     const ref = useRef<any>();
     const dpr = useMemo(() => window.devicePixelRatio || 1, []);
 
@@ -105,8 +109,8 @@ export const Konva: Story = {
     }, []);
 
     return (
-      <div className="flex flex-col items-center gap-[2rem] p-[1rem] bg-[#8d8d86] rounded-lg">
-        <span className="text-white self-start">audio_23ef6b7464.mp3</span>
+      <div className="flex flex-col items-center gap-8 rounded-lg bg-[#8d8d86] p-4">
+        <span className="self-start text-white">audio_23ef6b7464.mp3</span>
         <Stage width={props.width} height={props.height}>
           <Layer ref={ref}>
             <Image
@@ -119,16 +123,16 @@ export const Konva: Story = {
             />
           </Layer>
         </Stage>
-        <div className="flex justify-between items-center w-full">
+        <div className="flex w-full items-center justify-between">
           <div className="flex gap-[8px]">
             <button
-              className="bg-[#E0E1E6] hover:bg-[#CDCED6] py-[0.5rem] px-[1rem] rounded-[8px] transition duration-100 ease-in-out"
+              className="rounded-[8px] bg-[#E0E1E6] px-4 py-2 transition duration-100 ease-in-out hover:bg-[#CDCED6]"
               onClick={play}
             >
               재생
             </button>
             <button
-              className="bg-[#E0E1E6] hover:bg-[#CDCED6] py-[0.5rem] px-[1rem] rounded-[8px] transition duration-100 ease-in-out"
+              className="rounded-[8px] bg-[#E0E1E6] px-4 py-2 transition duration-100 ease-in-out hover:bg-[#CDCED6]"
               onClick={pause}
             >
               일시정지
