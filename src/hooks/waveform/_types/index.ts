@@ -1,6 +1,6 @@
-import { DOMAttributes } from 'react';
+import type { DOMAttributes } from 'react';
 
-import { UseWaveformParams } from '../useWaveform';
+import type { UseWaveformParams } from '../useWaveform';
 
 export interface UseTypeWaveformParams
   extends Required<
@@ -29,6 +29,7 @@ export interface UseTypeWaveformParams
   changeCurrentTime?: (currentTime: number) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (
   x: infer I,
 ) => void

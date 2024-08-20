@@ -1,7 +1,8 @@
 import { useEffect } from 'react';
+
 import { useAudio, useControlAudio } from '@pozalabs/pokit';
 
-import { HTMLAudioElementEventType, UnionToIntersection } from './_types';
+import type { HTMLAudioElementEventType, UnionToIntersection } from './_types';
 
 interface UseWaveformAudioParams extends HTMLAudioElementEventType {
   src: string;
@@ -23,14 +24,12 @@ const useWaveformAudio = ({
   ...eventHandlers
 }: UseWaveformAudioParams): UseWaveformAudioReturns => {
   const audioRef = useAudio();
-  const [
-    { isPlaying, currentTime, duration },
-    { play, pause, changeCurrentTime },
-  ] = useControlAudio({
-    audioRef,
-    src,
-    autoPlay: autoplay,
-  });
+  const [{ isPlaying, currentTime, duration }, { play, pause, changeCurrentTime }] =
+    useControlAudio({
+      audioRef,
+      src,
+      autoPlay: autoplay,
+    });
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -48,7 +47,7 @@ const useWaveformAudio = ({
 
       audioRef.current?.addEventListener(formattedEventType, eventHandler);
     });
-  }, []);
+  }, [audioRef, eventHandlers]);
 
   return {
     isPlaying,

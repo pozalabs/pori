@@ -1,4 +1,5 @@
 import { useMemo } from 'react';
+
 import { BAR_WIDTH, WAVEFORM_HEIGHT_RATIO } from './_constants';
 
 interface UseWaveformSizeParams {

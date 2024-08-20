@@ -1,13 +1,12 @@
 import { useCallback, useState } from 'react';
 
+import { WAVEFORM_DEFAULT_VALUE } from './_constants';
+import type { HTMLAudioElementEventType } from './_types';
+import getPeakLength from './_utils/getPeakLength';
 import useAudioData from './useAudioData';
-import useWaveformAudio from './useWaveformAudio';
 import useCanvasWaveform from './useCanvasWaveform';
 import useSvgWaveform from './useSvgWaveform';
-
-import { WAVEFORM_DEFAULT_VALUE } from './_constants';
-import { HTMLAudioElementEventType } from './_types';
-import getPeakLength from './_utils/getPeakLength';
+import useWaveformAudio from './useWaveformAudio';
 
 export interface UseWaveformParams extends HTMLAudioElementEventType {
   src: string;
