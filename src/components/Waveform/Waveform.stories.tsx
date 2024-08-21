@@ -17,7 +17,7 @@ const WaveformWithControlButton = (props: UseWaveformParams) => {
   const ref = useRef<WaveformHandles>(null);
 
   return (
-    <div className="flex flex-col gap-4 w-fit">
+    <div className="flex w-fit flex-col gap-4">
       <Waveform ref={ref} {...props} />
       <div className="flex justify-between px-48">
         <button
@@ -234,7 +234,7 @@ export const Konva: Story = {
             )}
           </Layer>
         </Stage>
-        <div className="flex items-center justify-between w-full">
+        <div className="flex w-full items-center justify-between">
           <div className="flex gap-[8px]">
             <button
               className="rounded-[8px] bg-[#E0E1E6] px-4 py-2 transition duration-100 ease-in-out hover:bg-[#CDCED6]"
