@@ -2,11 +2,11 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
+import type { Group as TGroup } from 'konva/lib/Group';
 import type { KonvaEventObject } from 'konva/lib/Node';
+import type { Transformer as TTransformer } from 'konva/lib/shapes/Transformer';
 import { Group, Image, Layer, Rect, Stage, Text, Transformer } from 'react-konva';
 
-import type { Transformer as TTransformer } from 'konva/lib/shapes/Transformer';
-import type { Group as TGroup } from 'konva/lib/Group';
 import type { WaveformHandles } from './Waveform';
 import Waveform from './Waveform';
 import { WAVEFORM_DEFAULT_VALUE } from '../../hooks/waveform/_constants';
