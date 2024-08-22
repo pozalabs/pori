@@ -26,7 +26,7 @@ const useWaveformSize = ({
   const maxHeight = useMemo(() => height * WAVEFORM_HEIGHT_RATIO, [height]);
   const halfBarOffset = useMemo(() => BAR_WIDTH / 2, []);
   const playedWidth = useMemo(() => {
-    const playedWidth = Math.round((currentTime / duration) * width);
+    const playedWidth = (currentTime / duration) * width;
     return isNaN(playedWidth) ? 0 : Math.min(width, playedWidth);
   }, [currentTime, duration, width]);
 
