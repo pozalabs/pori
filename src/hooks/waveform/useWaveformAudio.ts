@@ -76,6 +76,10 @@ const useWaveformAudio = ({
       return;
     }
     cancelAnimationFrame(currentTimeRafId.current);
+
+    return () => {
+      cancelAnimationFrame(currentTimeRafId.current);
+    };
   }, [audioRef, isPlaying]);
 
   return {
