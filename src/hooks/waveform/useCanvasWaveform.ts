@@ -94,6 +94,8 @@ const useCanvasWaveform = ({
 
     if (!waveformCtx) return;
 
+    waveformCtx.imageSmoothingEnabled = false;
+
     mainCanvas.setAttribute('class', className);
     if (controls) addEventListeners(mainCanvas);
 
@@ -156,7 +158,6 @@ const useCanvasWaveform = ({
 
     if (!waveformCtx) return;
 
-    waveformCtx.imageSmoothingEnabled = false;
     waveformCtx.clearRect(0, 0, width, height);
     waveformCtx.drawImage(initWaveform, 0, 0);
     if (isHovering)
