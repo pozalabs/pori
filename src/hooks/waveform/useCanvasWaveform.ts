@@ -189,7 +189,7 @@ const useCanvasWaveform = ({
       removeEventListeners(waveform);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [width, height, addEventListeners, removeEventListeners, enabled]);
+  }, [addEventListeners, removeEventListeners, enabled]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -208,6 +208,19 @@ const useCanvasWaveform = ({
     duration,
     enabled,
   ]);
+
+  useEffect(() => {
+    if (!enabled || !waveform) return;
+
+    const ctx = waveform.getContext('2d');
+
+    waveform.width = width * dpr;
+    waveform.height = height * dpr;
+    waveform.style.width = `${width}px`;
+    waveform.style.height = `${height}px`;
+
+    ctx?.scale(dpr, dpr);
+  }, [width, height, enabled, dpr, waveform]);
 
   useEffect(() => {
     if (!enabled) return;
