@@ -2,7 +2,13 @@ import { useCallback, useEffect, useState, useMemo } from 'react';
 
 import { BAR_WIDTH } from './_constants';
 import type { UseTypeWaveformParams } from './_types';
-import { createPolylineElement, createRectElement, createSvgElement } from './_utils/createElement';
+import {
+  createGElement,
+  createPolylineElement,
+  createRectElement,
+  createSvgElement,
+  createUseElement,
+} from './_utils/createElement';
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
 
@@ -28,9 +34,7 @@ const useSvgWaveform = ({
   enabled,
 }: UseTypeWaveformParams) => {
   const [waveform, setWaveform] = useState<HTMLImageElement>();
-  const [initWaveform, setInitWaveform] = useState<SVGSVGElement>();
-  const [playedWaveform, setPlayedWaveform] = useState<SVGSVGElement>();
-  const [hoveredWaveform, setHoveredWaveform] = useState<SVGSVGElement>();
+  const [waveformSvg, setWaveformSvg] = useState<SVGSVGElement>();
 
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
     duration,
@@ -46,7 +50,7 @@ const useSvgWaveform = ({
   });
 
   const drawLineWaveform = useCallback(
-    (svgElement: SVGSVGElement, bgColor: string, waveColor: string): void => {
+    (element: SVGGElement): void => {
       const polylineElement = createPolylineElement();
 
       const points = peaks
@@ -60,21 +64,18 @@ const useSvgWaveform = ({
         })
         .join(' ');
 
-      svgElement.style.background = bgColor;
       polylineElement.setAttribute('points', points);
       polylineElement.style.strokeWidth = `${BAR_WIDTH}`;
-      polylineElement.style.stroke = waveColor;
-      polylineElement.style.fill = 'none';
+      polylineElement.setAttribute('stroke', 'currentColor');
+      polylineElement.setAttribute('fill', 'none');
 
-      svgElement.appendChild(polylineElement);
+      element.appendChild(polylineElement);
     },
     [peaks, halfHeight, maxHeight, gap],
   );
 
   const drawBarWaveform = useCallback(
-    (svgElement: SVGSVGElement, bgColor: string, waveColor: string): void => {
-      svgElement.style.background = bgColor;
-
+    (element: SVGGElement): void => {
       peaks.forEach((peak, index) => {
         const rectElement = createRectElement();
         const x = index * (gap + BAR_WIDTH);
@@ -86,9 +87,9 @@ const useSvgWaveform = ({
         rectElement.setAttribute('y', `${yTop}`);
         rectElement.setAttribute('width', `${BAR_WIDTH}`);
         rectElement.setAttribute('height', `${2 * formattedBarHeight}`);
-        rectElement.style.fill = waveColor;
+        rectElement.setAttribute('fill', 'currentColor');
 
-        svgElement.appendChild(rectElement);
+        element.appendChild(rectElement);
       });
     },
     [peaks, halfHeight, maxHeight, gap],
@@ -109,47 +110,58 @@ const useSvgWaveform = ({
   }, [className, controls, addEventListeners]);
 
   const initSvgWaveform = useCallback((): void => {
+    const svgElement = createSvgElement(width, height);
+    const gElement = createGElement();
+
+    drawWaveform(gElement);
+    gElement.id = 'waveform';
+
+    const initUseSvg = createUseElement();
+    const playedUseSvg = createUseElement();
+    const hoveredUseSvg = createUseElement();
+    initUseSvg.setAttribute('href', '#waveform');
+    playedUseSvg.setAttribute('href', '#waveform');
+    hoveredUseSvg.setAttribute('href', '#waveform');
+
     const initSvg = createSvgElement(width, height);
     const playedSvg = createSvgElement(width, height);
     const hoveredSvg = createSvgElement(width, height);
 
-    drawWaveform(initSvg, bgColor, waveColor);
-    drawWaveform(playedSvg, 'transparent', progressColor);
-    drawWaveform(hoveredSvg, 'transparent', hoveredColor);
+    initSvg.id = 'init';
+    playedSvg.id = 'played';
+    hoveredSvg.id = 'hovered';
+    initSvg.appendChild(initUseSvg);
+    playedSvg.appendChild(playedUseSvg);
+    hoveredSvg.appendChild(hoveredUseSvg);
 
-    setInitWaveform(initSvg);
-    setPlayedWaveform(playedSvg);
-    setHoveredWaveform(hoveredSvg);
-  }, [width, height, bgColor, waveColor, progressColor, hoveredColor, drawWaveform]);
+    initSvg.style.color = waveColor;
+    playedSvg.style.color = progressColor;
+    hoveredSvg.style.color = hoveredColor;
+
+    svgElement.appendChild(gElement);
+    svgElement.appendChild(initSvg);
+    svgElement.appendChild(hoveredSvg);
+    svgElement.appendChild(playedSvg);
+
+    setWaveformSvg(svgElement);
+  }, [width, height, waveColor, progressColor, hoveredColor, drawWaveform]);
 
   const updateSvgWaveform = useCallback((): void => {
-    if (!waveform || !initWaveform || !playedWaveform || !hoveredWaveform) return;
+    const initWaveform = waveformSvg?.getElementById('init') as SVGSVGElement;
+    const playedWaveform = waveformSvg?.getElementById('played') as SVGSVGElement;
+    const hoveredWaveform = waveformSvg?.getElementById('hovered') as SVGSVGElement;
 
-    const newMainSvg = createSvgElement(width, height);
+    if (!initWaveform || !playedWaveform || !hoveredWaveform || !waveform || !waveformSvg) return;
 
-    newMainSvg.style.background = bgColor;
     playedWaveform.setAttribute('width', `${playedWidth}`);
     hoveredWaveform.setAttribute('width', `${hoveredWidth}`);
 
-    newMainSvg.appendChild(initWaveform);
-    if (isHovering) newMainSvg.appendChild(hoveredWaveform);
-    newMainSvg.appendChild(playedWaveform);
+    hoveredWaveform.style.display = isHovering ? 'block' : 'none';
 
     waveform.src =
       'data:image/svg+xml;charset=utf-8,' +
-      encodeURIComponent(new XMLSerializer().serializeToString(newMainSvg));
-  }, [
-    waveform,
-    initWaveform,
-    playedWaveform,
-    hoveredWaveform,
-    width,
-    height,
-    bgColor,
-    playedWidth,
-    hoveredWidth,
-    isHovering,
-  ]);
+      encodeURIComponent(new XMLSerializer().serializeToString(waveformSvg));
+  }, [waveformSvg, waveform, playedWidth, hoveredWidth, isHovering]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -187,16 +199,7 @@ const useSvgWaveform = ({
 
     updateSvgWaveform();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [
-    initWaveform,
-    progressColor,
-    hoveredWidth,
-    isHovering,
-    playedWaveform,
-    hoveredWaveform,
-    currentTime,
-    enabled,
-  ]);
+  }, [isHovering, waveform, playedWidth, hoveredWidth, enabled]);
 
   return waveform;
 };
