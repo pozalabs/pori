@@ -170,7 +170,7 @@ export const Konva: Story = {
         trRef.current?.nodes([shapeRef.current]);
         trRef.current?.getLayer()?.batchDraw();
       }
-    }, [selected, waveform]);
+    }, [selected, waveform, waveformProps.width, waveformProps.height]);
 
     return (
       <div className="flex flex-col items-center gap-8 rounded-lg bg-[#f0f0f3] p-4">
