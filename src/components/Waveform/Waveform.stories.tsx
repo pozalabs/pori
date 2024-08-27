@@ -10,10 +10,11 @@ import { Group, Image, Layer, Rect, Stage, Text, Transformer } from 'react-konva
 import type { WaveformHandles } from './Waveform';
 import Waveform from './Waveform';
 import { WAVEFORM_DEFAULT_VALUE } from '../../hooks/waveform/_constants';
+import type { WaveformType } from '../../hooks/waveform/_types';
 import type { UseWaveformParams } from '../../hooks/waveform/useWaveform';
 import useWaveform from '../../hooks/waveform/useWaveform';
 
-const WaveformWithControlButton = (props: UseWaveformParams) => {
+const WaveformWithControlButton = <T extends WaveformType>(props: UseWaveformParams<T>) => {
   const ref = useRef<WaveformHandles>(null);
 
   return (
@@ -55,7 +56,6 @@ export const Svg: Story = {
 };
 export const Konva: Story = {
   args: {
-    ...WAVEFORM_DEFAULT_VALUE,
     type: 'canvas',
     variant: 'bar',
     width: 400,
@@ -67,7 +67,7 @@ export const Konva: Story = {
     bgColor: '#E1DCCF',
     src,
   },
-  render: (props: UseWaveformParams) => {
+  render: <T extends WaveformType>(props: UseWaveformParams<T>) => {
     const [audioItem, setAudioItem] = useState({
       x: 100,
       y: 100,
@@ -77,7 +77,10 @@ export const Konva: Story = {
     });
     const AUDIO_PADDING_X = 12;
     const AUDIO_PADDING_Y = 20;
-    const [waveformProps, setWaveformProps] = useState(props);
+    const [waveformProps, setWaveformProps] = useState<UseWaveformParams<'canvas'>>({
+      ...props,
+      type: 'canvas',
+    });
 
     const {
       waveform,
