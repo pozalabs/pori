@@ -96,7 +96,7 @@ export const Konva: Story = {
     const ref = useRef<any>();
     const trRef = useRef<TTransformer>(null);
     const shapeRef = useRef<TGroup>(null);
-    const dpr = useMemo(() => window.devicePixelRatio || 1, []);
+    const dpr = useMemo(() => Math.max(window.devicePixelRatio, 1), []);
     const [selected, setSelected] = useState(false);
 
     const onDragEnd = (): void => {
