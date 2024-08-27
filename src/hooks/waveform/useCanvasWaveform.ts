@@ -94,7 +94,7 @@ const useCanvasWaveform = ({
 
     if (!waveformCtx) return;
 
-    waveformCtx.imageSmoothingEnabled = false;
+    waveformCtx.imageSmoothingQuality = 'high';
 
     mainCanvas.setAttribute('class', className);
     if (controls) addEventListeners(mainCanvas);
