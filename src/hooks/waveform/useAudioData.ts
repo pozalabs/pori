@@ -53,7 +53,7 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams): UseA
   );
 
   const initPeaks = useCallback(
-    async (audioContext: AudioContext): Promise<void> => {
+    async (audioContext: OfflineAudioContext): Promise<void> => {
       try {
         const { url, arrayBuffer } = await fetchAudio({
           src,
@@ -71,15 +71,13 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams): UseA
   );
 
   useEffect(() => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)({
+    const audioContext = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)(
+      1,
+      1,
       sampleRate,
-    });
+    );
 
     initPeaks(audioContext);
-
-    return () => {
-      audioContext.close();
-    };
   }, [initPeaks, sampleRate]);
 
   return { audioUrl, audioBuffer, peaks };
