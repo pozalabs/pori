@@ -103,7 +103,7 @@ const useWaveform = ({
   });
 
   const [isHovering, setIsHovering] = useState(false);
-  const [hoveredWidth, setHoveredWidth] = useState(0);
+  const [hoveredPosition, setHoveredPosition] = useState(0);
 
   const showHoveredWaveform = useCallback((e: Event, positionX?: number): void => {
     if (
@@ -114,9 +114,9 @@ const useWaveform = ({
 
     const rect = e.target.getBoundingClientRect();
 
-    const playheadPosition = e.clientX - rect.left;
+    const hoveredPosition = e.clientX - rect.left;
 
-    setHoveredWidth(Math.max(0, positionX ?? playheadPosition));
+    setHoveredPosition(Math.max(0, positionX ?? hoveredPosition));
     setIsHovering(true);
   }, []);
 
@@ -140,7 +140,7 @@ const useWaveform = ({
     duration,
     changeCurrentTime,
     isHovering,
-    hoveredWidth,
+    hoveredPosition,
     showHoveredWaveform,
     hideHoveredWaveform,
   };

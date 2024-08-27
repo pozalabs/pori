@@ -33,7 +33,7 @@ const useCanvasWaveform = ({
   currentTime,
   duration,
   isHovering,
-  hoveredWidth,
+  hoveredPosition,
   showHoveredWaveform,
   hideHoveredWaveform,
   enabled,
@@ -52,7 +52,7 @@ const useCanvasWaveform = ({
     hideHoveredWaveform,
     changeCurrentTime,
   });
-  const { halfHeight, maxHeight, halfBarOffset, playedWidth } = useWaveformSize({
+  const { halfHeight, maxHeight, halfBarOffset, playedPosition } = useWaveformSize({
     width,
     height,
     currentTime,
@@ -165,24 +165,34 @@ const useCanvasWaveform = ({
         hoveredWaveform,
         0,
         0,
-        hoveredWidth,
+        hoveredPosition,
         height,
         0,
         0,
-        hoveredWidth,
+        hoveredPosition,
         height,
       );
-    waveformCtx.drawImage(playedWaveform, 0, 0, playedWidth, height, 0, 0, playedWidth, height);
+    waveformCtx.drawImage(
+      playedWaveform,
+      0,
+      0,
+      playedPosition,
+      height,
+      0,
+      0,
+      playedPosition,
+      height,
+    );
   }, [
     width,
     height,
-    playedWidth,
+    playedPosition,
     waveform,
     isHovering,
     initWaveform,
     playedWaveform,
     hoveredWaveform,
-    hoveredWidth,
+    hoveredPosition,
   ]);
 
   useEffect(() => {
@@ -224,7 +234,7 @@ const useCanvasWaveform = ({
   }, [
     initWaveform,
     progressColor,
-    hoveredWidth,
+    hoveredPosition,
     isHovering,
     playedWaveform,
     hoveredWaveform,

@@ -23,7 +23,7 @@ export interface UseTypeWaveformParams
   currentTime: number;
   duration: number;
   isHovering: boolean;
-  hoveredWidth: number;
+  hoveredPosition: number;
   showHoveredWaveform: (e: Event) => void;
   hideHoveredWaveform: () => void;
   changeCurrentTime?: (currentTime: number) => void;

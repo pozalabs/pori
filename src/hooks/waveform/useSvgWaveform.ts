@@ -21,7 +21,7 @@ const useSvgWaveform = ({
   currentTime,
   duration,
   isHovering,
-  hoveredWidth,
+  hoveredPosition,
   showHoveredWaveform,
   hideHoveredWaveform,
   changeCurrentTime,
@@ -38,7 +38,7 @@ const useSvgWaveform = ({
     hideHoveredWaveform,
     changeCurrentTime,
   });
-  const { halfHeight, maxHeight, playedWidth } = useWaveformSize({
+  const { halfHeight, maxHeight, playedPosition } = useWaveformSize({
     width,
     height,
     currentTime,
@@ -128,8 +128,8 @@ const useSvgWaveform = ({
     const newMainSvg = createSvgElement(width, height);
 
     newMainSvg.style.background = bgColor;
-    playedWaveform.setAttribute('width', `${playedWidth}`);
-    hoveredWaveform.setAttribute('width', `${hoveredWidth}`);
+    playedWaveform.setAttribute('width', `${playedPosition}`);
+    hoveredWaveform.setAttribute('width', `${hoveredPosition}`);
 
     newMainSvg.appendChild(initWaveform);
     if (isHovering) newMainSvg.appendChild(hoveredWaveform);
@@ -146,8 +146,8 @@ const useSvgWaveform = ({
     width,
     height,
     bgColor,
-    playedWidth,
-    hoveredWidth,
+    playedPosition,
+    hoveredPosition,
     isHovering,
   ]);
 
@@ -190,7 +190,7 @@ const useSvgWaveform = ({
   }, [
     initWaveform,
     progressColor,
-    hoveredWidth,
+    hoveredPosition,
     isHovering,
     playedWaveform,
     hoveredWaveform,
