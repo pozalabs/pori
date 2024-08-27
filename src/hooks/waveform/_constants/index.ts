@@ -2,7 +2,7 @@ import type { UseWaveformParams } from '../useWaveform';
 
 export const WAVEFORM_DEFAULT_VALUE: Required<
   Pick<
-    UseWaveformParams,
+    UseWaveformParams<'canvas'>,
     | 'type'
     | 'variant'
     | 'sampleRate'

@@ -1,16 +1,16 @@
 import { useCallback, useState } from 'react';
 
 import { WAVEFORM_DEFAULT_VALUE } from './_constants';
-import type { HTMLAudioElementEventType } from './_types';
+import type { HTMLAudioElementEventType, WaveformType } from './_types';
 import getPeakLength from './_utils/getPeakLength';
 import useAudioData from './useAudioData';
 import useCanvasWaveform from './useCanvasWaveform';
 import useSvgWaveform from './useSvgWaveform';
 import useWaveformAudio from './useWaveformAudio';
 
-export interface UseWaveformParams extends HTMLAudioElementEventType {
+export interface UseWaveformParams<T extends WaveformType> extends HTMLAudioElementEventType {
   src: string;
-  type?: 'canvas' | 'svg';
+  type?: T;
   variant?: 'line' | 'bar';
   sampleRate?: number;
   width?: number;
@@ -25,7 +25,7 @@ export interface UseWaveformParams extends HTMLAudioElementEventType {
   autoplay?: boolean;
 }
 
-export interface UseWaveformReturns {
+export interface UseWaveformReturns<T extends WaveformType> {
   isPlaying: boolean;
   currentTime: number;
   duration: number;
@@ -34,7 +34,7 @@ export interface UseWaveformReturns {
   changeCurrentTime: (currentTime: number) => void;
   showHoveredWaveform: (e: Event, positionX?: number) => void;
   hideHoveredWaveform: () => void;
-  waveform?: CanvasImageSource;
+  waveform?: T extends 'svg' ? SVGSVGElement : HTMLCanvasElement;
 }
 
 /**
@@ -70,13 +70,13 @@ export interface UseWaveformReturns {
  *    changeCurrentTime: (currentTime: number) => void;
  *    showHoveredWaveform: (e: Event, positionX?: number) => void;
  *    hideHoveredWaveform: () => void;
- *    waveform?: CanvasImageSource;
+ *    waveform?: T extends 'canvas' ? HTMLCanvasElement : T extends 'svg' ? SVGSVGElement : undefined;
  * }
  * ```
  */
-const useWaveform = ({
+const useWaveform = <T extends WaveformType = 'canvas'>({
   src,
-  type = WAVEFORM_DEFAULT_VALUE['type'],
+  type = WAVEFORM_DEFAULT_VALUE['type'] as T,
   variant = WAVEFORM_DEFAULT_VALUE['variant'],
   sampleRate = WAVEFORM_DEFAULT_VALUE['sampleRate'],
   width = WAVEFORM_DEFAULT_VALUE['width'],
@@ -90,7 +90,7 @@ const useWaveform = ({
   controls = WAVEFORM_DEFAULT_VALUE['controls'],
   autoplay = WAVEFORM_DEFAULT_VALUE['autoplay'],
   ...eventHandlers
-}: UseWaveformParams): UseWaveformReturns => {
+}: UseWaveformParams<T>): UseWaveformReturns<T> => {
   const { audioUrl, peaks } = useAudioData({
     src,
     sampleRate,
@@ -106,17 +106,19 @@ const useWaveform = ({
   const [hoveredWidth, setHoveredWidth] = useState(0);
 
   const showHoveredWaveform = useCallback((e: Event, positionX?: number): void => {
-    if (
-      !(e instanceof MouseEvent) ||
-      !(e.target instanceof HTMLCanvasElement || e.target instanceof HTMLImageElement)
-    )
-      return;
+    const element =
+      e.target instanceof HTMLCanvasElement
+        ? e.target
+        : e.currentTarget instanceof SVGSVGElement
+          ? e.currentTarget
+          : null;
+    if (!(e instanceof MouseEvent) || !element) return;
 
-    const rect = e.target.getBoundingClientRect();
+    const rect = element.getBoundingClientRect();
 
-    const playheadPosition = e.clientX - rect.left;
+    const hoveredPosition = e.clientX - rect.left;
 
-    setHoveredWidth(Math.max(0, positionX ?? playheadPosition));
+    setHoveredWidth(Math.max(0, positionX ?? hoveredPosition));
     setIsHovering(true);
   }, []);
 
@@ -148,12 +150,12 @@ const useWaveform = ({
   const canvasWaveform = useCanvasWaveform({
     ...waveformParams,
     enabled: type === 'canvas',
-  });
+  }) as UseWaveformReturns<T>['waveform'];
 
   const svgWaveform = useSvgWaveform({
     ...waveformParams,
     enabled: type === 'svg',
-  });
+  }) as UseWaveformReturns<T>['waveform'];
 
   return {
     isPlaying,
