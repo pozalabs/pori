@@ -128,11 +128,17 @@ const useSvgWaveform = ({
     const newMainSvg = createSvgElement(width, height);
 
     newMainSvg.style.background = bgColor;
+    const initStartPosition = isHovering
+      ? Math.max(playedPosition, hoveredPosition)
+      : playedPosition;
+
+    initWaveform.setAttribute('viewBox', `${initStartPosition} 0 ${width} ${height}`);
+    initWaveform.setAttribute('x', `${initStartPosition}`);
     playedWaveform.setAttribute('width', `${playedPosition}`);
     hoveredWaveform.setAttribute('width', `${hoveredPosition}`);
 
     newMainSvg.appendChild(initWaveform);
-    if (isHovering) newMainSvg.appendChild(hoveredWaveform);
+    if (isHovering && hoveredPosition > playedPosition) newMainSvg.appendChild(hoveredWaveform);
     newMainSvg.appendChild(playedWaveform);
 
     waveform.src =
@@ -146,9 +152,9 @@ const useSvgWaveform = ({
     width,
     height,
     bgColor,
+    isHovering,
     playedPosition,
     hoveredPosition,
-    isHovering,
   ]);
 
   useEffect(() => {
