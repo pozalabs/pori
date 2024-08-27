@@ -159,19 +159,34 @@ const useCanvasWaveform = ({
     if (!waveformCtx) return;
 
     waveformCtx.clearRect(0, 0, width, height);
-    waveformCtx.drawImage(initWaveform, 0, 0);
-    if (isHovering)
+
+    const initStartPosition = isHovering
+      ? Math.max(playedPosition, hoveredPosition)
+      : playedPosition;
+    waveformCtx.drawImage(
+      initWaveform,
+      initStartPosition,
+      0,
+      width,
+      height,
+      initStartPosition,
+      0,
+      width,
+      height,
+    );
+    if (isHovering && hoveredPosition > playedPosition) {
       waveformCtx.drawImage(
         hoveredWaveform,
+        playedPosition,
         0,
-        0,
-        hoveredPosition,
+        hoveredPosition - playedPosition,
         height,
+        playedPosition,
         0,
-        0,
-        hoveredPosition,
+        hoveredPosition - playedPosition,
         height,
       );
+    }
     waveformCtx.drawImage(
       playedWaveform,
       0,
