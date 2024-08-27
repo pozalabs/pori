@@ -1,5 +1,5 @@
 import { render } from '@testing-library/react';
-import { AudioContext } from 'standardized-audio-context-mock';
+import { OfflineAudioContext } from 'standardized-audio-context-mock';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import 'vitest-canvas-mock';
 
@@ -18,12 +18,12 @@ const getSVGElement = (imageElement: HTMLImageElement): HTMLElement => {
 };
 
 describe('Waveform 컴포넌트 렌더링 테스트', () => {
-  let windowAudioContext: typeof window.AudioContext;
+  let offlineAudioContext: typeof window.OfflineAudioContext;
 
   beforeEach(() => {
-    windowAudioContext = window.AudioContext;
+    offlineAudioContext = window.OfflineAudioContext;
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    window.AudioContext = AudioContext as any;
+    window.OfflineAudioContext = OfflineAudioContext as any;
     window.HTMLMediaElement.prototype.pause = vi.fn();
     window.OffscreenCanvas = vi.fn().mockImplementation((width: number, height: number) => {
       return {
@@ -42,7 +42,7 @@ describe('Waveform 컴포넌트 렌더링 테스트', () => {
   });
 
   afterEach(() => {
-    window.AudioContext = windowAudioContext;
+    window.OfflineAudioContext = offlineAudioContext;
     (window.HTMLMediaElement.prototype.pause as ReturnType<typeof vi.fn>).mockClear();
     (window.OffscreenCanvas as ReturnType<typeof vi.fn>).mockClear();
   });
