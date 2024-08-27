@@ -6,24 +6,6 @@ import 'vitest-canvas-mock';
 import useWaveform from './useWaveform';
 import { FILE_SRC } from '../../mocks/constants';
 
-const isSVGImage = (image: CanvasImageSource): boolean => {
-  if (image instanceof HTMLImageElement) {
-    return image.src.endsWith('.svg') || image.src.startsWith('data:image/svg+xml');
-  }
-  return image instanceof SVGImageElement;
-};
-
-const getSVGElement = (imageElement: HTMLImageElement): HTMLElement => {
-  const parser = new DOMParser();
-  const document = parser.parseFromString(
-    decodeURIComponent(imageElement.src.split(',')[1]),
-    'image/svg+xml',
-  );
-  const svgElement = document.documentElement;
-
-  return svgElement;
-};
-
 describe('useWaveform 테스트', () => {
   let windowAudioContext: typeof window.AudioContext;
 
@@ -68,7 +50,7 @@ describe('useWaveform 테스트', () => {
       const { result } = renderHook(() => useWaveform({ type: 'svg', src: FILE_SRC['30'] }));
 
       expect(result.current.waveform).toBeDefined();
-      expect(isSVGImage(result.current.waveform!)).toBeTruthy();
+      expect(result.current.waveform instanceof SVGSVGElement).toBeTruthy();
     });
   });
 
@@ -98,8 +80,7 @@ describe('useWaveform 테스트', () => {
           height: 200,
         }),
       );
-      const imageElement = result.current.waveform as HTMLImageElement;
-      const svgElement = getSVGElement(imageElement);
+      const svgElement = result.current.waveform as SVGSVGElement;
 
       expect(svgElement).toBeDefined();
       expect(svgElement.getAttribute('width')).toEqual('500');
