@@ -44,7 +44,7 @@ const useCanvasWaveform = ({
   const [playedWaveform, setPlayedWaveform] = useState<HTMLCanvasElement | OffscreenCanvas>();
   const [hoveredWaveform, setHoveredWaveform] = useState<HTMLCanvasElement | OffscreenCanvas>();
 
-  const dpr = useMemo(() => window.devicePixelRatio ?? 1, []);
+  const dpr = useMemo(() => Math.max(window.devicePixelRatio, 1), []);
 
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
     duration,
@@ -94,7 +94,7 @@ const useCanvasWaveform = ({
 
     if (!waveformCtx) return;
 
-    waveformCtx.imageSmoothingEnabled = false;
+    waveformCtx.imageSmoothingQuality = 'high';
 
     mainCanvas.setAttribute('class', className);
     if (controls) addEventListeners(mainCanvas);
