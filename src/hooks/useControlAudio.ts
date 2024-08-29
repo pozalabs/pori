@@ -63,6 +63,7 @@ const useControlAudio = ({
     setCurrentSrc(src);
     setCurrentTime(0);
     setIsPlaying(!audioRef.current.paused);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioRef]);
 
   const onAudioEnd = useCallback(() => {

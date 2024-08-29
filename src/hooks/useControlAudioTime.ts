@@ -80,6 +80,7 @@ const useControlAudioTime = ({
 
     setCurrentTime(audio.currentTime);
     setProgress(getProgress(audio.duration, audio.currentTime));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     audioRef.current,
     audioRef.current?.duration,
@@ -108,6 +109,7 @@ const useControlAudioTime = ({
 
       audioRef.current.currentTime = (newProgress / progressMaxValue) * audioRef.current.duration;
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [audioRef.current, dragModeRef.current, progressMaxValue],
   );
 
@@ -124,6 +126,7 @@ const useControlAudioTime = ({
 
       audioRef.current.currentTime = (value / progressMaxValue) * audioRef.current.duration;
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [audioRef.current, progressMaxValue],
   );
 
@@ -137,8 +140,10 @@ const useControlAudioTime = ({
       if (!audioRef.current) return;
 
       audioRef.current.removeEventListener('loadedmetadata', resetAudioTime);
+      // eslint-disable-next-line react-hooks/exhaustive-deps
       audioRef.current.removeEventListener('timeupdate', updateProgress);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioRef.current, resetAudioTime, updateProgress]);
 
   useEffect(() => {
@@ -146,6 +151,7 @@ const useControlAudioTime = ({
 
     setCurrentTime(audioRef.current.currentTime);
     setProgress(getProgress(audioRef.current.duration, audioRef.current.currentTime));
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioRef.current?.currentTime]);
 
   useIsomorphicLayoutEffect(() => {

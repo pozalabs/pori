@@ -42,6 +42,7 @@ const useControlAudioVolume = ({
     if (!audioRef.current) return;
 
     setCurrentVolume(audioRef.current.volume * progressMaxValue);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioRef.current]);
 
   const onVolumeChange = useCallback(
@@ -53,6 +54,7 @@ const useControlAudioVolume = ({
       audioRef.current.volume = newCurrentVolume;
       setCurrentVolume(newCurrentVolume * progressMaxValue);
     },
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     [audioRef.current, currentVolume],
   );
 
@@ -68,6 +70,7 @@ const useControlAudioVolume = ({
     setPreviousVolume(currentVolume);
     audioRef.current.volume = 0;
     setCurrentVolume(0);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [audioRef.current, currentVolume, previousVolume]);
 
   return {
