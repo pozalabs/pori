@@ -29,45 +29,44 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams): UseA
     return peaks.map(peak => peak * multiplier);
   }, []);
 
-  const getPeaks = useCallback(
-    (audioBuffer: AudioBuffer): number[] => {
-      const channelData = audioBuffer.getChannelData(0);
-      const sampleSize = Math.floor(channelData.length / peakLength);
+  const getPeaks = useCallback((): number[] => {
+    if (!audioBuffer) return [];
 
-      const peaks = [...Array(peakLength).keys()].reduce<number[]>((acc, peakIndex) => {
-        const samples = channelData.slice(
-          Math.floor(peakIndex * sampleSize),
-          Math.ceil((peakIndex + 1) * sampleSize),
-        );
-        const max = samples.reduce((prevMax, sample) => {
-          if (Math.abs(sample) > Math.abs(prevMax)) return Math.abs(sample);
-          return prevMax;
-        }, 0);
+    const channelData = audioBuffer.getChannelData(0);
+    const sampleSize = Math.floor(channelData.length / peakLength);
 
-        return [...acc, max];
-      }, []);
+    const peaks = [...Array(peakLength).keys()].reduce<number[]>((acc, peakIndex) => {
+      const samples = channelData.slice(
+        Math.floor(peakIndex * sampleSize),
+        Math.ceil((peakIndex + 1) * sampleSize),
+      );
+      const max = samples.reduce((prevMax, sample) => {
+        if (Math.abs(sample) > Math.abs(prevMax)) return Math.abs(sample);
+        return prevMax;
+      }, 0);
 
-      return normalizePeaks(peaks);
-    },
-    [normalizePeaks, peakLength],
-  );
+      return [...acc, max];
+    }, []);
 
-  const initPeaks = useCallback(
+    return normalizePeaks(peaks);
+  }, [normalizePeaks, peakLength, audioBuffer]);
+
+  const getAudioData = useCallback(
     async (audioContext: AudioContext): Promise<void> => {
       try {
         const { url, arrayBuffer } = await fetchAudio({
           src,
         });
-        const audioBuffer = await audioContext.decodeAudioData(arrayBuffer);
-
-        setAudioBuffer(audioBuffer);
-        setPeaks(getPeaks(audioBuffer));
         setAudioUrl(url);
+
+        audioContext.decodeAudioData(arrayBuffer, audioBuffer => {
+          setAudioBuffer(audioBuffer);
+        });
       } catch (err) {
         setError(err);
       }
     },
-    [getPeaks, src],
+    [src],
   );
 
   useEffect(() => {
@@ -75,12 +74,18 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams): UseA
       sampleRate,
     });
 
-    initPeaks(audioContext);
+    getAudioData(audioContext);
 
     return () => {
       audioContext.close();
     };
-  }, [initPeaks, sampleRate]);
+  }, [getAudioData, sampleRate]);
+
+  useEffect(() => {
+    if (!audioBuffer) return;
+
+    setPeaks(getPeaks());
+  }, [audioBuffer, peakLength, getPeaks]);
 
   return { audioUrl, audioBuffer, peaks };
 };
