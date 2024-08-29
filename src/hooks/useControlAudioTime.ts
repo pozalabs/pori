@@ -1,6 +1,7 @@
-import { ChangeEvent, MutableRefObject, useCallback, useEffect, useRef, useState } from "react";
+import type { ChangeEvent, MutableRefObject } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { useIsomorphicLayoutEffect } from '@pozalabs/pokit/hooks'
+import { useIsomorphicLayoutEffect } from '@pozalabs/pokit/hooks';
 
 interface UseControlAudioTimeParams {
   audioRef: MutableRefObject<HTMLAudioElement | null>;
@@ -57,20 +58,35 @@ const useControlAudioTime = ({
 
   const setDragModeRef = (dragMode: boolean): void => {
     dragModeRef.current = dragMode;
-  }
+  };
 
-  const getProgress = useCallback((duration: number, currentTime: number): number => {
-    return duration > 0 ? (currentTime / duration) * progressMaxValue : 0;
-  }, [progressMaxValue]);
+  const getProgress = useCallback(
+    (duration: number, currentTime: number): number => {
+      return duration > 0 ? (currentTime / duration) * progressMaxValue : 0;
+    },
+    [progressMaxValue],
+  );
 
   const updateProgress = useCallback((): void => {
-    if (!audioRef.current || !audioRef.current.src || !audioRef.current.duration || dragModeRef.current) return;
+    if (
+      !audioRef.current ||
+      !audioRef.current.src ||
+      !audioRef.current.duration ||
+      dragModeRef.current
+    )
+      return;
 
     const audio = audioRef.current;
 
     setCurrentTime(audio.currentTime);
     setProgress(getProgress(audio.duration, audio.currentTime));
-  }, [audioRef.current, audioRef.current?.duration, audioRef.current?.src, audioRef.current?.currentTime, dragModeRef.current]);
+  }, [
+    audioRef.current,
+    audioRef.current?.duration,
+    audioRef.current?.src,
+    audioRef.current?.currentTime,
+    dragModeRef.current,
+  ]);
 
   const resetAudioTime = useCallback((): void => {
     setDragTime(0);
@@ -114,14 +130,14 @@ const useControlAudioTime = ({
   useEffect(() => {
     if (!audioRef.current) return;
 
-    audioRef.current.addEventListener("loadedmetadata", resetAudioTime);
-    audioRef.current.addEventListener("timeupdate", updateProgress);
+    audioRef.current.addEventListener('loadedmetadata', resetAudioTime);
+    audioRef.current.addEventListener('timeupdate', updateProgress);
 
     return () => {
       if (!audioRef.current) return;
 
-      audioRef.current.removeEventListener("loadedmetadata", resetAudioTime);
-      audioRef.current.removeEventListener("timeupdate", updateProgress);
+      audioRef.current.removeEventListener('loadedmetadata', resetAudioTime);
+      audioRef.current.removeEventListener('timeupdate', updateProgress);
     };
   }, [audioRef.current, resetAudioTime, updateProgress]);
 
@@ -133,7 +149,12 @@ const useControlAudioTime = ({
   }, [audioRef.current?.currentTime]);
 
   useIsomorphicLayoutEffect(() => {
-    if (!audioRef.current || dragModeRef.current || !(audioRef.current.readyState >= audioRef.current.HAVE_CURRENT_DATA)) return;
+    if (
+      !audioRef.current ||
+      dragModeRef.current ||
+      !(audioRef.current.readyState >= audioRef.current.HAVE_CURRENT_DATA)
+    )
+      return;
 
     audioRef.current.currentTime = dragTime;
     setCurrentTime(dragTime);
@@ -151,4 +172,3 @@ const useControlAudioTime = ({
 };
 
 export default useControlAudioTime;
-

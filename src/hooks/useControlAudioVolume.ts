@@ -1,5 +1,5 @@
-
-import { ChangeEvent, MutableRefObject, useCallback, useEffect, useState } from "react";
+import type { ChangeEvent, MutableRefObject } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 interface UseControlAudioVolumeParams {
   audioRef: MutableRefObject<HTMLAudioElement | null>;

@@ -1,8 +1,8 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
-import { act, renderHook } from "@testing-library/react";
+import { act, renderHook } from '@testing-library/react';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
-import useAudio from "./useAudio";
-import useControlAudioTime from "./useControlAudioTime";
+import useAudio from './useAudio';
+import useControlAudioTime from './useControlAudioTime';
 
 describe('useControlAudioTime 테스트', () => {
   beforeEach(() => {
@@ -11,16 +11,14 @@ describe('useControlAudioTime 테스트', () => {
   });
 
   afterEach(() => {
-    (
-      window.HTMLMediaElement.prototype.play as ReturnType<typeof vi.fn>
-    ).mockClear();
-    (
-      window.HTMLMediaElement.prototype.pause as ReturnType<typeof vi.fn>
-    ).mockClear();
+    (window.HTMLMediaElement.prototype.play as ReturnType<typeof vi.fn>).mockClear();
+    (window.HTMLMediaElement.prototype.pause as ReturnType<typeof vi.fn>).mockClear();
   });
 
   it('useControlAudioTime은 currentTime, progress, dragTime 값을 반환한다.', () => {
-    const { result: { current: audioRef } } = renderHook(() => useAudio());
+    const {
+      result: { current: audioRef },
+    } = renderHook(() => useAudio());
     const { result } = renderHook(() => useControlAudioTime({ audioRef, progressMaxValue: 100 }));
 
     expect(result.current.currentTime).toBeTypeOf('number');
@@ -29,7 +27,9 @@ describe('useControlAudioTime 테스트', () => {
   });
 
   it('useControlAudioTime은 onProgressChange, changeProgressByValue, setDragModeRef, resetAudioTime 함수를 반환한다.', () => {
-    const { result: { current: audioRef } } = renderHook(() => useAudio());
+    const {
+      result: { current: audioRef },
+    } = renderHook(() => useAudio());
     const { result } = renderHook(() => useControlAudioTime({ audioRef, progressMaxValue: 100 }));
 
     expect(result.current.onProgressChange).toBeTypeOf('function');
@@ -39,7 +39,9 @@ describe('useControlAudioTime 테스트', () => {
   });
 
   it('useControlAudio의 resetAudioTime 함수를 호출하면 currentTime과 progress가 초기화된다.', () => {
-    const { result: { current: audioRef } } = renderHook(() => useAudio());
+    const {
+      result: { current: audioRef },
+    } = renderHook(() => useAudio());
     const { result } = renderHook(() => useControlAudioTime({ audioRef, progressMaxValue: 100 }));
 
     act(() => {
