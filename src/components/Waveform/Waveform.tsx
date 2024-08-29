@@ -1,4 +1,6 @@
-import { ForwardedRef, forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+import type { ForwardedRef } from 'react';
+import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
+
 import useWaveform, { type UseWaveformParams } from '../../hooks/waveform/useWaveform';
 
 export interface WaveformHandles {
@@ -57,10 +59,11 @@ const Waveform = forwardRef((props: UseWaveformParams, ref: ForwardedRef<Wavefor
       pause,
       changeCurrentTime,
     }),
-    [isPlaying, currentTime, duration],
+    [isPlaying, currentTime, duration, play, pause, changeCurrentTime],
   );
 
-  return <div ref={containerRef} className="w-max h-max" />;
+  return <div ref={containerRef} className="size-max" />;
 });
 
+Waveform.displayName = 'Waveform';
 export default Waveform;

@@ -1,6 +1,6 @@
-import { DOMAttributes } from 'react';
+import type { DOMAttributes } from 'react';
 
-import { UseWaveformParams } from '../useWaveform';
+import type { UseWaveformParams } from '../useWaveform';
 
 export interface UseTypeWaveformParams
   extends Required<
@@ -9,12 +9,11 @@ export interface UseTypeWaveformParams
       | 'variant'
       | 'width'
       | 'height'
-      | 'playheadWidth'
+      | 'gap'
       | 'waveColor'
       | 'progressColor'
+      | 'hoveredColor'
       | 'bgColor'
-      | 'playheadBgColor'
-      | 'playheadTextColor'
       | 'className'
       | 'controls'
     >
@@ -23,13 +22,14 @@ export interface UseTypeWaveformParams
   peaks: number[];
   currentTime: number;
   duration: number;
-  isPlayheadShowing: boolean;
-  playheadPosition: number;
-  showPlayhead: (e: Event) => void;
-  hidePlayhead: () => void;
+  isHovering: boolean;
+  hoveredWidth: number;
+  showHoveredWaveform: (e: Event) => void;
+  hideHoveredWaveform: () => void;
   changeCurrentTime?: (currentTime: number) => void;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-explicit-any
 export type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) extends (
   x: infer I,
 ) => void

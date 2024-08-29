@@ -1,129 +1,90 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 
+import { BAR_WIDTH } from './_constants';
+import type { UseTypeWaveformParams } from './_types';
+import { createCanvasElement, createOffscreenCanvas } from './_utils/createElement';
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
 
-import { UseTypeWaveformParams } from './_types';
-import { BAR_WIDTH, PLAYHEAD_TIME, WAVEFORM_HEIGHT_PERCENT } from './_constants';
-import { createCanvasElement, createOffscreenCanvas } from './_utils/createElement';
-import formatTime from './_utils/formatTime';
+const createCanvas = (
+  width: number,
+  height: number,
+  dpr: number,
+): HTMLCanvasElement | OffscreenCanvas => {
+  if (typeof window.OffscreenCanvas === 'undefined') {
+    return createCanvasElement(width, height, dpr);
+  }
+
+  return createOffscreenCanvas(width, height, dpr);
+};
 
 const useCanvasWaveform = ({
   variant,
   width,
   height,
-  playheadWidth,
+  gap,
   waveColor,
   progressColor,
+  hoveredColor,
   bgColor,
-  playheadBgColor,
-  playheadTextColor,
   className,
   controls,
   peaks,
   currentTime,
   duration,
-  isPlayheadShowing,
-  playheadPosition,
-  showPlayhead,
-  hidePlayhead,
+  isHovering,
+  hoveredWidth,
+  showHoveredWaveform,
+  hideHoveredWaveform,
   enabled,
   changeCurrentTime,
 }: UseTypeWaveformParams) => {
   const [waveform, setWaveform] = useState<HTMLCanvasElement>();
-  const [initWaveform, setInitWaveform] = useState<OffscreenCanvas>();
-  const [playedWaveform, setPlayedWaveform] = useState<OffscreenCanvas>();
+  const [initWaveform, setInitWaveform] = useState<HTMLCanvasElement | OffscreenCanvas>();
+  const [playedWaveform, setPlayedWaveform] = useState<HTMLCanvasElement | OffscreenCanvas>();
+  const [hoveredWaveform, setHoveredWaveform] = useState<HTMLCanvasElement | OffscreenCanvas>();
 
-  const dpr = useMemo(() => window.devicePixelRatio ?? 1, []);
+  const dpr = useMemo(() => Math.max(window.devicePixelRatio, 1), []);
 
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
     duration,
-    showPlayhead,
-    hidePlayhead,
+    showHoveredWaveform,
+    hideHoveredWaveform,
     changeCurrentTime,
   });
-  const { halfHeight, barIndexScale, playedWidth } = useWaveformSize({
+  const { halfHeight, maxHeight, halfBarOffset, playedWidth } = useWaveformSize({
     width,
     height,
-    peakLength: peaks.length,
     currentTime,
     duration,
   });
 
   const drawWaveform = useCallback(
-    (ctx: OffscreenCanvasRenderingContext2D): void => {
+    (ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D): void => {
       ctx.beginPath();
 
       peaks.forEach((peak, index) => {
-        const x = (index * barIndexScale) / dpr;
-        const waveformMaxHeight = (height / 100) * WAVEFORM_HEIGHT_PERCENT;
-        const barHeight = Math.round(peak * (waveformMaxHeight / 2));
+        const x = (index * (gap + BAR_WIDTH) + halfBarOffset) / dpr;
+        const barHeight = Math.round((peak * maxHeight) / 2);
         const yTop = (halfHeight - barHeight) / dpr;
         const yBottom = (halfHeight + barHeight) / dpr;
 
-        variant === 'line' ? ctx.lineTo(x, yTop) : ctx.moveTo(x, yTop);
+        if (variant === 'line') {
+          ctx.lineTo(x, yTop);
+        }
+        ctx.moveTo(x, yTop);
+
+        if (variant === 'bar' && barHeight <= 0) {
+          ctx.moveTo(x, yTop - BAR_WIDTH / 2);
+          ctx.lineTo(x, yTop + BAR_WIDTH / 2);
+        }
         ctx.lineTo(x, yBottom);
       });
 
       ctx.stroke();
       ctx.closePath();
     },
-    [variant, peaks, halfHeight, barIndexScale, height],
-  );
-
-  const drawPlayhead = useCallback(
-    (ctx: CanvasRenderingContext2D): void => {
-      ctx.beginPath();
-      ctx.lineWidth = playheadWidth;
-      ctx.lineCap = 'round';
-      ctx.strokeStyle = playheadBgColor;
-
-      ctx.moveTo(playheadPosition, 0);
-      ctx.lineTo(playheadPosition, height);
-
-      ctx.stroke();
-      ctx.closePath();
-
-      const percent = (playheadPosition / width) * 100;
-      const playheadTime = (percent * duration) / 100;
-      const formattedPlayheadTime = formatTime(playheadTime > 0 ? playheadTime : 0);
-      const playheadTimeWidth =
-        ctx.measureText(formattedPlayheadTime).width + PLAYHEAD_TIME.padding * 2;
-      const playheadTimeHeight = PLAYHEAD_TIME.fontSize + PLAYHEAD_TIME.padding * 2;
-
-      ctx.beginPath();
-
-      const playheadTimePosition =
-        playheadPosition > playheadTimeWidth
-          ? playheadPosition - playheadTimeWidth
-          : playheadPosition;
-
-      ctx.fillStyle = playheadBgColor;
-      ctx.roundRect(playheadTimePosition, 0, playheadTimeWidth, playheadTimeHeight, [3]);
-      ctx.fill();
-
-      ctx.font = `${PLAYHEAD_TIME.fontSize}px Arial`;
-      ctx.letterSpacing = '-0.2px';
-      ctx.strokeStyle = playheadTextColor;
-      ctx.lineWidth = 0.7;
-      ctx.strokeText(
-        `${formattedPlayheadTime}`,
-        playheadTimePosition + PLAYHEAD_TIME.padding,
-        PLAYHEAD_TIME.fontSize,
-      );
-
-      ctx.closePath();
-    },
-    [
-      width,
-      height,
-      height,
-      playheadWidth,
-      playheadBgColor,
-      playheadTextColor,
-      playheadPosition,
-      duration,
-    ],
+    [peaks, gap, halfBarOffset, dpr, maxHeight, halfHeight, variant],
   );
 
   const configureWaveform = useCallback((): void => {
@@ -133,20 +94,33 @@ const useCanvasWaveform = ({
 
     if (!waveformCtx) return;
 
+    waveformCtx.imageSmoothingQuality = 'high';
+
     mainCanvas.setAttribute('class', className);
-    controls && addEventListeners(mainCanvas);
+    if (controls) addEventListeners(mainCanvas);
 
     setWaveform(mainCanvas);
-  }, [width, height, className, controls, addEventListeners]);
+  }, [width, height, dpr, className, controls, addEventListeners]);
 
   const initCanvasWaveform = useCallback((): void => {
-    const initCanvas = createOffscreenCanvas(width, height, dpr);
-    const playedCanvas = createOffscreenCanvas(width, height, dpr);
+    const initCanvas = createCanvas(width, height, dpr);
+    const playedCanvas = createCanvas(width, height, dpr);
+    const hoveredCanvas = createCanvas(width, height, dpr);
 
-    const initCtx = initCanvas.getContext('2d');
-    const playedCtx = playedCanvas.getContext('2d');
+    const initCtx = initCanvas.getContext('2d') as
+      | OffscreenCanvasRenderingContext2D
+      | CanvasRenderingContext2D
+      | null;
+    const playedCtx = playedCanvas.getContext('2d') as
+      | OffscreenCanvasRenderingContext2D
+      | CanvasRenderingContext2D
+      | null;
+    const hoveredCtx = hoveredCanvas.getContext('2d') as
+      | OffscreenCanvasRenderingContext2D
+      | CanvasRenderingContext2D
+      | null;
 
-    if (!initCtx || !playedCtx) return;
+    if (!initCtx || !playedCtx || !hoveredCtx) return;
 
     initCtx.fillStyle = bgColor;
     initCtx.clearRect(0, 0, width, height);
@@ -165,12 +139,20 @@ const useCanvasWaveform = ({
 
     drawWaveform(playedCtx);
 
+    hoveredCtx.lineWidth = BAR_WIDTH / dpr;
+    hoveredCtx.clearRect(0, 0, width, height);
+
+    hoveredCtx.strokeStyle = hoveredColor;
+
+    drawWaveform(hoveredCtx);
+
     setInitWaveform(initCanvas);
     setPlayedWaveform(playedCanvas);
-  }, [width, height, bgColor, waveColor, progressColor, drawWaveform]);
+    setHoveredWaveform(hoveredCanvas);
+  }, [width, height, dpr, bgColor, waveColor, drawWaveform, progressColor, hoveredColor]);
 
   const updateCanvasWaveform = useCallback((): void => {
-    if (!waveform || !initWaveform || !playedWaveform) return;
+    if (!waveform || !initWaveform || !playedWaveform || !hoveredWaveform) return;
 
     const waveformCtx = waveform.getContext('2d');
 
@@ -178,17 +160,29 @@ const useCanvasWaveform = ({
 
     waveformCtx.clearRect(0, 0, width, height);
     waveformCtx.drawImage(initWaveform, 0, 0);
+    if (isHovering)
+      waveformCtx.drawImage(
+        hoveredWaveform,
+        0,
+        0,
+        hoveredWidth,
+        height,
+        0,
+        0,
+        hoveredWidth,
+        height,
+      );
     waveformCtx.drawImage(playedWaveform, 0, 0, playedWidth, height, 0, 0, playedWidth, height);
-    isPlayheadShowing && drawPlayhead(waveformCtx);
   }, [
     width,
     height,
     playedWidth,
-    isPlayheadShowing,
     waveform,
+    isHovering,
     initWaveform,
     playedWaveform,
-    drawPlayhead,
+    hoveredWaveform,
+    hoveredWidth,
   ]);
 
   useEffect(() => {
@@ -201,28 +195,39 @@ const useCanvasWaveform = ({
 
       removeEventListeners(waveform);
     };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [width, height, addEventListeners, removeEventListeners, enabled]);
 
   useEffect(() => {
     if (!enabled) return;
 
     initCanvasWaveform();
-  }, [peaks, variant, width, height, waveColor, bgColor, progressColor, duration, enabled]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [
+    peaks,
+    variant,
+    width,
+    height,
+    waveColor,
+    bgColor,
+    progressColor,
+    hoveredColor,
+    duration,
+    enabled,
+  ]);
 
   useEffect(() => {
     if (!enabled) return;
 
     updateCanvasWaveform();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [
     initWaveform,
     progressColor,
-    playheadWidth,
-    playheadBgColor,
-    playheadTextColor,
-    playheadPosition,
-    isPlayheadShowing,
+    hoveredWidth,
+    isHovering,
     playedWaveform,
-    playheadWidth,
+    hoveredWaveform,
     currentTime,
     enabled,
   ]);

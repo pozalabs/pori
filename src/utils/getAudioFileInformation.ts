@@ -15,9 +15,7 @@ interface IAudioInformation {
  * }
  * ```
  */
-const getAudioFileInformation = async (
-  src: string,
-): Promise<IAudioInformation> => {
+const getAudioFileInformation = async (src: string): Promise<IAudioInformation> => {
   const response = await fetch(src, {
     method: 'HEAD',
   });
@@ -26,8 +24,7 @@ const getAudioFileInformation = async (
 
   const type = response.headers.get('Content-Type');
 
-  if (!type || !type.startsWith('audio/'))
-    throw new Error('This file is not audio type');
+  if (!type || !type.startsWith('audio/')) throw new Error('This file is not audio type');
 
   return {
     audioType: response.headers.get('Content-Type') ?? '',

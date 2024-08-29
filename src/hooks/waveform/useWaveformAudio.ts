@@ -1,9 +1,8 @@
-import { useEffect } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 
+import type { HTMLAudioElementEventType, UnionToIntersection } from './_types';
 import useAudio from '../useAudio';
 import useControlAudio from '../useControlAudio';
-
-import { HTMLAudioElementEventType, UnionToIntersection } from './_types';
 
 interface UseWaveformAudioParams extends HTMLAudioElementEventType {
   src: string;
@@ -24,12 +23,25 @@ const useWaveformAudio = ({
   autoplay,
   ...eventHandlers
 }: UseWaveformAudioParams): UseWaveformAudioReturns => {
+  const [currentTime, setCurrentTime] = useState(0);
+  const currentTimeRafId = useRef(0);
+
   const audioRef = useAudio();
-  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } = useControlAudio({
+  const { isPlaying, duration, play, pause } = useControlAudio({
     audioRef,
     src,
     autoPlay: autoplay,
   });
+
+  const changeCurrentTime = useCallback(
+    (currentTime: number): void => {
+      if (!audioRef.current) return;
+
+      setCurrentTime(currentTime);
+      audioRef.current.currentTime = currentTime;
+    },
+    [audioRef],
+  );
 
   useEffect(() => {
     if (!audioRef.current) return;
@@ -47,7 +59,28 @@ const useWaveformAudio = ({
 
       audioRef.current?.addEventListener(formattedEventType, eventHandler);
     });
-  }, []);
+  }, [audioRef, eventHandlers]);
+
+  useEffect(() => {
+    const updateCurrentTime = () => {
+      if (!isPlaying) return;
+
+      const newCurrentTime = Number((audioRef.current?.currentTime ?? 0).toFixed(2));
+
+      setCurrentTime(newCurrentTime);
+      currentTimeRafId.current = requestAnimationFrame(updateCurrentTime);
+    };
+
+    if (isPlaying) {
+      currentTimeRafId.current = requestAnimationFrame(updateCurrentTime);
+      return;
+    }
+    cancelAnimationFrame(currentTimeRafId.current);
+
+    return () => {
+      cancelAnimationFrame(currentTimeRafId.current);
+    };
+  }, [audioRef, isPlaying]);
 
   return {
     isPlaying,

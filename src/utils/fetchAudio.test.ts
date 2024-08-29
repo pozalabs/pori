@@ -1,7 +1,6 @@
 import { describe, it, expect, afterEach, beforeEach, vi } from 'vitest';
 
 import fetchAudio from './fetchAudio';
-
 import { FILE_SRC } from '../mocks/constants';
 
 describe('fetchAudio 청크 다운로드 동작 테스트', () => {
