@@ -2,7 +2,13 @@ import { useCallback, useEffect, useState, useMemo } from 'react';
 
 import { BAR_WIDTH } from './_constants';
 import type { UseTypeWaveformParams } from './_types';
-import { createPolylineElement, createRectElement, createSvgElement } from './_utils/createElement';
+import {
+  createDescElement,
+  createPolylineElement,
+  createRectElement,
+  createSvgElement,
+  createTitleElement,
+} from './_utils/createElement';
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
 import useWaveformSize from './useWaveformSize';
 
@@ -100,6 +106,8 @@ const useSvgWaveform = ({
     const mainSvg = createSvgElement(width, height);
 
     mainSvg.setAttribute('class', className);
+    mainSvg.setAttribute('role', 'img');
+    mainSvg.setAttribute('aria-label', 'waveform');
     mainSvg.style.backgroundColor = bgColor;
     if (controls) addEventListeners(mainSvg);
 
@@ -108,6 +116,11 @@ const useSvgWaveform = ({
 
   const initSvgWaveform = useCallback((): void => {
     if (!waveform) return;
+
+    const titleEl = createTitleElement();
+    const descEl = createDescElement();
+    titleEl.textContent = 'SVG Waveform';
+    descEl.textContent = 'Audio Waveform using SVG Elements.';
 
     const initSvg = createSvgElement(width, height);
     const playedSvg = createSvgElement(width, height);
@@ -125,6 +138,8 @@ const useSvgWaveform = ({
     hoveredSvg.setAttribute('width', `${hoveredWidth}`);
 
     waveform.replaceChildren();
+    waveform.appendChild(titleEl);
+    waveform.appendChild(descEl);
     waveform.appendChild(initSvg);
     waveform.appendChild(hoveredSvg);
     waveform.appendChild(playedSvg);
