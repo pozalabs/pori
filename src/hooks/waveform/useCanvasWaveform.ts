@@ -97,6 +97,8 @@ const useCanvasWaveform = ({
     waveformCtx.imageSmoothingQuality = 'high';
 
     mainCanvas.setAttribute('class', className);
+    mainCanvas.setAttribute('role', 'img');
+    mainCanvas.setAttribute('aria-label', 'waveform');
     if (controls) addEventListeners(mainCanvas);
 
     setWaveform(mainCanvas);
