@@ -2,10 +2,12 @@ import type { DOMAttributes } from 'react';
 
 import type { UseWaveformParams } from '../useWaveform';
 
-export interface UseTypeWaveformParams
+export type WaveformType = 'canvas' | 'svg';
+
+export interface UseTypeWaveformParams<T extends WaveformType>
   extends Required<
     Pick<
-      UseWaveformParams,
+      UseWaveformParams<T>,
       | 'variant'
       | 'width'
       | 'height'
