@@ -1,8 +1,8 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import { useAudio, useControlAudio } from '@pozalabs/pokit';
-
 import type { HTMLAudioElementEventType, UnionToIntersection } from './_types';
+import useAudio from '../useAudio';
+import useControlAudio from '../useControlAudio';
 
 interface UseWaveformAudioParams extends HTMLAudioElementEventType {
   src: string;
@@ -27,7 +27,7 @@ const useWaveformAudio = ({
   const currentTimeRafId = useRef(0);
 
   const audioRef = useAudio();
-  const [{ isPlaying, duration }, { play, pause }] = useControlAudio({
+  const { isPlaying, duration, play, pause } = useControlAudio({
     audioRef,
     src,
     autoPlay: autoplay,
