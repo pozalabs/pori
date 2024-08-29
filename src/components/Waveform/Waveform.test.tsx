@@ -6,17 +6,6 @@ import 'vitest-canvas-mock';
 import Waveform from './Waveform';
 import { FILE_SRC } from '../../mocks/constants';
 
-const getSVGElement = (imageElement: HTMLImageElement): HTMLElement => {
-  const parser = new DOMParser();
-  const document = parser.parseFromString(
-    decodeURIComponent(imageElement.src.split(',')[1]),
-    'image/svg+xml',
-  );
-  const svgElement = document.documentElement;
-
-  return svgElement;
-};
-
 describe('Waveform 컴포넌트 렌더링 테스트', () => {
   let windowAudioContext: typeof window.AudioContext;
 
@@ -59,10 +48,9 @@ describe('Waveform 컴포넌트 렌더링 테스트', () => {
   it('Waveform 컴포넌트는 type이 svg일 때 svg로 그려진 waveform을 렌더링한다.', async () => {
     const { container } = render(<Waveform type="svg" src={FILE_SRC['30']} />);
 
-    const waveformElement = container.querySelector('img');
-    const svgElement = getSVGElement(waveformElement as HTMLImageElement);
+    const waveformElement = container.querySelector('svg');
 
-    expect(svgElement).toBeDefined();
-    expect(svgElement instanceof SVGSVGElement).toBeTruthy();
+    expect(waveformElement).toBeDefined();
+    expect(waveformElement instanceof SVGSVGElement).toBeTruthy();
   });
 });
