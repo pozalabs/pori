@@ -38,7 +38,7 @@ const useCanvasWaveform = ({
   hideHoveredWaveform,
   enabled,
   changeCurrentTime,
-}: UseTypeWaveformParams) => {
+}: UseTypeWaveformParams<'canvas'>) => {
   const [waveform, setWaveform] = useState<HTMLCanvasElement>();
   const [initWaveform, setInitWaveform] = useState<HTMLCanvasElement | OffscreenCanvas>();
   const [playedWaveform, setPlayedWaveform] = useState<HTMLCanvasElement | OffscreenCanvas>();
