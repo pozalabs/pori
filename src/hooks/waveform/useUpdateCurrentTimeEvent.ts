@@ -8,8 +8,8 @@ interface UseUpdateCurrentTimeEventParams {
 }
 
 interface UseUpdateCurrentTimeEventReturns {
-  addEventListeners: (element: HTMLCanvasElement | HTMLImageElement) => void;
-  removeEventListeners: (element: HTMLCanvasElement | HTMLImageElement) => void;
+  addEventListeners: (element: HTMLCanvasElement | SVGSVGElement) => void;
+  removeEventListeners: (element: HTMLCanvasElement | SVGSVGElement) => void;
 }
 
 const useUpdateCurrentTimeEvent = ({
@@ -22,12 +22,14 @@ const useUpdateCurrentTimeEvent = ({
     (e: Event): void => {
       if (!(e instanceof MouseEvent)) return;
       if (
-        !(e.target instanceof HTMLCanvasElement || e.target instanceof HTMLImageElement) ||
+        !(
+          e.currentTarget instanceof HTMLCanvasElement || e.currentTarget instanceof SVGSVGElement
+        ) ||
         !changeCurrentTime
       )
         return;
 
-      const rect = e.target.getBoundingClientRect();
+      const rect = e.currentTarget.getBoundingClientRect();
 
       const targetWidth = rect.width;
       const clickX = e.clientX - rect.left;
@@ -40,19 +42,19 @@ const useUpdateCurrentTimeEvent = ({
   );
 
   const addEventListeners = useCallback(
-    (element: HTMLCanvasElement | HTMLImageElement): void => {
+    (element: HTMLCanvasElement | SVGSVGElement): void => {
       element.addEventListener('click', onElementClick);
       element.addEventListener('mousemove', showHoveredWaveform);
-      element.addEventListener('mouseout', hideHoveredWaveform);
+      element.addEventListener('mouseleave', hideHoveredWaveform);
     },
     [onElementClick, showHoveredWaveform, hideHoveredWaveform],
   );
 
   const removeEventListeners = useCallback(
-    (element: HTMLCanvasElement | HTMLImageElement): void => {
+    (element: HTMLCanvasElement | SVGSVGElement): void => {
       element.removeEventListener('click', onElementClick);
       element.removeEventListener('mousemove', showHoveredWaveform);
-      element.removeEventListener('mouseout', hideHoveredWaveform);
+      element.removeEventListener('mouseleave', hideHoveredWaveform);
     },
     [onElementClick, showHoveredWaveform, hideHoveredWaveform],
   );

@@ -1,6 +1,7 @@
 import type { ForwardedRef } from 'react';
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
+import type { WaveformType } from '../../hooks/waveform/_types';
 import useWaveform, { type UseWaveformParams } from '../../hooks/waveform/useWaveform';
 
 export interface WaveformHandles {
@@ -29,41 +30,43 @@ export interface WaveformHandles {
  * }
  * ```
  */
-const Waveform = forwardRef((props: UseWaveformParams, ref: ForwardedRef<WaveformHandles>) => {
-  const { waveform, isPlaying, currentTime, duration, play, pause, changeCurrentTime } =
-    useWaveform(props);
+const Waveform = forwardRef(
+  <T extends WaveformType>(props: UseWaveformParams<T>, ref: ForwardedRef<WaveformHandles>) => {
+    const { waveform, isPlaying, currentTime, duration, play, pause, changeCurrentTime } =
+      useWaveform(props);
 
-  const containerRef = useRef<HTMLDivElement>(null);
+    const containerRef = useRef<HTMLDivElement>(null);
 
-  useEffect(() => {
-    if (!containerRef.current || !waveform) return;
+    useEffect(() => {
+      if (!containerRef.current || !waveform) return;
 
-    if (!containerRef.current.hasChildNodes()) {
-      containerRef.current.appendChild(waveform as Node);
-      return;
-    }
+      const waveformElement = waveform as Element;
+      waveformElement.setAttribute('role', 'waveform');
 
-    const waveformElement = waveform as Element;
-    waveformElement.setAttribute('role', 'waveform');
+      if (!containerRef.current.hasChildNodes()) {
+        containerRef.current.appendChild(waveform);
+        return;
+      }
 
-    containerRef.current.replaceChild(waveformElement, containerRef.current.firstChild!);
-  }, [waveform]);
+      containerRef.current.replaceChild(waveformElement, containerRef.current.firstChild!);
+    }, [waveform]);
 
-  useImperativeHandle(
-    ref,
-    () => ({
-      isPlaying,
-      currentTime,
-      duration,
-      play,
-      pause,
-      changeCurrentTime,
-    }),
-    [isPlaying, currentTime, duration, play, pause, changeCurrentTime],
-  );
+    useImperativeHandle(
+      ref,
+      () => ({
+        isPlaying,
+        currentTime,
+        duration,
+        play,
+        pause,
+        changeCurrentTime,
+      }),
+      [isPlaying, currentTime, duration, play, pause, changeCurrentTime],
+    );
 
-  return <div ref={containerRef} className="size-max" />;
-});
+    return <div ref={containerRef} className="size-max" />;
+  },
+);
 
 Waveform.displayName = 'Waveform';
 export default Waveform;

@@ -1,4 +1,4 @@
-name: Publish pokit
+name: Publish pori
 
 on:
   release:
