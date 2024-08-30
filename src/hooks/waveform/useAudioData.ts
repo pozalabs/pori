@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { OFFLINE_AUDIO_CONTEXT_LENGTH } from './_constants';
 import fetchAudio from '../../utils/fetchAudio';
 
 interface UseAudioDataParams {
@@ -73,7 +74,7 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams): UseA
   useEffect(() => {
     const audioContext = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)({
       sampleRate,
-      length: 1,
+      length: OFFLINE_AUDIO_CONTEXT_LENGTH,
     });
 
     initPeaks(audioContext);
