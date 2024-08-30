@@ -33,7 +33,7 @@ const useCanvasWaveform = ({
   currentTime,
   duration,
   isHovering,
-  hoveredWidth,
+  hoveredPosition,
   showHoveredWaveform,
   hideHoveredWaveform,
   enabled,
@@ -52,7 +52,7 @@ const useCanvasWaveform = ({
     hideHoveredWaveform,
     changeCurrentTime,
   });
-  const { halfHeight, maxHeight, halfBarOffset, playedWidth } = useWaveformSize({
+  const { halfHeight, maxHeight, halfBarOffset, playedPosition } = useWaveformSize({
     width,
     height,
     currentTime,
@@ -152,30 +152,55 @@ const useCanvasWaveform = ({
     if (!waveformCtx) return;
 
     waveformCtx.clearRect(0, 0, width, height);
-    waveformCtx.drawImage(initWaveform, 0, 0);
-    if (isHovering)
+
+    const initStartPosition = isHovering
+      ? Math.max(playedPosition, hoveredPosition)
+      : playedPosition;
+    waveformCtx.drawImage(
+      initWaveform,
+      initStartPosition,
+      0,
+      width,
+      height,
+      initStartPosition,
+      0,
+      width,
+      height,
+    );
+    if (isHovering && hoveredPosition > playedPosition) {
       waveformCtx.drawImage(
         hoveredWaveform,
+        playedPosition,
         0,
-        0,
-        hoveredWidth,
+        hoveredPosition - playedPosition,
         height,
+        playedPosition,
         0,
-        0,
-        hoveredWidth,
+        hoveredPosition - playedPosition,
         height,
       );
-    waveformCtx.drawImage(playedWaveform, 0, 0, playedWidth, height, 0, 0, playedWidth, height);
+    }
+    waveformCtx.drawImage(
+      playedWaveform,
+      0,
+      0,
+      playedPosition,
+      height,
+      0,
+      0,
+      playedPosition,
+      height,
+    );
   }, [
     width,
     height,
-    playedWidth,
+    playedPosition,
     waveform,
     isHovering,
     initWaveform,
     playedWaveform,
     hoveredWaveform,
-    hoveredWidth,
+    hoveredPosition,
   ]);
 
   useEffect(() => {
@@ -230,7 +255,7 @@ const useCanvasWaveform = ({
   }, [
     initWaveform,
     progressColor,
-    hoveredWidth,
+    hoveredPosition,
     isHovering,
     playedWaveform,
     hoveredWaveform,
