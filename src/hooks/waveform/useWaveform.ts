@@ -103,7 +103,7 @@ const useWaveform = <T extends WaveformType = 'canvas'>({
   });
 
   const [isHovering, setIsHovering] = useState(false);
-  const [hoveredWidth, setHoveredWidth] = useState(0);
+  const [hoveredPosition, setHoveredPosition] = useState(0);
 
   const showHoveredWaveform = useCallback((e: Event, positionX?: number): void => {
     const element =
@@ -118,7 +118,7 @@ const useWaveform = <T extends WaveformType = 'canvas'>({
 
     const hoveredPosition = e.clientX - rect.left;
 
-    setHoveredWidth(Math.max(0, positionX ?? hoveredPosition));
+    setHoveredPosition(Math.max(0, positionX ?? hoveredPosition));
     setIsHovering(true);
   }, []);
 
@@ -142,7 +142,7 @@ const useWaveform = <T extends WaveformType = 'canvas'>({
     duration,
     changeCurrentTime,
     isHovering,
-    hoveredWidth,
+    hoveredPosition,
     showHoveredWaveform,
     hideHoveredWaveform,
   };

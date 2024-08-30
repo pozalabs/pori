@@ -21,7 +21,7 @@ const useSvgWaveform = ({
   currentTime,
   duration,
   isHovering,
-  hoveredWidth,
+  hoveredPosition,
   showHoveredWaveform,
   hideHoveredWaveform,
   changeCurrentTime,
@@ -35,7 +35,7 @@ const useSvgWaveform = ({
     hideHoveredWaveform,
     changeCurrentTime,
   });
-  const { halfHeight, maxHeight, playedWidth } = useWaveformSize({
+  const { halfHeight, maxHeight, playedPosition } = useWaveformSize({
     width,
     height,
     currentTime,
@@ -121,8 +121,8 @@ const useSvgWaveform = ({
     drawWaveform(playedSvg, 'transparent', progressColor);
     drawWaveform(hoveredSvg, 'transparent', hoveredColor);
 
-    playedSvg.setAttribute('width', `${playedWidth}`);
-    hoveredSvg.setAttribute('width', `${hoveredWidth}`);
+    playedSvg.setAttribute('width', `${playedPosition}`);
+    hoveredSvg.setAttribute('width', `${hoveredPosition}`);
 
     waveform.replaceChildren();
     waveform.appendChild(initSvg);
@@ -137,8 +137,8 @@ const useSvgWaveform = ({
     waveColor,
     progressColor,
     hoveredColor,
-    playedWidth,
-    hoveredWidth,
+    playedPosition,
+    hoveredPosition,
   ]);
 
   const updateSvgWaveform = useCallback((): void => {
@@ -148,8 +148,14 @@ const useSvgWaveform = ({
 
     if (!initWaveform || !playedWaveform || !hoveredWaveform) return;
 
-    playedWaveform.setAttribute('width', `${playedWidth}`);
-    hoveredWaveform.setAttribute('width', `${hoveredWidth}`);
+    const initStartPosition = isHovering
+      ? Math.max(playedPosition, hoveredPosition)
+      : playedPosition;
+
+    initWaveform.setAttribute('viewBox', `${initStartPosition} 0 ${width} ${height}`);
+    initWaveform.setAttribute('x', `${initStartPosition}`);
+    playedWaveform.setAttribute('width', `${playedPosition}`);
+    hoveredWaveform.setAttribute('width', `${hoveredPosition}`);
 
     if (isHovering) {
       hoveredWaveform.style.display = 'block';
@@ -157,7 +163,7 @@ const useSvgWaveform = ({
     }
 
     hoveredWaveform.style.display = 'none';
-  }, [playedWidth, hoveredWidth, isHovering, waveform]);
+  }, [waveform, isHovering, playedPosition, hoveredPosition, width, height]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -184,7 +190,7 @@ const useSvgWaveform = ({
 
     updateSvgWaveform();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isHovering, waveform, playedWidth, hoveredWidth, enabled]);
+  }, [isHovering, waveform, playedPosition, hoveredPosition, enabled]);
 
   return waveform;
 };
