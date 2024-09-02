@@ -50,6 +50,18 @@ export const createRectElement = (): SVGRectElement => {
   return rect;
 };
 
+export const createTitleElement = (): SVGTitleElement => {
+  const title = document.createElementNS('http://www.w3.org/2000/svg', 'title');
+
+  return title;
+};
+
+export const createDescElement = (): SVGDescElement => {
+  const desc = document.createElementNS('http://www.w3.org/2000/svg', 'desc');
+
+  return desc;
+};
+
 export const createGElement = (): SVGGElement => {
   const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
 

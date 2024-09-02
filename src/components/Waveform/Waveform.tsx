@@ -41,7 +41,6 @@ const Waveform = forwardRef(
       if (!containerRef.current || !waveform) return;
 
       const waveformElement = waveform as Element;
-      waveformElement.setAttribute('role', 'waveform');
 
       if (!containerRef.current.hasChildNodes()) {
         containerRef.current.appendChild(waveform);
