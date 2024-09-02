@@ -1,5 +1,6 @@
 import { useCallback, useEffect, useState } from 'react';
 
+import { OFFLINE_AUDIO_CONTEXT_LENGTH } from './_constants';
 import fetchAudio from '../../utils/fetchAudio';
 
 interface UseAudioDataParams {
@@ -53,7 +54,7 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams): UseA
   );
 
   const initPeaks = useCallback(
-    async (audioContext: AudioContext): Promise<void> => {
+    async (audioContext: OfflineAudioContext): Promise<void> => {
       try {
         const { url, arrayBuffer } = await fetchAudio({
           src,
@@ -71,15 +72,12 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams): UseA
   );
 
   useEffect(() => {
-    const audioContext = new (window.AudioContext || window.webkitAudioContext)({
+    const audioContext = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)({
       sampleRate,
+      length: OFFLINE_AUDIO_CONTEXT_LENGTH,
     });
 
     initPeaks(audioContext);
-
-    return () => {
-      audioContext.close();
-    };
   }, [initPeaks, sampleRate]);
 
   return { audioUrl, audioBuffer, peaks };

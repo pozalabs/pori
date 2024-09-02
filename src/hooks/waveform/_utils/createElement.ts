@@ -61,3 +61,15 @@ export const createDescElement = (): SVGDescElement => {
 
   return desc;
 };
+
+export const createGElement = (): SVGGElement => {
+  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+
+  return g;
+};
+
+export const createUseElement = (): SVGUseElement => {
+  const use = document.createElementNS('http://www.w3.org/2000/svg', 'use');
+
+  return use;
+};
