@@ -59,33 +59,31 @@ const useCanvasWaveform = ({
     duration,
   });
 
-  const drawWaveform = useCallback(
-    (ctx: CanvasRenderingContext2D | OffscreenCanvasRenderingContext2D): void => {
-      ctx.beginPath();
+  const getWaveformPath = useCallback((): Path2D => {
+    const path = new Path2D();
 
-      peaks.forEach((peak, index) => {
-        const x = (index * (gap + BAR_WIDTH) + halfBarOffset) / dpr;
-        const barHeight = Math.round((peak * maxHeight) / 2);
-        const yTop = (halfHeight - barHeight) / dpr;
-        const yBottom = (halfHeight + barHeight) / dpr;
+    peaks.forEach((peak, index) => {
+      const x = (index * (gap + BAR_WIDTH) + halfBarOffset) / dpr;
+      const barHeight = Math.round((peak * maxHeight) / 2);
+      const yTop = (halfHeight - barHeight) / dpr;
+      const yBottom = (halfHeight + barHeight) / dpr;
 
-        if (variant === 'line') {
-          ctx.lineTo(x, yTop);
-        }
-        ctx.moveTo(x, yTop);
+      if (variant === 'line') {
+        path.lineTo(x, yTop);
+      }
+      path.moveTo(x, yTop);
 
-        if (variant === 'bar' && barHeight <= 0) {
-          ctx.moveTo(x, yTop - BAR_WIDTH / 2);
-          ctx.lineTo(x, yTop + BAR_WIDTH / 2);
-        }
-        ctx.lineTo(x, yBottom);
-      });
+      if (variant === 'bar' && barHeight <= 0) {
+        path.moveTo(x, yTop - BAR_WIDTH / 2);
+        path.lineTo(x, yTop + BAR_WIDTH / 2);
+      }
+      path.lineTo(x, yBottom);
+    });
 
-      ctx.stroke();
-      ctx.closePath();
-    },
-    [peaks, gap, halfBarOffset, dpr, maxHeight, halfHeight, variant],
-  );
+    path.closePath();
+
+    return path;
+  }, [peaks, gap, halfBarOffset, dpr, maxHeight, halfHeight, variant]);
 
   const configureWaveform = useCallback((): void => {
     const mainCanvas = createCanvasElement(width, height, dpr);
@@ -127,29 +125,24 @@ const useCanvasWaveform = ({
     initCtx.fillRect(0, 0, width, height);
     initCtx.fill();
 
+    const path = getWaveformPath();
+
     initCtx.lineWidth = BAR_WIDTH / dpr;
     initCtx.strokeStyle = waveColor;
-
-    drawWaveform(initCtx);
+    initCtx.stroke(path);
 
     playedCtx.lineWidth = BAR_WIDTH / dpr;
-    playedCtx.clearRect(0, 0, width, height);
-
     playedCtx.strokeStyle = progressColor;
-
-    drawWaveform(playedCtx);
+    playedCtx.stroke(path);
 
     hoveredCtx.lineWidth = BAR_WIDTH / dpr;
-    hoveredCtx.clearRect(0, 0, width, height);
-
     hoveredCtx.strokeStyle = hoveredColor;
-
-    drawWaveform(hoveredCtx);
+    hoveredCtx.stroke(path);
 
     setInitWaveform(initCanvas);
     setPlayedWaveform(playedCanvas);
     setHoveredWaveform(hoveredCanvas);
-  }, [width, height, dpr, bgColor, waveColor, drawWaveform, progressColor, hoveredColor]);
+  }, [width, height, dpr, bgColor, getWaveformPath, waveColor, progressColor, hoveredColor]);
 
   const updateCanvasWaveform = useCallback((): void => {
     if (!waveform || !initWaveform || !playedWaveform || !hoveredWaveform) return;
@@ -221,7 +214,7 @@ const useCanvasWaveform = ({
       removeEventListeners(waveform);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [width, height, addEventListeners, removeEventListeners, enabled]);
+  }, [addEventListeners, removeEventListeners, enabled]);
 
   useEffect(() => {
     if (!enabled) return;
@@ -240,6 +233,19 @@ const useCanvasWaveform = ({
     duration,
     enabled,
   ]);
+
+  useEffect(() => {
+    if (!enabled || !waveform) return;
+
+    const ctx = waveform.getContext('2d');
+
+    waveform.width = width * dpr;
+    waveform.height = height * dpr;
+    waveform.style.width = `${width}px`;
+    waveform.style.height = `${height}px`;
+
+    ctx?.scale(dpr, dpr);
+  }, [width, height, enabled, dpr, waveform]);
 
   useEffect(() => {
     if (!enabled) return;
