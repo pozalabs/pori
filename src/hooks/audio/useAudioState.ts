@@ -31,6 +31,7 @@ const useAudioState = ({
   const [volume, setVolume] = useState(maxProgressVolume);
 
   const prevVolumeRef = useRef(0);
+  const currentTimeIdRef = useRef(0);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -42,47 +43,53 @@ const useAudioState = ({
       setProgressTime((audio.currentTime / audio.duration) * maxProgressTime);
     };
 
-    const onAudioTimeUpdate = (): void => {
-      const progress = (audioRef.current.currentTime / audioRef.current.duration) * maxProgressTime;
+    const updateCurrentTime = () => {
+      const progress = (audio.currentTime / audio.duration) * maxProgressTime;
 
-      setCurrentTime(audioRef.current.currentTime);
+      setCurrentTime(Number((audio.currentTime ?? 0).toFixed(2)));
       setProgressTime(isNaN(progress) ? 0 : progress);
+
+      currentTimeIdRef.current = requestAnimationFrame(updateCurrentTime);
     };
-
-    audio.addEventListener('loadedmetadata', onAudioMetadataLoaded);
-    audio.addEventListener('timeupdate', onAudioTimeUpdate);
-
-    return () => {
-      audio.removeEventListener('loadedmetadata', onAudioMetadataLoaded);
-      audio.removeEventListener('timeupdate', onAudioTimeUpdate);
-    };
-  }, [audioRef, maxProgressTime]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
 
     const onAudioPlay = (): void => {
       setIsPlaying(true);
+      currentTimeIdRef.current = requestAnimationFrame(updateCurrentTime);
     };
 
     const onAudioPause = (): void => {
       setIsPlaying(false);
+      cancelAnimationFrame(currentTimeIdRef.current);
+      currentTimeIdRef.current = 0;
     };
 
     const onAudioEnded = (): void => {
       setIsPlaying(false);
+      cancelAnimationFrame(currentTimeIdRef.current);
+      currentTimeIdRef.current = 0;
     };
 
+    const onAudioSeeked = (): void => {
+      const progress = (audio.currentTime / audio.duration) * maxProgressTime;
+
+      setCurrentTime(audio.currentTime);
+      setProgressTime(isNaN(progress) ? 0 : progress);
+    };
+
+    audio.addEventListener('loadedmetadata', onAudioMetadataLoaded);
     audio.addEventListener('play', onAudioPlay);
     audio.addEventListener('pause', onAudioPause);
     audio.addEventListener('ended', onAudioEnded);
+    audio.addEventListener('seeked', onAudioSeeked);
 
     return () => {
+      audio.removeEventListener('loadedmetadata', onAudioMetadataLoaded);
       audio.removeEventListener('play', onAudioPlay);
       audio.removeEventListener('pause', onAudioPause);
       audio.removeEventListener('ended', onAudioEnded);
+      audio.removeEventListener('seeked', onAudioSeeked);
     };
-  }, [audioRef]);
+  }, [audioRef, maxProgressTime]);
 
   useEffect(() => {
     const audio = audioRef.current;
