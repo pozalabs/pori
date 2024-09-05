@@ -18,7 +18,7 @@ export interface UseControlAudioReturns {
   pause: () => void;
   resetAudioTime: () => void;
   toggleMuted: () => void;
-  togglePlayPause: () => void;
+  togglePlayPause: (src?: string) => void;
 }
 
 const useControlAudio = ({
@@ -59,25 +59,36 @@ const useControlAudio = ({
     [audioRef, maxProgressVolume],
   );
 
-  const play = useCallback((): void => {
-    audioRef.current.play();
-  }, [audioRef]);
-
   const pause = useCallback((): void => {
     audioRef.current.pause();
   }, [audioRef]);
+
+  const play = useCallback((): void => {
+    audioRef.current.play().catch(() => {
+      pause();
+    });
+  }, [audioRef, pause]);
 
   const resetAudioTime = useCallback((): void => {
     audioRef.current.currentTime = 0;
   }, [audioRef]);
 
-  const togglePlayPause = useCallback((): void => {
-    if (isPlaying) {
-      pause();
-      return;
-    }
-    play();
-  }, [isPlaying, pause, play]);
+  const togglePlayPause = useCallback(
+    (src?: string): void => {
+      if (src) {
+        audioRef.current.src = src;
+        play();
+        return;
+      }
+
+      if (isPlaying) {
+        pause();
+        return;
+      }
+      play();
+    },
+    [audioRef, isPlaying, pause, play],
+  );
 
   const toggleMuted = useCallback((): void => {
     audioRef.current.muted = !audioRef.current.muted;
