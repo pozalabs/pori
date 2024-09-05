@@ -69,7 +69,7 @@ const useAudioState = ({
 
       setVolume(
         audioRef.current.volume > 0
-          ? audioRef.current.volume
+          ? audioRef.current.volume * maxProgressVolume
           : DEFAULT_UNMUTE_VOLUME * maxProgressVolume,
       );
       prevVolumeRef.current = 0;
