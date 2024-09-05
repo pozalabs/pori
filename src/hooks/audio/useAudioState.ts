@@ -42,6 +42,25 @@ const useAudioState = ({
       setProgressTime((audio.currentTime / audio.duration) * maxProgressTime);
     };
 
+    const onAudioTimeUpdate = (): void => {
+      const progress = (audioRef.current.currentTime / audioRef.current.duration) * maxProgressTime;
+
+      setCurrentTime(audioRef.current.currentTime);
+      setProgressTime(isNaN(progress) ? 0 : progress);
+    };
+
+    audio.addEventListener('loadedmetadata', onAudioMetadataLoaded);
+    audio.addEventListener('timeupdate', onAudioTimeUpdate);
+
+    return () => {
+      audio.removeEventListener('loadedmetadata', onAudioMetadataLoaded);
+      audio.removeEventListener('timeupdate', onAudioTimeUpdate);
+    };
+  }, [audioRef, maxProgressTime]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
     const onAudioPlay = (): void => {
       setIsPlaying(true);
     };
@@ -54,27 +73,16 @@ const useAudioState = ({
       setIsPlaying(false);
     };
 
-    const onAudioTimeUpdate = (): void => {
-      const progress = (audioRef.current.currentTime / audioRef.current.duration) * maxProgressTime;
-
-      setCurrentTime(audioRef.current.currentTime);
-      setProgressTime(isNaN(progress) ? 0 : progress);
-    };
-
-    audio.addEventListener('loadedmetadata', onAudioMetadataLoaded);
     audio.addEventListener('play', onAudioPlay);
     audio.addEventListener('pause', onAudioPause);
     audio.addEventListener('ended', onAudioEnded);
-    audio.addEventListener('timeupdate', onAudioTimeUpdate);
 
     return () => {
-      audio.removeEventListener('loadedmetadata', onAudioMetadataLoaded);
       audio.removeEventListener('play', onAudioPlay);
       audio.removeEventListener('pause', onAudioPause);
       audio.removeEventListener('ended', onAudioEnded);
-      audio.removeEventListener('timeupdate', onAudioTimeUpdate);
     };
-  }, [audioRef, maxProgressTime]);
+  }, [audioRef]);
 
   useEffect(() => {
     const audio = audioRef.current;
