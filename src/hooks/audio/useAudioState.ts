@@ -50,6 +50,10 @@ const useAudioState = ({
       setIsPlaying(false);
     };
 
+    const onAudioEnded = (): void => {
+      setIsPlaying(false);
+    };
+
     const onAudioVolumeChange = (): void => {
       setVolume(audioRef.current.volume * maxProgressVolume);
 
@@ -81,6 +85,7 @@ const useAudioState = ({
     audio.addEventListener('loadedmetadata', onAudioMetadataLoaded);
     audio.addEventListener('play', onAudioPlay);
     audio.addEventListener('pause', onAudioPause);
+    audio.addEventListener('ended', onAudioEnded);
     audio.addEventListener('volumechange', onAudioVolumeChange);
     audio.addEventListener('timeupdate', onAudioTimeUpdate);
 
@@ -88,6 +93,7 @@ const useAudioState = ({
       audio.removeEventListener('loadedmetadata', onAudioMetadataLoaded);
       audio.removeEventListener('play', onAudioPlay);
       audio.removeEventListener('pause', onAudioPause);
+      audio.removeEventListener('ended', onAudioEnded);
       audio.removeEventListener('volumechange', onAudioVolumeChange);
       audio.removeEventListener('timeupdate', onAudioTimeUpdate);
     };
