@@ -54,6 +54,31 @@ const useAudioState = ({
       setIsPlaying(false);
     };
 
+    const onAudioTimeUpdate = (): void => {
+      const progress = (audioRef.current.currentTime / audioRef.current.duration) * maxProgressTime;
+
+      setCurrentTime(audioRef.current.currentTime);
+      setProgressTime(isNaN(progress) ? 0 : progress);
+    };
+
+    audio.addEventListener('loadedmetadata', onAudioMetadataLoaded);
+    audio.addEventListener('play', onAudioPlay);
+    audio.addEventListener('pause', onAudioPause);
+    audio.addEventListener('ended', onAudioEnded);
+    audio.addEventListener('timeupdate', onAudioTimeUpdate);
+
+    return () => {
+      audio.removeEventListener('loadedmetadata', onAudioMetadataLoaded);
+      audio.removeEventListener('play', onAudioPlay);
+      audio.removeEventListener('pause', onAudioPause);
+      audio.removeEventListener('ended', onAudioEnded);
+      audio.removeEventListener('timeupdate', onAudioTimeUpdate);
+    };
+  }, [audioRef, maxProgressTime]);
+
+  useEffect(() => {
+    const audio = audioRef.current;
+
     const onAudioVolumeChange = (): void => {
       setVolume(audioRef.current.volume * maxProgressVolume);
 
@@ -75,29 +100,12 @@ const useAudioState = ({
       prevVolumeRef.current = 0;
     };
 
-    const onAudioTimeUpdate = (): void => {
-      const progress = (audioRef.current.currentTime / audioRef.current.duration) * maxProgressTime;
-
-      setCurrentTime(audioRef.current.currentTime);
-      setProgressTime(isNaN(progress) ? 0 : progress);
-    };
-
-    audio.addEventListener('loadedmetadata', onAudioMetadataLoaded);
-    audio.addEventListener('play', onAudioPlay);
-    audio.addEventListener('pause', onAudioPause);
-    audio.addEventListener('ended', onAudioEnded);
     audio.addEventListener('volumechange', onAudioVolumeChange);
-    audio.addEventListener('timeupdate', onAudioTimeUpdate);
 
     return () => {
-      audio.removeEventListener('loadedmetadata', onAudioMetadataLoaded);
-      audio.removeEventListener('play', onAudioPlay);
-      audio.removeEventListener('pause', onAudioPause);
-      audio.removeEventListener('ended', onAudioEnded);
       audio.removeEventListener('volumechange', onAudioVolumeChange);
-      audio.removeEventListener('timeupdate', onAudioTimeUpdate);
     };
-  }, [audioRef, isPlaying, maxProgressTime, maxProgressVolume, muted, volume]);
+  }, [audioRef, maxProgressVolume, muted, volume]);
 
   return {
     currentSrc,
