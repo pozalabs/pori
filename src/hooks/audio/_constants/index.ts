@@ -1,5 +1,6 @@
 export const AUDIO_DEFAULT_VALUE = {
   autoplay: false,
+  loop: false,
   maxProgressTime: 100,
   maxProgressVolume: 1,
   src: '',

@@ -8,6 +8,7 @@ import useControlAudio from './useControlAudio';
 
 interface UseAudioParams {
   autoplay?: boolean;
+  loop?: boolean;
   maxProgressTime?: number;
   maxProgressVolume?: number;
   src?: string;
@@ -23,12 +24,14 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  * ```
  * interface UseAudioParams {
  *    autoplay?: boolean;
+ *    loop?: boolean;
  *    maxProgressTime?: number;
  *    maxProgressVolume?: number;
  *    src?: string;
  * }
  * ```
  * - `autoplay` : 오디오 자동 재생 여부 (default : false)
+ * - `loop` : 오디오 반복 재생 여부 (default : false)
  * - `maxProgressTime` : 현재 재생 시간을 progress로 환산했을 때의 max 값 (default : 100)
  * - `maxProgressVolume` : 현재 볼륨의 max 값 (default : 1)
  * - `src` : 오디오 source url
@@ -57,6 +60,7 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  */
 const useAudio = ({
   autoplay = AUDIO_DEFAULT_VALUE.autoplay,
+  loop = AUDIO_DEFAULT_VALUE.loop,
   maxProgressTime = AUDIO_DEFAULT_VALUE.maxProgressTime,
   maxProgressVolume = AUDIO_DEFAULT_VALUE.maxProgressVolume,
   src = AUDIO_DEFAULT_VALUE.src,
@@ -88,6 +92,10 @@ const useAudio = ({
   useEffect(() => {
     audioRef.current.autoplay = autoplay;
   }, [autoplay]);
+
+  useEffect(() => {
+    audioRef.current.loop = loop;
+  }, [loop]);
 
   return {
     audioRef,
