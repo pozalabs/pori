@@ -92,8 +92,8 @@ const useControlAudio = ({
 
   const stop = useCallback((): void => {
     pause();
-    changeCurrentTime(0);
-  }, [changeCurrentTime, pause]);
+    resetAudioTime();
+  }, [pause, resetAudioTime]);
 
   const toggleMuted = useCallback((): void => {
     audioRef.current.muted = !audioRef.current.muted;
