@@ -104,12 +104,18 @@ const useControlAudio = ({
   }, [audioRef]);
 
   const shiftTimeBackward = useCallback((): void => {
+    if (isNaN(audioRef.current.duration)) return;
+
     const currentTime = audioRef.current.currentTime + timeShift;
+
     changeCurrentTime(Math.min(currentTime, audioRef.current.duration));
   }, [audioRef, changeCurrentTime, timeShift]);
 
   const shiftTimeForward = useCallback((): void => {
+    if (isNaN(audioRef.current.duration)) return;
+
     const currentTime = audioRef.current.currentTime - timeShift;
+
     changeCurrentTime(Math.max(currentTime, 0));
   }, [audioRef, changeCurrentTime, timeShift]);
 
