@@ -48,7 +48,7 @@ const useAudioState = ({
     const updateCurrentTime = () => {
       const progress = (audio.currentTime / audio.duration) * maxProgressTime;
 
-      setCurrentTime(Number((audio.currentTime ?? 0).toFixed(2)));
+      setCurrentTime(Number(audio.currentTime.toFixed(2)));
       setProgressTime(isNaN(progress) ? 0 : progress);
 
       currentTimeIdRef.current = requestAnimationFrame(updateCurrentTime);
