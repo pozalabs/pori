@@ -5,9 +5,11 @@ import type { UseAudioStateReturns } from './useAudioState';
 import useAudioState from './useAudioState';
 import type { UseControlAudioReturns } from './useControlAudio';
 import useControlAudio from './useControlAudio';
+import useKeyBinding from './useKeyboardControl';
 
 interface UseAudioParams {
   autoplay?: boolean;
+  enabledKeyboardControl?: boolean;
   loop?: boolean;
   maxProgressTime?: number;
   maxProgressVolume?: number;
@@ -25,6 +27,7 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  * ```
  * interface UseAudioParams {
  *    autoplay?: boolean;
+ *    enabledKeyboardControl?: boolean;
  *    loop?: boolean;
  *    maxProgressTime?: number;
  *    maxProgressVolume?: number;
@@ -70,6 +73,7 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  */
 const useAudio = ({
   autoplay = AUDIO_DEFAULT_VALUE.autoplay,
+  enabledKeyboardControl = AUDIO_DEFAULT_VALUE.enabledKeyboardControl,
   loop = AUDIO_DEFAULT_VALUE.loop,
   maxProgressTime = AUDIO_DEFAULT_VALUE.maxProgressTime,
   maxProgressVolume = AUDIO_DEFAULT_VALUE.maxProgressVolume,
@@ -108,6 +112,17 @@ const useAudio = ({
     duration,
     isPlaying,
     timeShift,
+  });
+
+  useKeyBinding({
+    enabled: enabledKeyboardControl,
+    duration,
+    isPlaying,
+    changeCurrentTime,
+    shiftTimeBackward,
+    shiftTimeForward,
+    toggleMuted,
+    togglePlayPause,
   });
 
   useEffect(() => {
