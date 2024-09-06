@@ -131,10 +131,20 @@ const useAudioState = ({
       setPlaybackRate(audio.playbackRate);
     };
 
+    const onAudioEmptied = (): void => {
+      setCurrentSrc('');
+      setCurrentTime(0);
+      setDuration(0);
+      setIsPlaying(false);
+      setProgressTime(0);
+    };
+
     audio.addEventListener('ratechange', onAudioRateChange);
+    audio.addEventListener('emptied', onAudioEmptied);
 
     return () => {
       audio.removeEventListener('ratechange', onAudioRateChange);
+      audio.removeEventListener('emptied', onAudioEmptied);
     };
   }, [audioRef]);
 
