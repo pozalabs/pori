@@ -67,15 +67,17 @@ const useAudio = ({
 }: UseAudioParams): UseAudioReturns => {
   const audioRef = useRef(new Audio());
 
-  const { currentSrc, currentTime, duration, isPlaying, progressTime, volume } = useAudioState({
-    audioRef,
-    maxProgressTime,
-    maxProgressVolume,
-  });
+  const { currentSrc, currentTime, duration, isPlaying, playbackRate, progressTime, volume } =
+    useAudioState({
+      audioRef,
+      maxProgressTime,
+      maxProgressVolume,
+    });
 
   const {
     changeCurrentSrc,
     changeCurrentTime,
+    changePlaybackRate,
     changeProgressTime,
     changeVolume,
     play,
@@ -103,10 +105,12 @@ const useAudio = ({
     currentTime,
     duration,
     isPlaying,
+    playbackRate,
     progressTime,
     volume,
     changeCurrentSrc,
     changeCurrentTime,
+    changePlaybackRate,
     changeProgressTime,
     changeVolume,
     play,

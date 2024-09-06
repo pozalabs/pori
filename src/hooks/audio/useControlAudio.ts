@@ -12,6 +12,7 @@ interface UseControlAudioParams {
 export interface UseControlAudioReturns {
   changeCurrentSrc: (currentSrc: string) => void;
   changeCurrentTime: (currentTime: number) => void;
+  changePlaybackRate: (playbackRate: number) => void;
   changeProgressTime: (progress: number) => void;
   changeVolume: (volume: number) => void;
   play: () => void;
@@ -40,6 +41,13 @@ const useControlAudio = ({
   const changeCurrentTime = useCallback(
     (currentTime: number): void => {
       audioRef.current.currentTime = currentTime;
+    },
+    [audioRef],
+  );
+
+  const changePlaybackRate = useCallback(
+    (playbackRate: number): void => {
+      audioRef.current.playbackRate = playbackRate;
     },
     [audioRef],
   );
@@ -97,6 +105,7 @@ const useControlAudio = ({
   return {
     changeCurrentSrc,
     changeCurrentTime,
+    changePlaybackRate,
     changeProgressTime,
     changeVolume,
     play,

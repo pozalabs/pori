@@ -13,6 +13,7 @@ export interface UseAudioStateReturns {
   currentTime: number;
   duration: number;
   isPlaying: boolean;
+  playbackRate: number;
   progressTime: number;
   volume: number;
 }
@@ -27,6 +28,7 @@ const useAudioState = ({
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
+  const [playbackRate, setPlaybackRate] = useState(1);
   const [progressTime, setProgressTime] = useState(0);
   const [volume, setVolume] = useState(maxProgressVolume);
 
@@ -122,11 +124,26 @@ const useAudioState = ({
     };
   }, [audioRef, maxProgressVolume, muted, volume]);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    const onAudioRateChange = (): void => {
+      setPlaybackRate(audio.playbackRate);
+    };
+
+    audio.addEventListener('ratechange', onAudioRateChange);
+
+    return () => {
+      audio.removeEventListener('ratechange', onAudioRateChange);
+    };
+  }, [audioRef]);
+
   return {
     currentSrc,
     currentTime,
     duration,
     isPlaying,
+    playbackRate,
     progressTime,
     volume,
   };
