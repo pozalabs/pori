@@ -19,6 +19,7 @@ export interface UseControlAudioReturns {
   changeVolume: (volume: number) => void;
   play: () => void;
   pause: () => void;
+  resetAudio: () => void;
   resetAudioTime: () => void;
   shiftTimeBackward: () => void;
   shiftTimeForward: () => void;
@@ -90,6 +91,14 @@ const useControlAudio = ({
     });
   }, [audioRef, pause]);
 
+  const resetAudio = useCallback((): void => {
+    audioRef.current.pause();
+    audioRef.current.src = 'data:,';
+    audioRef.current.muted = false;
+    audioRef.current.volume = 1;
+    audioRef.current.playbackRate = 1;
+  }, [audioRef]);
+
   const resetAudioTime = useCallback((): void => {
     audioRef.current.currentTime = 0;
   }, [audioRef]);
@@ -139,6 +148,7 @@ const useControlAudio = ({
     changeVolume,
     play,
     pause,
+    resetAudio,
     resetAudioTime,
     shiftTimeBackward,
     shiftTimeForward,

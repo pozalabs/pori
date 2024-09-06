@@ -58,6 +58,7 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  *    changeVolume: (volume: number) => void;
  *    play: () => void;
  *    pause: () => void;
+ *    resetAudio: () => void;
  *    resetAudioTime: () => void;
  *    shiftTimeBackward: () => void;
  *    shiftTimeForward: () => void;
@@ -93,6 +94,7 @@ const useAudio = ({
     changeVolume,
     play,
     pause,
+    resetAudio,
     resetAudioTime,
     shiftTimeBackward,
     shiftTimeForward,
@@ -137,6 +139,7 @@ const useAudio = ({
     changeVolume,
     play,
     pause,
+    resetAudio,
     resetAudioTime,
     shiftTimeBackward,
     shiftTimeForward,
