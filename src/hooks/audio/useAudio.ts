@@ -83,6 +83,7 @@ const useAudio = ({
     play,
     pause,
     resetAudioTime,
+    stop,
     toggleMuted,
     togglePlayPause,
   } = useControlAudio({ audioRef, maxProgressTime, maxProgressVolume, duration, isPlaying });
@@ -116,6 +117,7 @@ const useAudio = ({
     play,
     pause,
     resetAudioTime,
+    stop,
     toggleMuted,
     togglePlayPause,
   };

@@ -18,6 +18,7 @@ export interface UseControlAudioReturns {
   play: () => void;
   pause: () => void;
   resetAudioTime: () => void;
+  stop: () => void;
   toggleMuted: () => void;
   togglePlayPause: (src?: string) => void;
 }
@@ -81,6 +82,11 @@ const useControlAudio = ({
     audioRef.current.currentTime = 0;
   }, [audioRef]);
 
+  const stop = useCallback((): void => {
+    pause();
+    changeCurrentTime(0);
+  }, [changeCurrentTime, pause]);
+
   const togglePlayPause = useCallback(
     (src?: string): void => {
       if (src && src !== audioRef.current.src) {
@@ -111,6 +117,7 @@ const useControlAudio = ({
     play,
     pause,
     resetAudioTime,
+    stop,
     toggleMuted,
     togglePlayPause,
   };
