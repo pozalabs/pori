@@ -40,7 +40,10 @@ const useControlAudio = ({
     (currentSrc: string): void => {
       if (currentSrc === audioRef.current.currentSrc) return;
 
+      const playbackRate = audioRef.current.playbackRate;
+
       audioRef.current.src = currentSrc;
+      audioRef.current.playbackRate = playbackRate;
     },
     [audioRef],
   );
