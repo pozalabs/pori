@@ -7,6 +7,7 @@ interface UseControlAudioParams {
   maxProgressVolume: number;
   duration: number;
   isPlaying: boolean;
+  timeShift: number;
 }
 
 export interface UseControlAudioReturns {
@@ -19,6 +20,8 @@ export interface UseControlAudioReturns {
   play: () => void;
   pause: () => void;
   resetAudioTime: () => void;
+  shiftTimeBackward: () => void;
+  shiftTimeForward: () => void;
   stop: () => void;
   toggleMuted: () => void;
   togglePlayPause: (src?: string) => void;
@@ -30,6 +33,7 @@ const useControlAudio = ({
   maxProgressVolume,
   duration,
   isPlaying,
+  timeShift,
 }: UseControlAudioParams): UseControlAudioReturns => {
   const changeCurrentSrc = useCallback(
     (currentSrc: string): void => {
@@ -90,6 +94,16 @@ const useControlAudio = ({
     audioRef.current.currentTime = 0;
   }, [audioRef]);
 
+  const shiftTimeBackward = useCallback((): void => {
+    const currentTime = audioRef.current.currentTime + timeShift;
+    changeCurrentTime(Math.min(currentTime, audioRef.current.duration));
+  }, [audioRef, changeCurrentTime, timeShift]);
+
+  const shiftTimeForward = useCallback((): void => {
+    const currentTime = audioRef.current.currentTime - timeShift;
+    changeCurrentTime(Math.max(currentTime, 0));
+  }, [audioRef, changeCurrentTime, timeShift]);
+
   const stop = useCallback((): void => {
     pause();
     resetAudioTime();
@@ -126,6 +140,8 @@ const useControlAudio = ({
     play,
     pause,
     resetAudioTime,
+    shiftTimeBackward,
+    shiftTimeForward,
     stop,
     toggleMuted,
     togglePlayPause,

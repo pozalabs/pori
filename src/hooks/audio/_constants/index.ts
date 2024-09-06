@@ -4,6 +4,7 @@ export const AUDIO_DEFAULT_VALUE = {
   maxProgressTime: 100,
   maxProgressVolume: 1,
   src: '',
+  timeShift: 10,
 } as const;
 
 export const DEFAULT_UNMUTE_VOLUME = 0.01;
