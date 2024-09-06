@@ -12,6 +12,7 @@ interface UseControlAudioParams {
 export interface UseControlAudioReturns {
   changeCurrentSrc: (currentSrc: string) => void;
   changeCurrentTime: (currentTime: number) => void;
+  changeMuted: (muted: boolean) => void;
   changePlaybackRate: (playbackRate: number) => void;
   changeProgressTime: (progress: number) => void;
   changeVolume: (volume: number) => void;
@@ -42,6 +43,13 @@ const useControlAudio = ({
   const changeCurrentTime = useCallback(
     (currentTime: number): void => {
       audioRef.current.currentTime = currentTime;
+    },
+    [audioRef],
+  );
+
+  const changeMuted = useCallback(
+    (muted: boolean): void => {
+      audioRef.current.muted = muted;
     },
     [audioRef],
   );
@@ -87,6 +95,10 @@ const useControlAudio = ({
     changeCurrentTime(0);
   }, [changeCurrentTime, pause]);
 
+  const toggleMuted = useCallback((): void => {
+    audioRef.current.muted = !audioRef.current.muted;
+  }, [audioRef]);
+
   const togglePlayPause = useCallback(
     (src?: string): void => {
       if (src && src !== audioRef.current.src) {
@@ -104,13 +116,10 @@ const useControlAudio = ({
     [audioRef, isPlaying, pause, play],
   );
 
-  const toggleMuted = useCallback((): void => {
-    audioRef.current.muted = !audioRef.current.muted;
-  }, [audioRef]);
-
   return {
     changeCurrentSrc,
     changeCurrentTime,
+    changeMuted,
     changePlaybackRate,
     changeProgressTime,
     changeVolume,

@@ -77,6 +77,7 @@ const useAudio = ({
   const {
     changeCurrentSrc,
     changeCurrentTime,
+    changeMuted,
     changePlaybackRate,
     changeProgressTime,
     changeVolume,
@@ -111,6 +112,7 @@ const useAudio = ({
     volume,
     changeCurrentSrc,
     changeCurrentTime,
+    changeMuted,
     changePlaybackRate,
     changeProgressTime,
     changeVolume,
