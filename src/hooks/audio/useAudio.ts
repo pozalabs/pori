@@ -36,6 +36,7 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  * }
  * ```
  * - `autoplay` : 오디오 자동 재생 여부 (default : false)
+ * - `enabledKeyboardControl` : 키보드로 오디오 컨트롤 가능 여부 (default : false)
  * - `loop` : 오디오 반복 재생 여부 (default : false)
  * - `maxProgressTime` : 현재 재생 시간을 progress로 환산했을 때의 max 값 (default : 100)
  * - `maxProgressVolume` : 현재 볼륨의 max 값 (default : 1)
