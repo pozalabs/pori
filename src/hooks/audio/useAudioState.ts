@@ -4,7 +4,7 @@ import { DEFAULT_UNMUTE_VOLUME } from './_constants';
 
 interface UseAudioStateParams {
   audioRef: MutableRefObject<HTMLAudioElement>;
-  maxProgressTime: number;
+  maxPlaybackRange: number;
   maxProgressVolume: number;
 }
 
@@ -13,13 +13,13 @@ export interface UseAudioStateReturns {
   currentTime: number;
   duration: number;
   isPlaying: boolean;
-  progressTime: number;
+  playbackRange: number;
   volume: number;
 }
 
 const useAudioState = ({
   audioRef,
-  maxProgressTime,
+  maxPlaybackRange,
   maxProgressVolume,
 }: UseAudioStateParams): UseAudioStateReturns => {
   const [currentSrc, setCurrentSrc] = useState('');
@@ -27,7 +27,7 @@ const useAudioState = ({
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
-  const [progressTime, setProgressTime] = useState(0);
+  const [playbackRange, setPlaybackRange] = useState(0);
   const [volume, setVolume] = useState(maxProgressVolume);
 
   const prevVolumeRef = useRef(0);
@@ -39,14 +39,15 @@ const useAudioState = ({
       setCurrentSrc(audio.currentSrc);
       setCurrentTime(audio.currentTime);
       setDuration(audio.duration);
-      setProgressTime((audio.currentTime / audio.duration) * maxProgressTime);
+      setPlaybackRange((audio.currentTime / audio.duration) * maxPlaybackRange);
     };
 
     const onAudioTimeUpdate = (): void => {
-      const progress = (audioRef.current.currentTime / audioRef.current.duration) * maxProgressTime;
+      const progress =
+        (audioRef.current.currentTime / audioRef.current.duration) * maxPlaybackRange;
 
       setCurrentTime(audioRef.current.currentTime);
-      setProgressTime(isNaN(progress) ? 0 : progress);
+      setPlaybackRange(isNaN(progress) ? 0 : progress);
     };
 
     audio.addEventListener('loadedmetadata', onAudioMetadataLoaded);
@@ -56,7 +57,7 @@ const useAudioState = ({
       audio.removeEventListener('loadedmetadata', onAudioMetadataLoaded);
       audio.removeEventListener('timeupdate', onAudioTimeUpdate);
     };
-  }, [audioRef, maxProgressTime]);
+  }, [audioRef, maxPlaybackRange]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -120,7 +121,7 @@ const useAudioState = ({
     currentTime,
     duration,
     isPlaying,
-    progressTime,
+    playbackRange,
     volume,
   };
 };

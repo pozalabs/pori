@@ -15,10 +15,10 @@ describe('useAudio 테스트', () => {
       expect(audioRef.current instanceof HTMLAudioElement).toBeTruthy();
     });
 
-    it('useAudio는 currentSrc, currentTime, duration, isPlaying, progressTime, volume 상태를 반환한다.', () => {
+    it('useAudio는 currentSrc, currentTime, duration, isPlaying, playbackRange, volume 상태를 반환한다.', () => {
       const {
         result: {
-          current: { currentSrc, currentTime, duration, isPlaying, progressTime, volume },
+          current: { currentSrc, currentTime, duration, isPlaying, playbackRange, volume },
         },
       } = renderHook(() => useAudio({}));
 
@@ -26,17 +26,17 @@ describe('useAudio 테스트', () => {
       expect(currentTime).toBeTypeOf('number');
       expect(duration).toBeTypeOf('number');
       expect(isPlaying).toBeTypeOf('boolean');
-      expect(progressTime).toBeTypeOf('number');
+      expect(playbackRange).toBeTypeOf('number');
       expect(volume).toBeTypeOf('number');
     });
 
-    it('useAudio는 changeCurrentSrc, changeCurrentTime, changeProgressTime, changeVolume, play, pause, resetAudioTime, toggleMuted, togglePlayPause 함수를 반환한다.', () => {
+    it('useAudio는 changeCurrentSrc, changeCurrentTime, changePlaybackRange, changeVolume, play, pause, resetAudioTime, toggleMuted, togglePlayPause 함수를 반환한다.', () => {
       const {
         result: {
           current: {
             changeCurrentSrc,
             changeCurrentTime,
-            changeProgressTime,
+            changePlaybackRange,
             changeVolume,
             play,
             pause,
@@ -49,7 +49,7 @@ describe('useAudio 테스트', () => {
 
       expect(changeCurrentSrc).toBeTypeOf('function');
       expect(changeCurrentTime).toBeTypeOf('function');
-      expect(changeProgressTime).toBeTypeOf('function');
+      expect(changePlaybackRange).toBeTypeOf('function');
       expect(changeVolume).toBeTypeOf('function');
       expect(play).toBeTypeOf('function');
       expect(pause).toBeTypeOf('function');

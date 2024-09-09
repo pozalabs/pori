@@ -8,7 +8,7 @@ import useControlAudio from './useControlAudio';
 
 interface UseAudioParams {
   autoplay?: boolean;
-  maxProgressTime?: number;
+  maxPlaybackRange?: number;
   maxProgressVolume?: number;
   src?: string;
 }
@@ -23,13 +23,13 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  * ```
  * interface UseAudioParams {
  *    autoplay?: boolean;
- *    maxProgressTime?: number;
+ *    maxPlaybackRange?: number;
  *    maxProgressVolume?: number;
  *    src?: string;
  * }
  * ```
  * - `autoplay` : 오디오 자동 재생 여부 (default : false)
- * - `maxProgressTime` : 현재 재생 시간을 progress로 환산했을 때의 max 값 (default : 100)
+ * - `maxPlaybackRange` : 현재 재생 시간을 progress로 환산했을 때의 max 값 (default : 100)
  * - `maxProgressVolume` : 현재 볼륨의 max 값 (default : 1)
  * - `src` : 오디오 source url
  * @returns
@@ -41,11 +41,11 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  *    currentTime: number;
  *    duration: number;
  *    isPlaying: boolean;
- *    progressTime: number;
+ *    playbackRange: number;
  *    volume: number;
  *    changeCurrentSrc: (currentSrc: string) => void;
  *    changeCurrentTime: (currentTime: number) => void;
- *    changeProgressTime: (progress: number) => void;
+ *    changePlaybackRange: (progress: number) => void;
  *    changeVolume: (volume: number) => void;
  *    play: () => void;
  *    pause: () => void;
@@ -54,32 +54,33 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  *    togglePlayPause: (src?: string) => void;
  * }
  * ```
+ * - `playbackRange` : currentTime을 param으로 주어지는 maxPlaybackRange 단위로 환산한 값이며, maxPlaybackRange를 커스텀하지 않았을 경우 기본적으로 playbackRange는 퍼센트 단위로 환산됩니다.
  */
 const useAudio = ({
   autoplay = AUDIO_DEFAULT_VALUE.autoplay,
-  maxProgressTime = AUDIO_DEFAULT_VALUE.maxProgressTime,
+  maxPlaybackRange = AUDIO_DEFAULT_VALUE.maxPlaybackRange,
   maxProgressVolume = AUDIO_DEFAULT_VALUE.maxProgressVolume,
   src = AUDIO_DEFAULT_VALUE.src,
 }: UseAudioParams): UseAudioReturns => {
   const audioRef = useRef(new Audio());
 
-  const { currentSrc, currentTime, duration, isPlaying, progressTime, volume } = useAudioState({
+  const { currentSrc, currentTime, duration, isPlaying, playbackRange, volume } = useAudioState({
     audioRef,
-    maxProgressTime,
+    maxPlaybackRange,
     maxProgressVolume,
   });
 
   const {
     changeCurrentSrc,
     changeCurrentTime,
-    changeProgressTime,
+    changePlaybackRange,
     changeVolume,
     play,
     pause,
     resetAudioTime,
     toggleMuted,
     togglePlayPause,
-  } = useControlAudio({ audioRef, maxProgressTime, maxProgressVolume, duration, isPlaying });
+  } = useControlAudio({ audioRef, maxPlaybackRange, maxProgressVolume, duration, isPlaying });
 
   useEffect(() => {
     audioRef.current.src = src;
@@ -95,11 +96,11 @@ const useAudio = ({
     currentTime,
     duration,
     isPlaying,
-    progressTime,
+    playbackRange,
     volume,
     changeCurrentSrc,
     changeCurrentTime,
-    changeProgressTime,
+    changePlaybackRange,
     changeVolume,
     play,
     pause,

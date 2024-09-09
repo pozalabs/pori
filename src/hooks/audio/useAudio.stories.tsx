@@ -5,7 +5,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import useAudio from './useAudio';
 
 const DemoComponent = ({ src }: { src: string }) => {
-  const [maxProgressTime] = useState(100);
+  const [maxPlaybackRange] = useState(100);
   const [maxProgressVolume] = useState(1);
 
   const isDragging = useRef(false);
@@ -16,15 +16,15 @@ const DemoComponent = ({ src }: { src: string }) => {
     currentTime,
     duration,
     isPlaying,
-    progressTime,
+    playbackRange,
     volume,
-    changeProgressTime,
+    changePlaybackRange,
     changeVolume,
     toggleMuted,
     togglePlayPause,
   } = useAudio({
     src,
-    maxProgressTime,
+    maxPlaybackRange,
     maxProgressVolume,
   });
 
@@ -33,7 +33,7 @@ const DemoComponent = ({ src }: { src: string }) => {
       if (!isDragging.current) return;
 
       isDragging.current = false;
-      changeProgressTime(dragTime);
+      changePlaybackRange(dragTime);
     };
 
     document.addEventListener('mouseup', onMouseUp);
@@ -41,20 +41,20 @@ const DemoComponent = ({ src }: { src: string }) => {
     return () => {
       document.removeEventListener('mouseup', onMouseUp);
     };
-  }, [changeProgressTime, dragTime]);
+  }, [changePlaybackRange, dragTime]);
 
   return (
     <div>
       <p>src: {currentSrc}</p>
       <div className="flex items-center gap-2">
         <span>
-          {Math.round(isDragging.current ? (dragTime * duration) / maxProgressTime : currentTime)}s
+          {Math.round(isDragging.current ? (dragTime * duration) / maxPlaybackRange : currentTime)}s
         </span>
         <input
           type="range"
-          value={isDragging.current ? dragTime : progressTime}
+          value={isDragging.current ? dragTime : playbackRange}
           min={0}
-          max={maxProgressTime}
+          max={maxPlaybackRange}
           step={0.01}
           onMouseDown={() => (isDragging.current = true)}
           onChange={e => {
@@ -62,7 +62,7 @@ const DemoComponent = ({ src }: { src: string }) => {
               setDragTime(Number(e.target.value));
               return;
             }
-            changeProgressTime(Number(e.target.value));
+            changePlaybackRange(Number(e.target.value));
           }}
           className="w-full"
         />
@@ -76,7 +76,7 @@ const DemoComponent = ({ src }: { src: string }) => {
           {isPlaying ? '일시정지' : '재생'}
         </button>
         {[0, 25, 50, 75, 100].map(progress => (
-          <button onClick={() => changeProgressTime(progress)} key={progress}>
+          <button onClick={() => changePlaybackRange(progress)} key={progress}>
             {progress}%
           </button>
         ))}
