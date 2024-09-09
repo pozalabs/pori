@@ -26,6 +26,7 @@ const DemoComponent = ({ src }: { src: string }) => {
     src,
     maxPlaybackRange,
     maxVolume,
+    preventDefaultKeyboardEvent: true,
   });
 
   useEffect(() => {

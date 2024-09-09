@@ -2,6 +2,7 @@ import { useCallback, useEffect } from 'react';
 
 interface UseKeyboardControlParams {
   enabled: boolean;
+  preventDefault: boolean;
   duration: number;
   isPlaying: boolean;
   changeCurrentTime: (currentTime: number) => void;
@@ -13,6 +14,7 @@ interface UseKeyboardControlParams {
 
 const useKeyboardControl = ({
   enabled,
+  preventDefault,
   duration,
   isPlaying,
   changeCurrentTime,
@@ -41,8 +43,10 @@ const useKeyboardControl = ({
     const onKeyDown = (e: KeyboardEvent): void => {
       if (e.metaKey || e.ctrlKey || e.altKey) return;
 
-      e.preventDefault();
-      e.stopPropagation();
+      if (preventDefault) {
+        e.preventDefault();
+        e.stopPropagation();
+      }
 
       switch (e.key) {
         case 'ArrowLeft':
@@ -73,6 +77,7 @@ const useKeyboardControl = ({
     duration,
     enabled,
     isPlaying,
+    preventDefault,
     shiftTime,
     shiftTimeBackward,
     shiftTimeForward,

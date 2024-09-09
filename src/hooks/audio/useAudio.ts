@@ -13,6 +13,7 @@ interface UseAudioParams {
   loop?: boolean;
   maxPlaybackRange?: number;
   maxVolume?: number;
+  preventDefaultKeyboardEvent?: boolean;
   src?: string;
   timeShift?: number;
 }
@@ -31,6 +32,7 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  *    loop?: boolean;
  *    maxPlaybackRange?: number;
  *    maxVolume?: number;
+ *    preventDefaultKeyboardEvent?: boolean;
  *    src?: string;
  *    timeShift?: number;
  * }
@@ -40,6 +42,7 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  * - `loop` : 오디오 반복 재생 여부 (default : false)
  * - `maxPlaybackRange` : 현재 재생 시간을 progress로 환산했을 때의 max 값 (default : 100)
  * - `maxVolume` : 현재 볼륨의 max 값 (default : 1)
+ * - `preventDefaultKeyboardEvent` : 키보드 컨트롤 이벤트에서 preventDefault를 실행할지 여부 (default : true)
  * - `src` : 오디오 source url
  * - `timeShift` : 건너뛰기의 기준이 되는 시간(초) (default : 10)
  * @returns
@@ -79,6 +82,7 @@ const useAudio = ({
   loop = AUDIO_DEFAULT_VALUE.loop,
   maxPlaybackRange = AUDIO_DEFAULT_VALUE.maxPlaybackRange,
   maxVolume = AUDIO_DEFAULT_VALUE.maxVolume,
+  preventDefaultKeyboardEvent = AUDIO_DEFAULT_VALUE.preventDefaultKeyboardEvent,
   src = AUDIO_DEFAULT_VALUE.src,
   timeShift = AUDIO_DEFAULT_VALUE.timeShift,
 }: UseAudioParams): UseAudioReturns => {
@@ -118,6 +122,7 @@ const useAudio = ({
 
   useKeyBinding({
     enabled: enabledKeyboardControl,
+    preventDefault: preventDefaultKeyboardEvent,
     duration,
     isPlaying,
     changeCurrentTime,

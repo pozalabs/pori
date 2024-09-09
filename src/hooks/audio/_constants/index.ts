@@ -4,6 +4,7 @@ export const AUDIO_DEFAULT_VALUE = {
   loop: false,
   maxPlaybackRange: 100,
   maxVolume: 1,
+  preventDefaultKeyboardEvent: true,
   src: '',
   timeShift: 10,
 } as const;
