@@ -56,6 +56,7 @@ const useKeyboardControl = ({
           return;
         }
         case 'm': {
+          if (!isPlaying) return;
           toggleMuted();
           return;
         }
