@@ -126,10 +126,10 @@ describe('useAudio 테스트', () => {
     });
 
     it('useAudio의 changeVolume 함수를 호출하면 볼륨이 변경된다.', () => {
-      const maxProgressVolume = 1;
+      const maxVolume = 1;
       const newVolume = 0.5;
 
-      const { result } = renderHook(() => useAudio({ src: 'hi.mp3', maxProgressVolume }));
+      const { result } = renderHook(() => useAudio({ src: 'hi.mp3', maxVolume }));
 
       act(() => {
         result.current.changeVolume(newVolume);

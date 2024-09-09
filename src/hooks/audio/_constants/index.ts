@@ -1,7 +1,7 @@
 export const AUDIO_DEFAULT_VALUE = {
   autoplay: false,
   maxPlaybackRange: 100,
-  maxProgressVolume: 1,
+  maxVolume: 1,
   src: '',
 } as const;
 

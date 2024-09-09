@@ -6,7 +6,7 @@ import useAudio from './useAudio';
 
 const DemoComponent = ({ src }: { src: string }) => {
   const [maxPlaybackRange] = useState(100);
-  const [maxProgressVolume] = useState(1);
+  const [maxVolume] = useState(1);
 
   const isDragging = useRef(false);
   const [dragTime, setDragTime] = useState(0);
@@ -25,7 +25,7 @@ const DemoComponent = ({ src }: { src: string }) => {
   } = useAudio({
     src,
     maxPlaybackRange,
-    maxProgressVolume,
+    maxVolume,
   });
 
   useEffect(() => {
@@ -86,7 +86,7 @@ const DemoComponent = ({ src }: { src: string }) => {
           type="range"
           value={volume}
           min={0}
-          max={maxProgressVolume}
+          max={maxVolume}
           step={0.01}
           onChange={e => changeVolume(Number(e.target.value))}
         />

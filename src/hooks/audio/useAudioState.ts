@@ -5,7 +5,7 @@ import { DEFAULT_UNMUTE_VOLUME } from './_constants';
 interface UseAudioStateParams {
   audioRef: MutableRefObject<HTMLAudioElement>;
   maxPlaybackRange: number;
-  maxProgressVolume: number;
+  maxVolume: number;
 }
 
 export interface UseAudioStateReturns {
@@ -20,7 +20,7 @@ export interface UseAudioStateReturns {
 const useAudioState = ({
   audioRef,
   maxPlaybackRange,
-  maxProgressVolume,
+  maxVolume,
 }: UseAudioStateParams): UseAudioStateReturns => {
   const [currentSrc, setCurrentSrc] = useState('');
   const [currentTime, setCurrentTime] = useState(0);
@@ -28,7 +28,7 @@ const useAudioState = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
   const [playbackRange, setPlaybackRange] = useState(0);
-  const [volume, setVolume] = useState(maxProgressVolume);
+  const [volume, setVolume] = useState(maxVolume);
 
   const prevVolumeRef = useRef(0);
 
@@ -89,7 +89,7 @@ const useAudioState = ({
     const audio = audioRef.current;
 
     const onAudioVolumeChange = (): void => {
-      setVolume(audioRef.current.volume * maxProgressVolume);
+      setVolume(audioRef.current.volume * maxVolume);
 
       if (muted === audioRef.current.muted) return;
 
@@ -103,8 +103,8 @@ const useAudioState = ({
 
       setVolume(
         audioRef.current.volume > 0
-          ? audioRef.current.volume * maxProgressVolume
-          : DEFAULT_UNMUTE_VOLUME * maxProgressVolume,
+          ? audioRef.current.volume * maxVolume
+          : DEFAULT_UNMUTE_VOLUME * maxVolume,
       );
       prevVolumeRef.current = 0;
     };
@@ -114,7 +114,7 @@ const useAudioState = ({
     return () => {
       audio.removeEventListener('volumechange', onAudioVolumeChange);
     };
-  }, [audioRef, maxProgressVolume, muted, volume]);
+  }, [audioRef, maxVolume, muted, volume]);
 
   return {
     currentSrc,
