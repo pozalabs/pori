@@ -1,8 +1,7 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { HTMLAudioElementEventType, UnionToIntersection } from './_types';
-import useAudio from '../useAudio';
-import useControlAudio from '../useControlAudio';
+import useAudio from '../audio/useAudio';
 
 interface UseWaveformAudioParams extends HTMLAudioElementEventType {
   src: string;
@@ -26,11 +25,9 @@ const useWaveformAudio = ({
   const [currentTime, setCurrentTime] = useState(0);
   const currentTimeRafId = useRef(0);
 
-  const audioRef = useAudio();
-  const { isPlaying, duration, play, pause } = useControlAudio({
-    audioRef,
+  const { audioRef, isPlaying, duration, play, pause } = useAudio({
     src,
-    autoPlay: autoplay,
+    autoplay,
   });
 
   const changeCurrentTime = useCallback(
