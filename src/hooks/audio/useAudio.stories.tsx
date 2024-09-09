@@ -4,10 +4,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import useAudio from './useAudio';
 
-const DemoComponent = ({ src }: { src: string }) => {
-  const [maxPlaybackRange] = useState(100);
-  const [maxVolume] = useState(1);
-
+const DemoComponent = (params: Parameters<typeof useAudio>[0]) => {
   const isDragging = useRef(false);
   const [dragTime, setDragTime] = useState(0);
 
@@ -22,12 +19,7 @@ const DemoComponent = ({ src }: { src: string }) => {
     changeVolume,
     toggleMuted,
     togglePlayPause,
-  } = useAudio({
-    src,
-    maxPlaybackRange,
-    maxVolume,
-    preventDefaultKeyboardEvent: true,
-  });
+  } = useAudio(params);
 
   useEffect(() => {
     const onMouseUp = () => {
@@ -49,13 +41,18 @@ const DemoComponent = ({ src }: { src: string }) => {
       <p>src: {currentSrc}</p>
       <div className="flex items-center gap-2">
         <span>
-          {Math.round(isDragging.current ? (dragTime * duration) / maxPlaybackRange : currentTime)}s
+          {Math.round(
+            isDragging.current
+              ? (dragTime * duration) / (params.maxPlaybackRange ?? 100)
+              : currentTime,
+          )}
+          s
         </span>
         <input
           type="range"
           value={isDragging.current ? dragTime : playbackRange}
           min={0}
-          max={maxPlaybackRange}
+          max={params.maxPlaybackRange}
           step={0.01}
           onMouseDown={() => (isDragging.current = true)}
           onChange={e => {
@@ -87,7 +84,7 @@ const DemoComponent = ({ src }: { src: string }) => {
           type="range"
           value={volume}
           min={0}
-          max={maxVolume}
+          max={params.maxVolume}
           step={0.01}
           onChange={e => changeVolume(Number(e.target.value))}
         />
@@ -113,5 +110,8 @@ type Story = StoryObj<typeof meta>;
 export const Demo: Story = {
   args: {
     src: 'https://cdn.pixabay.com/audio/2023/06/12/audio_23ef6b7464.mp3',
+    maxPlaybackRange: 100,
+    maxVolume: 100,
+    enabledKeyboardControl: true,
   },
 };
