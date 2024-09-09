@@ -3,8 +3,8 @@ import { useCallback } from 'react';
 
 interface UseControlAudioParams {
   audioRef: MutableRefObject<HTMLAudioElement>;
-  maxProgressTime: number;
-  maxProgressVolume: number;
+  maxPlaybackRange: number;
+  maxVolume: number;
   duration: number;
   isPlaying: boolean;
   timeShift: number;
@@ -15,7 +15,7 @@ export interface UseControlAudioReturns {
   changeCurrentTime: (currentTime: number) => void;
   changeMuted: (muted: boolean) => void;
   changePlaybackRate: (playbackRate: number) => void;
-  changeProgressTime: (progress: number) => void;
+  changePlaybackRange: (progress: number) => void;
   changeVolume: (volume: number) => void;
   play: () => void;
   pause: () => void;
@@ -30,8 +30,8 @@ export interface UseControlAudioReturns {
 
 const useControlAudio = ({
   audioRef,
-  maxProgressTime,
-  maxProgressVolume,
+  maxPlaybackRange,
+  maxVolume,
   duration,
   isPlaying,
   timeShift,
@@ -69,19 +69,19 @@ const useControlAudio = ({
     [audioRef],
   );
 
-  const changeProgressTime = useCallback(
+  const changePlaybackRange = useCallback(
     (progress: number): void => {
-      changeCurrentTime((progress / maxProgressTime) * duration);
+      changeCurrentTime((progress / maxPlaybackRange) * duration);
     },
-    [changeCurrentTime, duration, maxProgressTime],
+    [changeCurrentTime, duration, maxPlaybackRange],
   );
 
   const changeVolume = useCallback(
     (volume: number): void => {
-      audioRef.current.volume = volume / maxProgressVolume;
+      audioRef.current.volume = volume / maxVolume;
       audioRef.current.muted = volume <= 0;
     },
-    [audioRef, maxProgressVolume],
+    [audioRef, maxVolume],
   );
 
   const pause = useCallback((): void => {
@@ -153,7 +153,7 @@ const useControlAudio = ({
     changeCurrentTime,
     changeMuted,
     changePlaybackRate,
-    changeProgressTime,
+    changePlaybackRange,
     changeVolume,
     play,
     pause,

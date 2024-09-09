@@ -24,7 +24,7 @@ describe('useAudio 테스트', () => {
             duration,
             isPlaying,
             playbackRate,
-            progressTime,
+            playbackRange,
             volume,
           },
         },
@@ -35,11 +35,11 @@ describe('useAudio 테스트', () => {
       expect(duration).toBeTypeOf('number');
       expect(isPlaying).toBeTypeOf('boolean');
       expect(playbackRate).toBeTypeOf('number');
-      expect(progressTime).toBeTypeOf('number');
+      expect(playbackRange).toBeTypeOf('number');
       expect(volume).toBeTypeOf('number');
     });
 
-    it('useAudio는 changeCurrentSrc, changeCurrentTime, changeMuted, changePlaybackRate, changeProgressTime, changeVolume, play, pause, resetAudio, resetAudioTime, shiftTimeBackward, shiftTimeForward, stop, toggleMuted, togglePlayPause 함수를 반환한다.', () => {
+    it('useAudio는 changeCurrentSrc, changeCurrentTime, changeMuted, changePlaybackRate, changePlaybackRange, changeVolume, play, pause, resetAudio, resetAudioTime, shiftTimeBackward, shiftTimeForward, stop, toggleMuted, togglePlayPause 함수를 반환한다.', () => {
       const {
         result: {
           current: {
@@ -47,7 +47,7 @@ describe('useAudio 테스트', () => {
             changeCurrentTime,
             changeMuted,
             changePlaybackRate,
-            changeProgressTime,
+            changePlaybackRange,
             changeVolume,
             play,
             pause,
@@ -66,7 +66,7 @@ describe('useAudio 테스트', () => {
       expect(changeCurrentTime).toBeTypeOf('function');
       expect(changeMuted).toBeTypeOf('function');
       expect(changePlaybackRate).toBeTypeOf('function');
-      expect(changeProgressTime).toBeTypeOf('function');
+      expect(changePlaybackRange).toBeTypeOf('function');
       expect(changeVolume).toBeTypeOf('function');
       expect(play).toBeTypeOf('function');
       expect(pause).toBeTypeOf('function');
@@ -181,10 +181,10 @@ describe('useAudio 테스트', () => {
     });
 
     it('useAudio의 changeVolume 함수를 호출하면 볼륨이 변경된다.', () => {
-      const maxProgressVolume = 1;
+      const maxVolume = 1;
       const newVolume = 0.5;
 
-      const { result } = renderHook(() => useAudio({ src: 'hi.mp3', maxProgressVolume }));
+      const { result } = renderHook(() => useAudio({ src: 'hi.mp3', maxVolume }));
 
       act(() => {
         result.current.changeVolume(newVolume);
@@ -220,9 +220,9 @@ describe('useAudio 테스트', () => {
     });
 
     it('useAudio의 resetAudio 함수를 호출하면 오디오의 상태가 모두 초기화된다.', () => {
-      const maxProgressVolume = 100;
+      const maxVolume = 100;
 
-      const { result } = renderHook(() => useAudio({ src: 'hi.mp3', maxProgressVolume }));
+      const { result } = renderHook(() => useAudio({ src: 'hi.mp3', maxVolume }));
 
       act(() => {
         result.current.resetAudio();
@@ -233,8 +233,8 @@ describe('useAudio 테스트', () => {
       expect(result.current.currentTime).toEqual(0);
       expect(result.current.duration).toEqual(0);
       expect(result.current.isPlaying).toBeFalsy();
-      expect(result.current.progressTime).toEqual(0);
-      expect(result.current.volume).toEqual(maxProgressVolume);
+      expect(result.current.playbackRange).toEqual(0);
+      expect(result.current.volume).toEqual(maxVolume);
       expect(result.current.playbackRate).toEqual(1);
     });
 

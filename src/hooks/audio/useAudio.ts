@@ -11,8 +11,8 @@ interface UseAudioParams {
   autoplay?: boolean;
   enabledKeyboardControl?: boolean;
   loop?: boolean;
-  maxProgressTime?: number;
-  maxProgressVolume?: number;
+  maxPlaybackRange?: number;
+  maxVolume?: number;
   src?: string;
   timeShift?: number;
 }
@@ -29,8 +29,8 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  *    autoplay?: boolean;
  *    enabledKeyboardControl?: boolean;
  *    loop?: boolean;
- *    maxProgressTime?: number;
- *    maxProgressVolume?: number;
+ *    maxPlaybackRange?: number;
+ *    maxVolume?: number;
  *    src?: string;
  *    timeShift?: number;
  * }
@@ -38,8 +38,8 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  * - `autoplay` : 오디오 자동 재생 여부 (default : false)
  * - `enabledKeyboardControl` : 키보드로 오디오 컨트롤 가능 여부 (default : false)
  * - `loop` : 오디오 반복 재생 여부 (default : false)
- * - `maxProgressTime` : 현재 재생 시간을 progress로 환산했을 때의 max 값 (default : 100)
- * - `maxProgressVolume` : 현재 볼륨의 max 값 (default : 1)
+ * - `maxPlaybackRange` : 현재 재생 시간을 progress로 환산했을 때의 max 값 (default : 100)
+ * - `maxVolume` : 현재 볼륨의 max 값 (default : 1)
  * - `src` : 오디오 source url
  * - `timeShift` : 건너뛰기의 기준이 되는 시간(초) (default : 10)
  * @returns
@@ -52,13 +52,13 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  *    duration: number;
  *    isPlaying: boolean;
  *    playbackRate: number;
- *    progressTime: number;
+ *    playbackRange: number;
  *    volume: number;
  *    changeCurrentSrc: (currentSrc: string) => void;
  *    changeCurrentTime: (currentTime: number) => void;
  *    changeMuted: (muted: boolean) => void;
  *    changePlaybackRate: (playbackRate: number) => void;
- *    changeProgressTime: (progress: number) => void;
+ *    changePlaybackRange: (progress: number) => void;
  *    changeVolume: (volume: number) => void;
  *    play: () => void;
  *    pause: () => void;
@@ -71,23 +71,24 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  *    togglePlayPause: (src?: string) => void;
  * }
  * ```
+ * - `playbackRange` : currentTime을 param으로 주어지는 maxPlaybackRange 단위로 환산한 값이며, maxPlaybackRange를 커스텀하지 않았을 경우 기본적으로 playbackRange는 퍼센트 단위로 환산됩니다.
  */
 const useAudio = ({
   autoplay = AUDIO_DEFAULT_VALUE.autoplay,
   enabledKeyboardControl = AUDIO_DEFAULT_VALUE.enabledKeyboardControl,
   loop = AUDIO_DEFAULT_VALUE.loop,
-  maxProgressTime = AUDIO_DEFAULT_VALUE.maxProgressTime,
-  maxProgressVolume = AUDIO_DEFAULT_VALUE.maxProgressVolume,
+  maxPlaybackRange = AUDIO_DEFAULT_VALUE.maxPlaybackRange,
+  maxVolume = AUDIO_DEFAULT_VALUE.maxVolume,
   src = AUDIO_DEFAULT_VALUE.src,
   timeShift = AUDIO_DEFAULT_VALUE.timeShift,
 }: UseAudioParams): UseAudioReturns => {
   const audioRef = useRef(new Audio());
 
-  const { currentSrc, currentTime, duration, isPlaying, playbackRate, progressTime, volume } =
+  const { currentSrc, currentTime, duration, isPlaying, playbackRate, playbackRange, volume } =
     useAudioState({
       audioRef,
-      maxProgressTime,
-      maxProgressVolume,
+      maxPlaybackRange,
+      maxVolume,
     });
 
   const {
@@ -95,7 +96,7 @@ const useAudio = ({
     changeCurrentTime,
     changeMuted,
     changePlaybackRate,
-    changeProgressTime,
+    changePlaybackRange,
     changeVolume,
     play,
     pause,
@@ -108,8 +109,8 @@ const useAudio = ({
     togglePlayPause,
   } = useControlAudio({
     audioRef,
-    maxProgressTime,
-    maxProgressVolume,
+    maxPlaybackRange,
+    maxVolume,
     duration,
     isPlaying,
     timeShift,
@@ -145,13 +146,13 @@ const useAudio = ({
     duration,
     isPlaying,
     playbackRate,
-    progressTime,
+    playbackRange,
     volume,
     changeCurrentSrc,
     changeCurrentTime,
     changeMuted,
     changePlaybackRate,
-    changeProgressTime,
+    changePlaybackRange,
     changeVolume,
     play,
     pause,

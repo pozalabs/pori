@@ -4,8 +4,8 @@ import { DEFAULT_UNMUTE_VOLUME } from './_constants';
 
 interface UseAudioStateParams {
   audioRef: MutableRefObject<HTMLAudioElement>;
-  maxProgressTime: number;
-  maxProgressVolume: number;
+  maxPlaybackRange: number;
+  maxVolume: number;
 }
 
 export interface UseAudioStateReturns {
@@ -14,14 +14,14 @@ export interface UseAudioStateReturns {
   duration: number;
   isPlaying: boolean;
   playbackRate: number;
-  progressTime: number;
+  playbackRange: number;
   volume: number;
 }
 
 const useAudioState = ({
   audioRef,
-  maxProgressTime,
-  maxProgressVolume,
+  maxPlaybackRange,
+  maxVolume,
 }: UseAudioStateParams): UseAudioStateReturns => {
   const [currentSrc, setCurrentSrc] = useState('');
   const [currentTime, setCurrentTime] = useState(0);
@@ -29,8 +29,8 @@ const useAudioState = ({
   const [isPlaying, setIsPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
   const [playbackRate, setPlaybackRate] = useState(1);
-  const [progressTime, setProgressTime] = useState(0);
-  const [volume, setVolume] = useState(maxProgressVolume);
+  const [playbackRange, setPlaybackRange] = useState(0);
+  const [volume, setVolume] = useState(maxVolume);
 
   const prevVolumeRef = useRef(0);
   const currentTimeIdRef = useRef(0);
@@ -42,14 +42,14 @@ const useAudioState = ({
       setCurrentSrc(audio.currentSrc);
       setCurrentTime(audio.currentTime);
       setDuration(audio.duration);
-      setProgressTime((audio.currentTime / audio.duration) * maxProgressTime);
+      setPlaybackRange((audio.currentTime / audio.duration) * maxPlaybackRange);
     };
 
     const updateCurrentTime = () => {
-      const progress = (audio.currentTime / audio.duration) * maxProgressTime;
+      const progress = (audio.currentTime / audio.duration) * maxPlaybackRange;
 
       setCurrentTime(Number(audio.currentTime.toFixed(2)));
-      setProgressTime(isNaN(progress) ? 0 : progress);
+      setPlaybackRange(isNaN(progress) ? 0 : progress);
 
       currentTimeIdRef.current = requestAnimationFrame(updateCurrentTime);
     };
@@ -72,10 +72,10 @@ const useAudioState = ({
     };
 
     const onAudioSeeked = (): void => {
-      const progress = (audio.currentTime / audio.duration) * maxProgressTime;
+      const progress = (audio.currentTime / audio.duration) * maxPlaybackRange;
 
       setCurrentTime(audio.currentTime);
-      setProgressTime(isNaN(progress) ? 0 : progress);
+      setPlaybackRange(isNaN(progress) ? 0 : progress);
     };
 
     audio.addEventListener('loadedmetadata', onAudioMetadataLoaded);
@@ -91,13 +91,13 @@ const useAudioState = ({
       audio.removeEventListener('ended', onAudioEnded);
       audio.removeEventListener('seeked', onAudioSeeked);
     };
-  }, [audioRef, maxProgressTime]);
+  }, [audioRef, maxPlaybackRange]);
 
   useEffect(() => {
     const audio = audioRef.current;
 
     const onAudioVolumeChange = (): void => {
-      setVolume(audioRef.current.volume * maxProgressVolume);
+      setVolume(audioRef.current.volume * maxVolume);
 
       if (muted === audioRef.current.muted) return;
 
@@ -111,8 +111,8 @@ const useAudioState = ({
 
       setVolume(
         audioRef.current.volume > 0
-          ? audioRef.current.volume * maxProgressVolume
-          : DEFAULT_UNMUTE_VOLUME * maxProgressVolume,
+          ? audioRef.current.volume * maxVolume
+          : DEFAULT_UNMUTE_VOLUME * maxVolume,
       );
       prevVolumeRef.current = 0;
     };
@@ -122,7 +122,7 @@ const useAudioState = ({
     return () => {
       audio.removeEventListener('volumechange', onAudioVolumeChange);
     };
-  }, [audioRef, maxProgressVolume, muted, volume]);
+  }, [audioRef, maxVolume, muted, volume]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -136,7 +136,7 @@ const useAudioState = ({
       setCurrentTime(0);
       setDuration(0);
       setIsPlaying(false);
-      setProgressTime(0);
+      setPlaybackRange(0);
     };
 
     audio.addEventListener('ratechange', onAudioRateChange);
@@ -154,7 +154,7 @@ const useAudioState = ({
     duration,
     isPlaying,
     playbackRate,
-    progressTime,
+    playbackRange,
     volume,
   };
 };
