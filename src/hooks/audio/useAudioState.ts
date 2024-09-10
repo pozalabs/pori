@@ -33,7 +33,7 @@ const useAudioState = ({
   const [volume, setVolume] = useState(maxVolume);
 
   const prevVolumeRef = useRef(0);
-  const currentTimeIdRef = useRef(0);
+  const currentTimeRAFIdRef = useRef(0);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -51,24 +51,24 @@ const useAudioState = ({
       setCurrentTime(Number(audio.currentTime.toFixed(2)));
       setPlaybackRange(isNaN(progress) ? 0 : progress);
 
-      currentTimeIdRef.current = requestAnimationFrame(updateCurrentTime);
+      currentTimeRAFIdRef.current = requestAnimationFrame(updateCurrentTime);
     };
 
     const onAudioPlay = (): void => {
       setIsPlaying(true);
-      currentTimeIdRef.current = requestAnimationFrame(updateCurrentTime);
+      currentTimeRAFIdRef.current = requestAnimationFrame(updateCurrentTime);
     };
 
     const onAudioPause = (): void => {
       setIsPlaying(false);
-      cancelAnimationFrame(currentTimeIdRef.current);
-      currentTimeIdRef.current = 0;
+      cancelAnimationFrame(currentTimeRAFIdRef.current);
+      currentTimeRAFIdRef.current = 0;
     };
 
     const onAudioEnded = (): void => {
       setIsPlaying(false);
-      cancelAnimationFrame(currentTimeIdRef.current);
-      currentTimeIdRef.current = 0;
+      cancelAnimationFrame(currentTimeRAFIdRef.current);
+      currentTimeRAFIdRef.current = 0;
     };
 
     const onAudioSeeked = (): void => {
