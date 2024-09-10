@@ -13,6 +13,7 @@ export interface UseAudioStateReturns {
   currentTime: number;
   duration: number;
   isPlaying: boolean;
+  playbackRate: number;
   playbackRange: number;
   volume: number;
 }
@@ -27,10 +28,12 @@ const useAudioState = ({
   const [duration, setDuration] = useState(0);
   const [isPlaying, setIsPlaying] = useState(false);
   const [muted, setMuted] = useState(false);
+  const [playbackRate, setPlaybackRate] = useState(1);
   const [playbackRange, setPlaybackRange] = useState(0);
   const [volume, setVolume] = useState(maxVolume);
 
   const prevVolumeRef = useRef(0);
+  const currentTimeRAFIdRef = useRef(0);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -42,48 +45,53 @@ const useAudioState = ({
       setPlaybackRange((audio.currentTime / audio.duration) * maxPlaybackRange);
     };
 
-    const onAudioTimeUpdate = (): void => {
-      const progress =
-        (audioRef.current.currentTime / audioRef.current.duration) * maxPlaybackRange;
+    const updateCurrentTime = () => {
+      const progress = (audio.currentTime / audio.duration) * maxPlaybackRange;
 
-      setCurrentTime(audioRef.current.currentTime);
+      setCurrentTime(Number(audio.currentTime.toFixed(2)));
       setPlaybackRange(isNaN(progress) ? 0 : progress);
+
+      currentTimeRAFIdRef.current = requestAnimationFrame(updateCurrentTime);
     };
-
-    audio.addEventListener('loadedmetadata', onAudioMetadataLoaded);
-    audio.addEventListener('timeupdate', onAudioTimeUpdate);
-
-    return () => {
-      audio.removeEventListener('loadedmetadata', onAudioMetadataLoaded);
-      audio.removeEventListener('timeupdate', onAudioTimeUpdate);
-    };
-  }, [audioRef, maxPlaybackRange]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
 
     const onAudioPlay = (): void => {
       setIsPlaying(true);
+      currentTimeRAFIdRef.current = requestAnimationFrame(updateCurrentTime);
     };
 
     const onAudioPause = (): void => {
       setIsPlaying(false);
+      cancelAnimationFrame(currentTimeRAFIdRef.current);
+      currentTimeRAFIdRef.current = 0;
     };
 
     const onAudioEnded = (): void => {
       setIsPlaying(false);
+      cancelAnimationFrame(currentTimeRAFIdRef.current);
+      currentTimeRAFIdRef.current = 0;
     };
 
+    const onAudioSeeked = (): void => {
+      const progress = (audio.currentTime / audio.duration) * maxPlaybackRange;
+
+      setCurrentTime(audio.currentTime);
+      setPlaybackRange(isNaN(progress) ? 0 : progress);
+    };
+
+    audio.addEventListener('loadedmetadata', onAudioMetadataLoaded);
     audio.addEventListener('play', onAudioPlay);
     audio.addEventListener('pause', onAudioPause);
     audio.addEventListener('ended', onAudioEnded);
+    audio.addEventListener('seeked', onAudioSeeked);
 
     return () => {
+      audio.removeEventListener('loadedmetadata', onAudioMetadataLoaded);
       audio.removeEventListener('play', onAudioPlay);
       audio.removeEventListener('pause', onAudioPause);
       audio.removeEventListener('ended', onAudioEnded);
+      audio.removeEventListener('seeked', onAudioSeeked);
     };
-  }, [audioRef]);
+  }, [audioRef, maxPlaybackRange]);
 
   useEffect(() => {
     const audio = audioRef.current;
@@ -116,11 +124,36 @@ const useAudioState = ({
     };
   }, [audioRef, maxVolume, muted, volume]);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    const onAudioRateChange = (): void => {
+      setPlaybackRate(audio.playbackRate);
+    };
+
+    const onAudioEmptied = (): void => {
+      setCurrentSrc('');
+      setCurrentTime(0);
+      setDuration(0);
+      setIsPlaying(false);
+      setPlaybackRange(0);
+    };
+
+    audio.addEventListener('ratechange', onAudioRateChange);
+    audio.addEventListener('emptied', onAudioEmptied);
+
+    return () => {
+      audio.removeEventListener('ratechange', onAudioRateChange);
+      audio.removeEventListener('emptied', onAudioEmptied);
+    };
+  }, [audioRef]);
+
   return {
     currentSrc,
     currentTime,
     duration,
     isPlaying,
+    playbackRate,
     playbackRange,
     volume,
   };

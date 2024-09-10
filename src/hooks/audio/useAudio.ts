@@ -5,12 +5,17 @@ import type { UseAudioStateReturns } from './useAudioState';
 import useAudioState from './useAudioState';
 import type { UseControlAudioReturns } from './useControlAudio';
 import useControlAudio from './useControlAudio';
+import useKeyBinding from './useKeyboardControl';
 
 interface UseAudioParams {
   autoplay?: boolean;
+  enabledKeyboardControl?: boolean;
+  loop?: boolean;
   maxPlaybackRange?: number;
   maxVolume?: number;
+  preventDefaultKeyboardEvent?: boolean;
   src?: string;
+  timeShift?: number;
 }
 
 interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
@@ -23,15 +28,23 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  * ```
  * interface UseAudioParams {
  *    autoplay?: boolean;
+ *    enabledKeyboardControl?: boolean;
+ *    loop?: boolean;
  *    maxPlaybackRange?: number;
  *    maxVolume?: number;
+ *    preventDefaultKeyboardEvent?: boolean;
  *    src?: string;
+ *    timeShift?: number;
  * }
  * ```
  * - `autoplay` : 오디오 자동 재생 여부 (default : false)
+ * - `enabledKeyboardControl` : 키보드로 오디오 컨트롤 가능 여부 (default : false)
+ * - `loop` : 오디오 반복 재생 여부 (default : false)
  * - `maxPlaybackRange` : 현재 재생 시간을 progress로 환산했을 때의 max 값 (default : 100)
  * - `maxVolume` : 현재 볼륨의 max 값 (default : 1)
+ * - `preventDefaultKeyboardEvent` : 키보드 컨트롤 이벤트에서 preventDefault를 실행할지 여부 (default : true)
  * - `src` : 오디오 source url
+ * - `timeShift` : 건너뛰기의 기준이 되는 시간(초) (default : 10)
  * @returns
  * `UseAudioReturns`
  * ```
@@ -41,15 +54,22 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  *    currentTime: number;
  *    duration: number;
  *    isPlaying: boolean;
+ *    playbackRate: number;
  *    playbackRange: number;
  *    volume: number;
  *    changeCurrentSrc: (currentSrc: string) => void;
  *    changeCurrentTime: (currentTime: number) => void;
+ *    changeMuted: (muted: boolean) => void;
+ *    changePlaybackRate: (playbackRate: number) => void;
  *    changePlaybackRange: (progress: number) => void;
  *    changeVolume: (volume: number) => void;
  *    play: () => void;
  *    pause: () => void;
+ *    resetAudio: () => void;
  *    resetAudioTime: () => void;
+ *    shiftTimeBackward: () => void;
+ *    shiftTimeForward: () => void;
+ *    stop: () => void;
  *    toggleMuted: () => void;
  *    togglePlayPause: (src?: string) => void;
  * }
@@ -58,29 +78,59 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  */
 const useAudio = ({
   autoplay = AUDIO_DEFAULT_VALUE.autoplay,
+  enabledKeyboardControl = AUDIO_DEFAULT_VALUE.enabledKeyboardControl,
+  loop = AUDIO_DEFAULT_VALUE.loop,
   maxPlaybackRange = AUDIO_DEFAULT_VALUE.maxPlaybackRange,
   maxVolume = AUDIO_DEFAULT_VALUE.maxVolume,
+  preventDefaultKeyboardEvent = AUDIO_DEFAULT_VALUE.preventDefaultKeyboardEvent,
   src = AUDIO_DEFAULT_VALUE.src,
+  timeShift = AUDIO_DEFAULT_VALUE.timeShift,
 }: UseAudioParams): UseAudioReturns => {
   const audioRef = useRef(new Audio());
 
-  const { currentSrc, currentTime, duration, isPlaying, playbackRange, volume } = useAudioState({
-    audioRef,
-    maxPlaybackRange,
-    maxVolume,
-  });
+  const { currentSrc, currentTime, duration, isPlaying, playbackRate, playbackRange, volume } =
+    useAudioState({
+      audioRef,
+      maxPlaybackRange,
+      maxVolume,
+    });
 
   const {
     changeCurrentSrc,
     changeCurrentTime,
+    changeMuted,
+    changePlaybackRate,
     changePlaybackRange,
     changeVolume,
     play,
     pause,
+    resetAudio,
     resetAudioTime,
+    shiftTimeBackward,
+    shiftTimeForward,
+    stop,
     toggleMuted,
     togglePlayPause,
-  } = useControlAudio({ audioRef, maxPlaybackRange, maxVolume, duration, isPlaying });
+  } = useControlAudio({
+    audioRef,
+    maxPlaybackRange,
+    maxVolume,
+    duration,
+    isPlaying,
+    timeShift,
+  });
+
+  useKeyBinding({
+    enabled: enabledKeyboardControl,
+    preventDefault: preventDefaultKeyboardEvent,
+    duration,
+    isPlaying,
+    changeCurrentTime,
+    shiftTimeBackward,
+    shiftTimeForward,
+    toggleMuted,
+    togglePlayPause,
+  });
 
   useEffect(() => {
     audioRef.current.src = src;
@@ -90,21 +140,32 @@ const useAudio = ({
     audioRef.current.autoplay = autoplay;
   }, [autoplay]);
 
+  useEffect(() => {
+    audioRef.current.loop = loop;
+  }, [loop]);
+
   return {
     audioRef,
     currentSrc,
     currentTime,
     duration,
     isPlaying,
+    playbackRate,
     playbackRange,
     volume,
     changeCurrentSrc,
     changeCurrentTime,
+    changeMuted,
+    changePlaybackRate,
     changePlaybackRange,
     changeVolume,
     play,
     pause,
+    resetAudio,
     resetAudioTime,
+    shiftTimeBackward,
+    shiftTimeForward,
+    stop,
     toggleMuted,
     togglePlayPause,
   };
