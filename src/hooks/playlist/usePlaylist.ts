@@ -25,7 +25,7 @@ const usePlaylist = ({
 }: UsePlaylistParams): UsePlaylistReturns => {
   const [playlist, setPlaylist] = useState(initPlaylist);
 
-  const { ...useAudioReturns } = useAudio({ ...useAudioParams });
+  const { ...useAudioReturns } = useAudio({ ...useAudioParams, loop: repeatMode === 'one' });
 
   const addAudio = useCallback((audio: ArrayElementType<Playlist>): void => {
     setPlaylist(prev => [...prev, audio]);
