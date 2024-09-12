@@ -1,9 +1,10 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 
 import { PLAYLIST_DEFAULT_VALUE } from './_constants';
 import type { Playlist, RepeatModeType } from './_types';
+import usePlayingAudio from './usePlayingAudio';
 import useAudio from '../audio/useAudio';
 
 interface UsePlaylistParams extends Omit<Parameters<typeof useAudio>[0], 'src' | 'loop'> {
@@ -11,7 +12,9 @@ interface UsePlaylistParams extends Omit<Parameters<typeof useAudio>[0], 'src' |
   repeatMode?: RepeatModeType;
 }
 
-interface UsePlaylistReturns extends ReturnType<typeof useAudio> {
+interface UsePlaylistReturns
+  extends ReturnType<typeof useAudio>,
+    ReturnType<typeof usePlayingAudio> {
   playlist: Playlist;
   addAudio: (audio: ArrayElementType<Playlist>) => void;
   removeAudio: (id: ArrayElementType<Playlist>['id']) => void;
@@ -25,7 +28,31 @@ const usePlaylist = ({
 }: UsePlaylistParams): UsePlaylistReturns => {
   const [playlist, setPlaylist] = useState(initPlaylist);
 
-  const { ...useAudioReturns } = useAudio({ ...useAudioParams, loop: repeatMode === 'one' });
+  const { resetAudio, togglePlayPause, ...useAudioReturns } = useAudio({
+    ...useAudioParams,
+    loop: repeatMode === 'one',
+  });
+
+  const getPlayingAudio = useCallback(
+    (id: ArrayElementType<Playlist>['id']): ArrayElementType<Playlist> | undefined => {
+      if (playlist.length <= 0 || !id) {
+        resetAudio();
+        return;
+      }
+
+      const playingAudio = playlist.find(audio => audio.id === id);
+
+      if (!playingAudio) {
+        resetAudio();
+        return;
+      }
+
+      return playingAudio;
+    },
+    [playlist, resetAudio],
+  );
+
+  const { playingId, changePlayingAudio } = usePlayingAudio({ getPlayingAudio, togglePlayPause });
 
   const addAudio = useCallback((audio: ArrayElementType<Playlist>): void => {
     setPlaylist(prev => [...prev, audio]);
@@ -39,11 +66,21 @@ const usePlaylist = ({
     setPlaylist([]);
   }, []);
 
+  useEffect(() => {
+    if (playlist.length <= 0 || playingId) return;
+
+    changePlayingAudio(playlist[0].id);
+  }, [changePlayingAudio, playingId, playlist]);
+
   return {
+    playingId,
     playlist,
     addAudio,
-    removeAudio,
+    changePlayingAudio,
     clearPlaylist,
+    removeAudio,
+    resetAudio,
+    togglePlayPause,
     ...useAudioReturns,
   };
 };
