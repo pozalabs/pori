@@ -28,7 +28,7 @@ const usePlaylist = ({
 }: UsePlaylistParams): UsePlaylistReturns => {
   const [playlist, setPlaylist] = useState(initPlaylist);
 
-  const { resetAudio, togglePlayPause, ...useAudioReturns } = useAudio({
+  const { audioRef, resetAudio, togglePlayPause, ...useAudioReturns } = useAudio({
     ...useAudioParams,
     loop: repeatMode === 'one',
   });
@@ -72,7 +72,34 @@ const usePlaylist = ({
     changePlayingAudio(playlist[0].id);
   }, [changePlayingAudio, playingId, playlist]);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    const onAudioEnded = (): void => {
+      const playingAudioIndex = playlist.findIndex(audio => audio.id === playingId);
+
+      if (playingAudioIndex < 0) return;
+
+      if (playingAudioIndex >= playlist.length - 1) {
+        if (repeatMode === 'all') {
+          changePlayingAudio(playlist[0].id);
+        }
+        return;
+      }
+
+      changePlayingAudio(playlist[playingAudioIndex + 1].id);
+    };
+
+    audio.addEventListener('ended', onAudioEnded);
+
+    return () => {
+      audio.removeEventListener('ended', onAudioEnded);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [audioRef, playingId, repeatMode]);
+
   return {
+    audioRef,
     playingId,
     playlist,
     addAudio,
