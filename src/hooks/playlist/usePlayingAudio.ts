@@ -72,6 +72,18 @@ const usePlayingAudio = ({
   }, [changePlayingAudio, playingId, playlist]);
 
   useEffect(() => {
+    if (playlist.length <= 0) {
+      resetAudio();
+      return;
+    }
+    if (playingId) return;
+
+    changePlayingAudio(playlist[0].id);
+  }, [changePlayingAudio, playingId, playlist, resetAudio]);
+
+  useEffect(() => {
+    if (!playingId) return;
+
     const playingAudio = findArrayElementById({
       array: playlist,
       id: playingId,
