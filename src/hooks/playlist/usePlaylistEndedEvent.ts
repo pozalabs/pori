@@ -1,3 +1,4 @@
+import type { MutableRefObject } from 'react';
 import { useEffect } from 'react';
 
 import type { ArrayElementType } from '@pozalabs/pokit/types';
@@ -6,7 +7,7 @@ import type { Playlist, RepeatModeType } from './_types';
 import findArrayElementById from './_utils/findArrayElementById';
 
 interface UsePlaylistEndedEventParams {
-  audioElement: HTMLAudioElement;
+  audioRef: MutableRefObject<HTMLAudioElement>;
   playingId: string;
   playlist: Playlist;
   repeatMode: RepeatModeType;
@@ -14,13 +15,15 @@ interface UsePlaylistEndedEventParams {
 }
 
 const usePlaylistEndedEvent = ({
-  audioElement,
+  audioRef,
   playingId,
   playlist,
   repeatMode,
   changePlayingAudio,
 }: UsePlaylistEndedEventParams) => {
   useEffect(() => {
+    const audioElement = audioRef.current;
+
     const onAudioEnded = (): void => {
       const playingAudioIndex = findArrayElementById({
         array: playlist,
@@ -46,7 +49,7 @@ const usePlaylistEndedEvent = ({
       audioElement.removeEventListener('ended', onAudioEnded);
     };
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [audioElement, playingId, repeatMode]);
+  }, [audioRef, playingId, repeatMode]);
 };
 
 export default usePlaylistEndedEvent;
