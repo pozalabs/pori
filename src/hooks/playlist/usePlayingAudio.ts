@@ -1,4 +1,3 @@
-import type { MutableRefObject } from 'react';
 import { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { ArrayElementType } from '@pozalabs/pokit/types';
@@ -7,7 +6,6 @@ import type { Playlist } from './_types';
 import findArrayElementById from './_utils/findArrayElementById';
 
 interface UsePlayingAudioParams {
-  audioRef: MutableRefObject<HTMLAudioElement>;
   playlist: Playlist;
   changeCurrentSrc: (currentSrc: string) => void;
   resetAudio: () => void;
@@ -22,13 +20,12 @@ interface UsePlayingAudioReturns {
 }
 
 const usePlayingAudio = ({
-  audioRef,
   playlist,
   changeCurrentSrc,
   resetAudio,
   togglePlayPause,
 }: UsePlayingAudioParams): UsePlayingAudioReturns => {
-  const [playingId, setPlayingId] = useState('');
+  const [playingId, setPlayingId] = useState(playlist.length > 0 ? playlist[0].id : '');
 
   const needToPlayRef = useRef(false);
 
@@ -91,13 +88,13 @@ const usePlayingAudio = ({
       resetAudio();
       return;
     }
-    if (playingId) return;
-
-    changePlayingAudio(playlist[0].id, audioRef.current.autoplay);
-  }, [audioRef, changePlayingAudio, playingId, playlist, resetAudio]);
+  }, [playlist, resetAudio]);
 
   useEffect(() => {
-    if (!playingId) return;
+    if (!playingId) {
+      resetAudio();
+      return;
+    }
 
     const playingAudio = findArrayElementById({
       array: playlist,
