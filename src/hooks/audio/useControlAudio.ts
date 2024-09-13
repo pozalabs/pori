@@ -38,7 +38,9 @@ const useControlAudio = ({
 }: UseControlAudioParams): UseControlAudioReturns => {
   const changeCurrentSrc = useCallback(
     (currentSrc: string): void => {
-      if (currentSrc === audioRef.current.currentSrc) return;
+      const absoluteCurrentSrc = new URL(currentSrc, window.location.href).href;
+
+      if (absoluteCurrentSrc === audioRef.current.currentSrc) return;
 
       const playbackRate = audioRef.current.playbackRate;
 
