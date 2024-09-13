@@ -29,19 +29,21 @@ const usePlaylist = ({
 }: UsePlaylistParams): UsePlaylistReturns => {
   const [playlist, setPlaylist] = useState(initPlaylist);
 
-  const { audioRef, resetAudio, togglePlayPause, ...useAudioReturns } = useAudio({
+  const { audioRef, changeCurrentSrc, resetAudio, togglePlayPause, ...useAudioReturns } = useAudio({
     ...useAudioParams,
     loop: repeatMode === 'one',
   });
 
   const { playingId, changePlayingAudio, ...usePlayingAudioReturns } = usePlayingAudio({
+    audioRef,
     playlist,
+    changeCurrentSrc,
     resetAudio,
     togglePlayPause,
   });
 
   usePlaylistEndedEvent({
-    audioElement: audioRef.current,
+    audioRef,
     playingId,
     playlist,
     repeatMode,
@@ -65,6 +67,7 @@ const usePlaylist = ({
     playingId,
     playlist,
     addAudio,
+    changeCurrentSrc,
     changePlayingAudio,
     clearPlaylist,
     removeAudio,
