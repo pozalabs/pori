@@ -1,10 +1,11 @@
-import { useCallback, useEffect, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 
 import { PLAYLIST_DEFAULT_VALUE } from './_constants';
 import type { Playlist, RepeatModeType } from './_types';
 import usePlayingAudio from './usePlayingAudio';
+import usePlaylistEndedEvent from './usePlaylistEndedEvent';
 import useAudio from '../audio/useAudio';
 
 interface UsePlaylistParams extends Omit<Parameters<typeof useAudio>[0], 'src' | 'loop'> {
@@ -39,6 +40,14 @@ const usePlaylist = ({
     togglePlayPause,
   });
 
+  usePlaylistEndedEvent({
+    audioElement: audioRef.current,
+    playingId,
+    playlist,
+    repeatMode,
+    changePlayingAudio,
+  });
+
   const addAudio = useCallback((audio: ArrayElementType<Playlist>): void => {
     setPlaylist(prev => [...prev, audio]);
   }, []);
@@ -50,38 +59,6 @@ const usePlaylist = ({
   const clearPlaylist = useCallback((): void => {
     setPlaylist([]);
   }, []);
-
-  useEffect(() => {
-    if (playlist.length <= 0 || playingId) return;
-
-    changePlayingAudio(playlist[0].id);
-  }, [changePlayingAudio, playingId, playlist]);
-
-  useEffect(() => {
-    const audio = audioRef.current;
-
-    const onAudioEnded = (): void => {
-      const playingAudioIndex = playlist.findIndex(audio => audio.id === playingId);
-
-      if (playingAudioIndex < 0) return;
-
-      if (playingAudioIndex >= playlist.length - 1) {
-        if (repeatMode === 'all') {
-          changePlayingAudio(playlist[0].id);
-        }
-        return;
-      }
-
-      changePlayingAudio(playlist[playingAudioIndex + 1].id);
-    };
-
-    audio.addEventListener('ended', onAudioEnded);
-
-    return () => {
-      audio.removeEventListener('ended', onAudioEnded);
-    };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [audioRef, playingId, repeatMode]);
 
   return {
     audioRef,
