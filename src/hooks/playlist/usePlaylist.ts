@@ -33,7 +33,7 @@ const usePlaylist = ({
     loop: repeatMode === 'one',
   });
 
-  const { playingId, changePlayingAudio } = usePlayingAudio({
+  const { playingId, changePlayingAudio, ...usePlayingAudioReturns } = usePlayingAudio({
     playlist,
     resetAudio,
     togglePlayPause,
@@ -94,6 +94,7 @@ const usePlaylist = ({
     resetAudio,
     togglePlayPause,
     ...useAudioReturns,
+    ...usePlayingAudioReturns,
   };
 };
 

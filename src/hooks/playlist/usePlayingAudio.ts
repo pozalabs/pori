@@ -14,6 +14,8 @@ interface UsePlayingAudioParams {
 interface UsePlayingAudioReturns {
   playingId: ArrayElementType<Playlist>['id'];
   changePlayingAudio: (id: ArrayElementType<Playlist>['id']) => void;
+  playNextAudio: () => void;
+  playPrevAudio: () => void;
 }
 
 const usePlayingAudio = ({
@@ -35,6 +37,40 @@ const usePlayingAudio = ({
     [playingId, togglePlayPause],
   );
 
+  const playNextAudio = useCallback((): void => {
+    const playingAudioIndex = findArrayElementById({
+      array: playlist,
+      id: playingId,
+      returnIndex: true,
+    });
+
+    if (playingAudioIndex === undefined || playingAudioIndex < 0) return;
+
+    if (playingAudioIndex >= playlist.length - 1) {
+      changePlayingAudio(playlist[0].id);
+      return;
+    }
+
+    changePlayingAudio(playlist[playingAudioIndex + 1].id);
+  }, [changePlayingAudio, playingId, playlist]);
+
+  const playPrevAudio = useCallback((): void => {
+    const playingAudioIndex = findArrayElementById({
+      array: playlist,
+      id: playingId,
+      returnIndex: true,
+    });
+
+    if (playingAudioIndex === undefined || playingAudioIndex < 0) return;
+
+    if (playingAudioIndex <= 0) {
+      changePlayingAudio(playlist[playlist.length - 1].id);
+      return;
+    }
+
+    changePlayingAudio(playlist[playingAudioIndex - 1].id);
+  }, [changePlayingAudio, playingId, playlist]);
+
   useEffect(() => {
     const playingAudio = findArrayElementById({
       array: playlist,
@@ -55,6 +91,8 @@ const usePlayingAudio = ({
   return {
     playingId,
     changePlayingAudio,
+    playNextAudio,
+    playPrevAudio,
   };
 };
 
