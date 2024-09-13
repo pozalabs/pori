@@ -33,26 +33,11 @@ const usePlaylist = ({
     loop: repeatMode === 'one',
   });
 
-  const getPlayingAudio = useCallback(
-    (id: ArrayElementType<Playlist>['id']): ArrayElementType<Playlist> | undefined => {
-      if (playlist.length <= 0 || !id) {
-        resetAudio();
-        return;
-      }
-
-      const playingAudio = playlist.find(audio => audio.id === id);
-
-      if (!playingAudio) {
-        resetAudio();
-        return;
-      }
-
-      return playingAudio;
-    },
-    [playlist, resetAudio],
-  );
-
-  const { playingId, changePlayingAudio } = usePlayingAudio({ getPlayingAudio, togglePlayPause });
+  const { playingId, changePlayingAudio } = usePlayingAudio({
+    playlist,
+    resetAudio,
+    togglePlayPause,
+  });
 
   const addAudio = useCallback((audio: ArrayElementType<Playlist>): void => {
     setPlaylist(prev => [...prev, audio]);

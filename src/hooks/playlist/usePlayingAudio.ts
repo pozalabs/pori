@@ -3,9 +3,11 @@ import { useCallback, useEffect, useState } from 'react';
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 
 import type { Playlist } from './_types';
+import findArrayElementById from './_utils/findArrayElementById';
 
 interface UsePlayingAudioParams {
-  getPlayingAudio: (id: ArrayElementType<Playlist>['id']) => ArrayElementType<Playlist> | undefined;
+  playlist: Playlist;
+  resetAudio: () => void;
   togglePlayPause: (src?: string) => void;
 }
 
@@ -15,7 +17,8 @@ interface UsePlayingAudioReturns {
 }
 
 const usePlayingAudio = ({
-  getPlayingAudio,
+  playlist,
+  resetAudio,
   togglePlayPause,
 }: UsePlayingAudioParams): UsePlayingAudioReturns => {
   const [playingId, setPlayingId] = useState('');
@@ -33,16 +36,21 @@ const usePlayingAudio = ({
   );
 
   useEffect(() => {
-    const playingAudio = getPlayingAudio(playingId);
+    const playingAudio = findArrayElementById({
+      array: playlist,
+      id: playingId,
+      returnIndex: false,
+    });
 
     if (!playingAudio) {
+      resetAudio();
       setPlayingId('');
       return;
     }
 
     togglePlayPause(playingAudio.src);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [getPlayingAudio, playingId]);
+  }, [playingId]);
 
   return {
     playingId,
