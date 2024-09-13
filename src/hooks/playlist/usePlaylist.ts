@@ -23,6 +23,36 @@ interface UsePlaylistReturns
   clearPlaylist: () => void;
 }
 
+/**
+ * 플레이리스트를 관리할 수 있는 훅입니다. useAudio 훅에서 플레이리스트 개념을 확장하고 있습니다.
+ * @param UsePlaylistParams
+ * ```
+ * interface UsePlaylistParams extends Omit<Parameters<typeof useAudio>[0], 'src' | 'loop'> {
+ *    playlist?: Playlist;
+ *    repeatMode?: RepeatModeType;
+ * }
+ * ```
+ * - playlist : 초기 플레이리스트 배열 (default : [])
+ * - repeatMode : 반복 모드 (none | one | all) (default : none)
+ * @returns
+ * `UsePlaylistReturns`
+ * ```
+ * interface UsePlaylistReturns extends ReturnType<typeof useAudio> {
+ *    playingId: ArrayElementType<Playlist>['id'];
+ *    playlist: Playlist;
+ *    addAudio: (audio: ArrayElementType<Playlist>, autoplay?: boolean) => void;
+ *    clearPlaylist: () => void;
+ *    changePlayingAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
+ *    playNextAudio: (autoplay?: boolean) => void;
+ *    playPrevAudio: (autoplay?: boolean) => void;
+ *    removeAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
+ * }
+ * ```
+ * - addAudio, removeAudio, changePlayingAudio, playNextAudio, playPrevAudio는 자동 재생 여부를 옵셔널로 입력 받습니다.
+ *   - 단, 이 값은 usePlaylist 훅에 전달하는 autoplay 파라미터와 충돌되는 값으로, 만약 usePlaylist 훅에 전달한 autoplay가 true라면 위 함수에 autoplay 값으로 false를 전달해도 오디오가 자동으로 재생될 수 있습니다.
+ * - addAudio, removeAudio의 autoplay default : `false`
+ * - changePlayingAudio, playNextAudio, playPrevAudio의 autoplay default : `true`
+ */
 const usePlaylist = ({
   playlist: initPlaylist = PLAYLIST_DEFAULT_VALUE.playlist,
   repeatMode = PLAYLIST_DEFAULT_VALUE.repeatMode,
