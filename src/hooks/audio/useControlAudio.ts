@@ -135,7 +135,7 @@ const useControlAudio = ({
 
   const togglePlayPause = useCallback(
     (src?: string): void => {
-      if (src && src !== audioRef.current.src) {
+      if (src) {
         audioRef.current.src = src;
         play();
         return;
