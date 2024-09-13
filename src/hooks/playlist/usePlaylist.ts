@@ -4,6 +4,7 @@ import type { ArrayElementType } from '@pozalabs/pokit/types';
 
 import { PLAYLIST_DEFAULT_VALUE } from './_constants';
 import type { Playlist, RepeatModeType } from './_types';
+import findArrayElementById from './_utils/findArrayElementById';
 import usePlayingAudio from './usePlayingAudio';
 import usePlaylistEndedEvent from './usePlaylistEndedEvent';
 import useAudio from '../audio/useAudio';
@@ -17,8 +18,8 @@ interface UsePlaylistReturns
   extends ReturnType<typeof useAudio>,
     ReturnType<typeof usePlayingAudio> {
   playlist: Playlist;
-  addAudio: (audio: ArrayElementType<Playlist>) => void;
-  removeAudio: (id: ArrayElementType<Playlist>['id']) => void;
+  addAudio: (audio: ArrayElementType<Playlist>, autoplay?: boolean) => void;
+  removeAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
   clearPlaylist: () => void;
 }
 
@@ -35,7 +36,6 @@ const usePlaylist = ({
   });
 
   const { playingId, changePlayingAudio, ...usePlayingAudioReturns } = usePlayingAudio({
-    audioRef,
     playlist,
     changeCurrentSrc,
     resetAudio,
@@ -50,13 +50,39 @@ const usePlaylist = ({
     changePlayingAudio,
   });
 
-  const addAudio = useCallback((audio: ArrayElementType<Playlist>): void => {
-    setPlaylist(prev => [...prev, audio]);
-  }, []);
+  const addAudio = useCallback(
+    (audio: ArrayElementType<Playlist>, autoplay = false): void => {
+      setPlaylist(prev => [...prev, audio]);
 
-  const removeAudio = useCallback((id: ArrayElementType<Playlist>['id']): void => {
-    setPlaylist(prev => prev.filter(audio => audio.id !== id));
-  }, []);
+      if (autoplay) {
+        changePlayingAudio(audio.id, autoplay);
+      }
+    },
+    [changePlayingAudio],
+  );
+
+  const removeAudio = useCallback(
+    (id: ArrayElementType<Playlist>['id'], autoplay = false): void => {
+      setPlaylist(prev => prev.filter(audio => audio.id !== id));
+
+      if (playingId !== id) return;
+
+      if (autoplay && playlist.length > 1) {
+        const removedAudioIndex = findArrayElementById({ array: playlist, id, returnIndex: true });
+
+        if (removedAudioIndex === undefined || removedAudioIndex < 0) return;
+
+        const targetAudio =
+          playlist[removedAudioIndex >= playlist.length - 1 ? 0 : removedAudioIndex + 1];
+
+        changePlayingAudio(targetAudio.id, autoplay);
+        return;
+      }
+
+      changePlayingAudio('');
+    },
+    [changePlayingAudio, playingId, playlist],
+  );
 
   const clearPlaylist = useCallback((): void => {
     setPlaylist([]);
