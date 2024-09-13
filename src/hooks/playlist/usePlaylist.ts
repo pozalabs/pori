@@ -67,11 +67,16 @@ const usePlaylist = ({
 
       if (playingId !== id) return;
 
-      if (autoplay && playlist.length > 1) {
-        const removedAudioIndex = findArrayElementById({ array: playlist, id, returnIndex: true });
+      const removedAudioIndex = findArrayElementById({ array: playlist, id, returnIndex: true });
 
-        if (removedAudioIndex === undefined || removedAudioIndex < 0) return;
+      if (removedAudioIndex === undefined || removedAudioIndex < 0) return;
 
+      if (!autoplay) {
+        changePlayingAudio(playlist[playlist.length > 1 ? removedAudioIndex + 1 : 0].id, autoplay);
+        return;
+      }
+
+      if (playlist.length > 1) {
         const targetAudio =
           playlist[removedAudioIndex >= playlist.length - 1 ? 0 : removedAudioIndex + 1];
 
