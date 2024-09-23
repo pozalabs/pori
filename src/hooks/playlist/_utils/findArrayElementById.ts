@@ -17,11 +17,15 @@ const findArrayElementById = <T extends ArrayWithId, F extends boolean>({
 }): FindArrayElementByIdReturnType<T, F> | undefined => {
   if (array.length <= 0 || !id) return;
 
+  const elementIndex = array.findIndex(el => el.id === id);
+
   if (returnIndex) {
-    return array.findIndex(el => el.id === id) as FindArrayElementByIdReturnType<T, F>;
+    return elementIndex as FindArrayElementByIdReturnType<T, F>;
   }
 
-  return array.find(el => el.id === id) as FindArrayElementByIdReturnType<T, F>;
+  if (elementIndex < 0) return;
+
+  return array[elementIndex] as FindArrayElementByIdReturnType<T, F>;
 };
 
 export default findArrayElementById;
