@@ -82,10 +82,9 @@ const usePlayingAudio = ({
   );
 
   useEffect(() => {
-    if (playlist.length <= 0) {
-      resetAudio();
-      return;
-    }
+    if (playlist.length > 0) return;
+
+    resetAudio();
   }, [playlist, resetAudio]);
 
   useEffect(() => {
