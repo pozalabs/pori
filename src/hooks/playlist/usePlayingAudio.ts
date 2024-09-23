@@ -43,15 +43,23 @@ const usePlayingAudio = ({
     [playingId, togglePlayPause],
   );
 
+  const getPlayingAudioIndex = useCallback((): number => {
+    const playingAudioIndex = findArrayElementById({
+      array: playlist,
+      id: playingId,
+      returnIndex: true,
+    });
+
+    if (playingAudioIndex === undefined || playingAudioIndex < 0) return -1;
+
+    return playingAudioIndex;
+  }, [playingId, playlist]);
+
   const playNextAudio = useCallback(
     (autoplay = true): void => {
-      const playingAudioIndex = findArrayElementById({
-        array: playlist,
-        id: playingId,
-        returnIndex: true,
-      });
+      const playingAudioIndex = getPlayingAudioIndex();
 
-      if (playingAudioIndex === undefined || playingAudioIndex < 0) return;
+      if (playingAudioIndex < 0) return;
 
       if (playingAudioIndex >= playlist.length - 1) {
         changePlayingAudio(playlist[0].id, autoplay);
@@ -60,18 +68,14 @@ const usePlayingAudio = ({
 
       changePlayingAudio(playlist[playingAudioIndex + 1].id, autoplay);
     },
-    [changePlayingAudio, playingId, playlist],
+    [changePlayingAudio, getPlayingAudioIndex, playlist],
   );
 
   const playPrevAudio = useCallback(
     (autoplay = true): void => {
-      const playingAudioIndex = findArrayElementById({
-        array: playlist,
-        id: playingId,
-        returnIndex: true,
-      });
+      const playingAudioIndex = getPlayingAudioIndex();
 
-      if (playingAudioIndex === undefined || playingAudioIndex < 0) return;
+      if (playingAudioIndex < 0) return;
 
       if (playingAudioIndex <= 0) {
         changePlayingAudio(playlist[playlist.length - 1].id, autoplay);
@@ -80,7 +84,7 @@ const usePlayingAudio = ({
 
       changePlayingAudio(playlist[playingAudioIndex - 1].id, autoplay);
     },
-    [changePlayingAudio, playingId, playlist],
+    [changePlayingAudio, getPlayingAudioIndex, playlist],
   );
 
   useEffect(() => {
