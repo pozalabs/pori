@@ -29,6 +29,7 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
     playNextAudio,
     playPrevAudio,
     removeAudio,
+    togglePlayPause,
   } = usePlaylist({
     ...params,
     repeatMode,
@@ -91,6 +92,12 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
         <option value="none">반복 없음</option>
       </select>
       <div className="flex gap-3">
+        <button
+          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1"
+          onClick={() => togglePlayPause()}
+        >
+          {isPlaying ? '일시정지' : '재생'}
+        </button>
         <button
           className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1"
           onClick={clearPlaylist}
