@@ -1,6 +1,11 @@
-import type { RepeatModeType } from '../_types';
+import type { Playlist, RepeatModeType } from '../_types';
 
-export const PLAYLIST_DEFAULT_VALUE = {
+interface IPlaylistDefaultValue {
+  playlist: Playlist;
+  repeatMode: RepeatModeType;
+}
+
+export const PLAYLIST_DEFAULT_VALUE: IPlaylistDefaultValue = {
   playlist: [],
-  repeatMode: 'none' as RepeatModeType,
+  repeatMode: 'none',
 };
