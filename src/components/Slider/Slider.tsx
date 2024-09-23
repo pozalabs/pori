@@ -9,7 +9,6 @@ interface SliderProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onDrag' | 'onDragStart' | 'onDragEnd'> {
   backgroundColor?: string;
   progressColor?: string;
-  draggable?: boolean;
   max?: number;
   min?: number;
   step?: number;
