@@ -61,12 +61,9 @@ const usePlayingAudio = ({
 
       if (playingAudioIndex < 0) return;
 
-      if (playingAudioIndex >= playlist.length - 1) {
-        changePlayingAudio(playlist[0].id, autoplay);
-        return;
-      }
+      const targetAudioIndex = playingAudioIndex >= playlist.length - 1 ? 0 : playingAudioIndex + 1;
 
-      changePlayingAudio(playlist[playingAudioIndex + 1].id, autoplay);
+      changePlayingAudio(playlist[targetAudioIndex].id, autoplay);
     },
     [changePlayingAudio, getPlayingAudioIndex, playlist],
   );
@@ -77,12 +74,9 @@ const usePlayingAudio = ({
 
       if (playingAudioIndex < 0) return;
 
-      if (playingAudioIndex <= 0) {
-        changePlayingAudio(playlist[playlist.length - 1].id, autoplay);
-        return;
-      }
+      const targetAudioIndex = playingAudioIndex <= 0 ? playlist.length - 1 : playingAudioIndex - 1;
 
-      changePlayingAudio(playlist[playingAudioIndex - 1].id, autoplay);
+      changePlayingAudio(playlist[targetAudioIndex].id, autoplay);
     },
     [changePlayingAudio, getPlayingAudioIndex, playlist],
   );
