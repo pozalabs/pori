@@ -19,11 +19,11 @@ const findArrayElementById = <T extends ArrayWithId, F extends boolean>({
 
   const elementIndex = array.findIndex(el => el.id === id);
 
+  if (elementIndex < 0) return;
+
   if (returnIndex) {
     return elementIndex as FindArrayElementByIdReturnType<T, F>;
   }
-
-  if (elementIndex < 0) return;
 
   return array[elementIndex] as FindArrayElementByIdReturnType<T, F>;
 };

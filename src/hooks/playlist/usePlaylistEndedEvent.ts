@@ -31,7 +31,7 @@ const usePlaylistEndedEvent = ({
         returnIndex: true,
       });
 
-      if (playingAudioIndex === undefined || playingAudioIndex < 0) return;
+      if (playingAudioIndex === undefined) return;
 
       if (playingAudioIndex >= playlist.length - 1) {
         if (repeatMode === 'all') {

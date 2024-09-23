@@ -99,7 +99,7 @@ const usePlaylist = ({
 
       const removedAudioIndex = findArrayElementById({ array: playlist, id, returnIndex: true });
 
-      if (removedAudioIndex === undefined || removedAudioIndex < 0) return;
+      if (removedAudioIndex === undefined) return;
 
       if (!autoplay) {
         changePlayingAudio(playlist[playlist.length > 1 ? removedAudioIndex + 1 : 0].id, autoplay);

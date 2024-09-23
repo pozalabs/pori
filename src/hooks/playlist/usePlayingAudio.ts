@@ -50,7 +50,7 @@ const usePlayingAudio = ({
       returnIndex: true,
     });
 
-    if (playingAudioIndex === undefined || playingAudioIndex < 0) return -1;
+    if (playingAudioIndex === undefined) return -1;
 
     return playingAudioIndex;
   }, [playingId, playlist]);
