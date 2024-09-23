@@ -1,11 +1,12 @@
 import type { MouseEvent } from 'react';
-import { useCallback, type InputHTMLAttributes } from 'react';
+import { useCallback, useRef, type InputHTMLAttributes } from 'react';
 
 import { cn } from '@pozalabs/pokit/utils';
 
 import { SLIDER_DEFAULT_VALUE } from './_constants';
 
-interface SliderProps extends InputHTMLAttributes<HTMLInputElement> {
+interface SliderProps
+  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onDrag' | 'onDragStart' | 'onDragEnd'> {
   backgroundColor?: string;
   progressColor?: string;
   draggable?: boolean;
@@ -14,6 +15,9 @@ interface SliderProps extends InputHTMLAttributes<HTMLInputElement> {
   step?: number;
   value?: number;
   onValueChange?: (value: number) => void;
+  onDrag?: (value: number) => void;
+  onDragStart?: (value: number) => void;
+  onDragEnd?: (value: number) => void;
 }
 
 const Slider = ({
@@ -24,25 +28,75 @@ const Slider = ({
   step = SLIDER_DEFAULT_VALUE.step,
   value,
   onValueChange,
+  onDrag,
+  onDragStart,
+  onDragEnd,
   className,
   ...inputProps
 }: SliderProps) => {
-  const onSliderClick = useCallback(
-    (e: MouseEvent<HTMLDivElement>): void => {
-      if (!onValueChange) return;
+  const isDraggingRef = useRef(false);
 
+  const getValue = useCallback(
+    (e: MouseEvent<HTMLDivElement>): number => {
       const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
       const clickX = e.clientX - rect.left;
       const value = Math.round(((clickX / rect.width) * max) / step) * step;
 
-      onValueChange(value);
+      return value;
     },
-    [max, onValueChange, step],
+    [max, step],
+  );
+
+  const onSliderClick = useCallback(
+    (e: MouseEvent<HTMLDivElement>): void => {
+      if (!onValueChange) return;
+
+      onValueChange(getValue(e));
+    },
+    [getValue, onValueChange],
+  );
+
+  const onSliderDrag = useCallback(
+    (e: MouseEvent<HTMLDivElement>): void => {
+      if (!onDrag || !isDraggingRef.current) return;
+
+      onDrag(getValue(e));
+    },
+    [getValue, onDrag],
+  );
+
+  const onSliderDragStart = useCallback(
+    (e: MouseEvent<HTMLDivElement>): void => {
+      isDraggingRef.current = true;
+
+      if (!onDragStart) return;
+
+      onDragStart(getValue(e));
+    },
+    [getValue, onDragStart],
+  );
+
+  const onSliderDragEnd = useCallback(
+    (e: MouseEvent<HTMLDivElement>): void => {
+      isDraggingRef.current = false;
+
+      if (!onDragEnd) return;
+
+      onDragEnd(getValue(e));
+    },
+    [getValue, onDragEnd],
   );
 
   return (
     <>
-      <div className={cn('relative h-4 rounded-lg', className)} onClick={onSliderClick}>
+      <div
+        className={cn('relative h-4 rounded-lg', className)}
+        onClick={onSliderClick}
+        onMouseMove={onSliderDrag}
+        onMouseDown={onSliderDragStart}
+        onMouseUp={onSliderDragEnd}
+        onMouseLeave={onSliderDragEnd}
+      >
         <div
           style={{ background: backgroundColor }}
           className="absolute left-0 top-0 size-full rounded-inherit"
