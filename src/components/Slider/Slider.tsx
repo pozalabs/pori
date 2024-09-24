@@ -7,12 +7,12 @@ import { SLIDER_DEFAULT_VALUE } from './_constants';
 
 interface SliderProps
   extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onDrag' | 'onDragStart' | 'onDragEnd'> {
-  backgroundColor?: string;
-  progressColor?: string;
   max?: number;
   min?: number;
   step?: number;
   value?: number;
+  railClassName?: string;
+  trackClassName?: string;
   onValueChange?: (value: number) => void;
   onDrag?: (value: number) => void;
   onDragStart?: (value: number) => void;
@@ -20,12 +20,12 @@ interface SliderProps
 }
 
 const Slider = ({
-  backgroundColor = SLIDER_DEFAULT_VALUE.backgroundColor,
-  progressColor = SLIDER_DEFAULT_VALUE.progressColor,
   max = SLIDER_DEFAULT_VALUE.max,
   min = SLIDER_DEFAULT_VALUE.min,
   step = SLIDER_DEFAULT_VALUE.step,
   value,
+  railClassName,
+  trackClassName,
   onValueChange,
   onDrag,
   onDragStart,
@@ -97,12 +97,17 @@ const Slider = ({
         onMouseLeave={onSliderDragEnd}
       >
         <div
-          style={{ background: backgroundColor }}
-          className="absolute left-0 top-0 size-full rounded-inherit"
+          className={cn(
+            'absolute left-0 top-0 size-full rounded-inherit bg-gray-100',
+            railClassName,
+          )}
         />
         <div
-          style={{ width: `${((value ?? 0) / max) * 100}%`, background: progressColor }}
-          className="absolute left-0 top-0 size-full rounded-inherit"
+          style={{ width: `${((value ?? 0) / max) * 100}%` }}
+          className={cn(
+            'absolute left-0 top-0 size-full rounded-inherit bg-[#0873FF]',
+            trackClassName,
+          )}
         />
       </div>
       <input

@@ -43,6 +43,8 @@ export const Player: Story = {
   args: {
     ...SLIDER_DEFAULT_VALUE,
     className: 'w-[400px]',
+    railClassName: 'bg-slate-100',
+    trackClassName: 'bg-violet-300',
     step: 0.01,
   },
   render: (props: Parameters<typeof Slider>[0]) => {
