@@ -13,6 +13,7 @@ interface SliderProps
   value?: number;
   railClassName?: string;
   trackClassName?: string;
+  thumbClassName?: string;
   onValueChange?: (value: number) => void;
   onDrag?: (value: number) => void;
   onDragStart?: (value: number) => void;
@@ -26,6 +27,7 @@ const Slider = ({
   value,
   railClassName,
   trackClassName,
+  thumbClassName,
   onValueChange,
   onDrag,
   onDragStart,
@@ -107,6 +109,13 @@ const Slider = ({
           className={cn(
             'absolute left-0 top-0 size-full rounded-inherit bg-[#0873FF]',
             trackClassName,
+          )}
+        />
+        <div
+          style={{ left: `calc(${((value ?? 0) / max) * 100}%)` }}
+          className={cn(
+            'absolute top-0 rounded-full bg-[#0873FF] h-full aspect-square -translate-x-1/2',
+            thumbClassName,
           )}
         />
       </div>
