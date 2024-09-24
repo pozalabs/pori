@@ -43,9 +43,12 @@ const Slider = ({
       const clickX = e.clientX - rect.left;
       const value = Math.round(((clickX / rect.width) * max) / step) * step;
 
+      if (value > max) return max;
+      if (value < min) return min;
+
       return value;
     },
-    [max, step],
+    [max, min, step],
   );
 
   const onSliderClick = useCallback(
