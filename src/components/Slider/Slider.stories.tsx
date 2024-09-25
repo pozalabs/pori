@@ -128,8 +128,8 @@ export const Player: Story = {
             onValueChange={onVolumeSliderChange}
             onDrag={onVolumeSliderChange}
             className="h-1 w-[100px]"
-            trackClassName="bg-violet-300"
-            thumbClassName="bg-violet-300 h-3 -top-1"
+            trackClassName="bg-violet-300 transition-all duration-100"
+            thumbClassName="bg-violet-300 h-3 border-violet-100 transition-all duration-100 -translate-y-1 hover:shadow-volume"
           />
         </div>
         <div className="flex justify-center gap-2">
