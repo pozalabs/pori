@@ -20,6 +20,26 @@ interface SliderProps
   onDragEnd?: (value: number) => void;
 }
 
+/**
+ * 스타일을 커스텀할 수 있는 Slider 컴포넌트입니다.
+ * @param SliderProps
+ * ```
+ * interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onDrag' | 'onDragStart' | 'onDragEnd'> {
+ *    max?: number;
+ *    min?: number;
+ *    step?: number;
+ *    value?: number;
+ *    railClassName?: string;
+ *    trackClassName?: string;
+ *    thumbClassName?: string;
+ *    railClassName?: string;
+ *    onValueChange?: (value: number) => void;
+ *    onDrag?: (value: number) => void;
+ *    onDragStart?: (value: number) => void;
+ *    onDragEnd?: (value: number) => void;
+ * }
+ * ```
+ */
 const Slider = ({
   max = SLIDER_DEFAULT_VALUE.max,
   min = SLIDER_DEFAULT_VALUE.min,
