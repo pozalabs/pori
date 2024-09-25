@@ -45,6 +45,7 @@ export const Player: Story = {
     className: 'w-[400px]',
     railClassName: 'bg-slate-100',
     trackClassName: 'bg-violet-300',
+    thumbClassName: 'hidden',
     step: 0.01,
   },
   render: (props: Parameters<typeof Slider>[0]) => {
@@ -62,7 +63,7 @@ export const Player: Story = {
       shiftTimeForward,
       togglePlayPause,
     } = useAudio({
-      src: 'https://cdn.pixabay.com/audio/2023/06/12/audio_23ef6b7464.mp3',
+      src: 'https://cdn.pixabay.com/audio/2024/09/09/audio_7556bb3a41.mp3',
       enabledKeyboardControl: true,
     });
 
@@ -71,10 +72,19 @@ export const Player: Story = {
     };
 
     const onCurrentTimeSliderDrag = (currentTime: number): void => {
-      if (isDragging.current) {
-        setDragTime(currentTime);
-        return;
-      }
+      if (!isDragging.current) return;
+      setDragTime(currentTime);
+    };
+
+    const onCurrentTimeSliderDragStart = (currentTime: number): void => {
+      isDragging.current = true;
+      setDragTime(currentTime);
+    };
+
+    const onCurrentTimeSliderDragEnd = (currentTime: number): void => {
+      if (!isDragging.current) return;
+
+      isDragging.current = false;
       changeCurrentTime(currentTime);
     };
 
@@ -105,7 +115,8 @@ export const Player: Story = {
           value={isDragging.current ? dragTime : currentTime}
           onValueChange={onCurrentTimeSliderChange}
           onDrag={onCurrentTimeSliderDrag}
-          onDragStart={() => (isDragging.current = true)}
+          onDragStart={onCurrentTimeSliderDragStart}
+          onDragEnd={onCurrentTimeSliderDragEnd}
         />
         <div className="flex items-center justify-center gap-2">
           <span className="text-[12px]">볼륨</span>
@@ -116,24 +127,26 @@ export const Player: Story = {
             value={volume}
             onValueChange={onVolumeSliderChange}
             onDrag={onVolumeSliderChange}
-            className="h-2 w-[100px]"
+            className="h-1 w-[100px]"
+            trackClassName="bg-violet-300"
+            thumbClassName="bg-violet-300 h-3 -top-1"
           />
         </div>
         <div className="flex justify-center gap-2">
           <button
-            className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1"
+            className="rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-[14px]"
             onClick={shiftTimeForward}
           >
             앞으로 10초 이동
           </button>
           <button
-            className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1"
+            className="rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-[14px]"
             onClick={() => togglePlayPause()}
           >
             {isPlaying ? '일시정지' : '재생'}
           </button>
           <button
-            className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1"
+            className="rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-[14px]"
             onClick={shiftTimeBackward}
           >
             뒤로 10초 이동
