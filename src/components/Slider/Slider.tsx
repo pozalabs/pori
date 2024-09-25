@@ -35,6 +35,7 @@ const Slider = ({
   className,
   ...inputProps
 }: SliderProps) => {
+  const mouseDownPositionRef = useRef(0);
   const isDraggingRef = useRef(false);
   const transitionEnabledRef = useRef(false);
 
@@ -66,7 +67,9 @@ const Slider = ({
     (e: MouseEvent<HTMLDivElement>): void => {
       if (!onDrag || !isDraggingRef.current) return;
 
-      transitionEnabledRef.current = false;
+      if (Math.abs(e.clientX - mouseDownPositionRef.current) > 1) {
+        transitionEnabledRef.current = false;
+      }
       onDrag(getValue(e));
     },
     [getValue, onDrag],
@@ -74,6 +77,7 @@ const Slider = ({
 
   const onSliderDragStart = useCallback(
     (e: MouseEvent<HTMLDivElement>): void => {
+      mouseDownPositionRef.current = e.clientX;
       isDraggingRef.current = true;
 
       if (!onDragStart) return;
@@ -104,13 +108,13 @@ const Slider = ({
         onMouseUp={onSliderDragEnd}
         onMouseLeave={onSliderDragEnd}
       >
-        <div
+        <span
           className={cn(
             'absolute left-0 top-0 size-full rounded-inherit bg-gray-100',
             railClassName,
           )}
         />
-        <div
+        <span
           style={{ width: `${((value ?? 0) / max) * 100}%` }}
           className={cn(
             'absolute left-0 top-0 size-full rounded-inherit bg-[#0873FF]',
@@ -118,7 +122,7 @@ const Slider = ({
             trackClassName,
           )}
         />
-        <div
+        <span
           style={{ left: `calc(${((value ?? 0) / max) * 100}%)` }}
           className={cn(
             'absolute top-0 rounded-full bg-[#0873FF] h-full aspect-square -translate-x-1/2',
