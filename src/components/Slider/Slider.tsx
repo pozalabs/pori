@@ -117,7 +117,7 @@ const Slider = ({
           )}
         />
         <span
-          style={{ left: `calc(${((value ?? 0) / max) * 100}%)` }}
+          style={{ left: `${((value ?? 0) / max) * 100}%` }}
           className={cn(
             'absolute top-0 rounded-full bg-[#0873FF] h-full aspect-square -translate-x-1/2',
             thumbClassName,
