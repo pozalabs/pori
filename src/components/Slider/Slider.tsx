@@ -94,36 +94,31 @@ const Slider = ({
   );
 
   return (
-    <>
-      <div
-        className={cn('relative h-4 rounded-lg', className)}
-        onClick={onSliderClick}
-        onMouseMove={onSliderDrag}
-        onMouseDown={onSliderDragStart}
-        onMouseUp={onSliderDragEnd}
-        onMouseLeave={onSliderDragEnd}
-      >
-        <span
-          className={cn(
-            'absolute left-0 top-0 size-full rounded-inherit bg-gray-100',
-            railClassName,
-          )}
-        />
-        <span
-          style={{ width: `${((value ?? 0) / max) * 100}%` }}
-          className={cn(
-            'absolute left-0 top-0 size-full rounded-inherit bg-[#0873FF]',
-            trackClassName,
-          )}
-        />
-        <span
-          style={{ left: `${((value ?? 0) / max) * 100}%` }}
-          className={cn(
-            'absolute top-0 rounded-full bg-[#0873FF] h-full aspect-square -translate-x-1/2',
-            thumbClassName,
-          )}
-        />
-      </div>
+    <div
+      className={cn('relative h-4 rounded-lg', className)}
+      onClick={onSliderClick}
+      onMouseMove={onSliderDrag}
+      onMouseDown={onSliderDragStart}
+      onMouseUp={onSliderDragEnd}
+      onMouseLeave={onSliderDragEnd}
+    >
+      <span
+        className={cn('absolute left-0 top-0 size-full rounded-inherit bg-gray-100', railClassName)}
+      />
+      <span
+        style={{ width: `${((value ?? 0) / max) * 100}%` }}
+        className={cn(
+          'absolute left-0 top-0 size-full rounded-inherit bg-[#0873FF]',
+          trackClassName,
+        )}
+      />
+      <span
+        style={{ left: `${((value ?? 0) / max) * 100}%` }}
+        className={cn(
+          'absolute top-0 rounded-full bg-[#0873FF] h-full aspect-square -translate-x-1/2',
+          thumbClassName,
+        )}
+      />
       <input
         type="range"
         style={{ display: 'none' }}
@@ -134,7 +129,7 @@ const Slider = ({
         readOnly
         {...inputProps}
       />
-    </>
+    </div>
   );
 };
 
