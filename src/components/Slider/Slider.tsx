@@ -77,6 +77,8 @@ const Slider = ({
 
   const onSliderDragStart = useCallback(
     (e: MouseEvent<HTMLDivElement>): void => {
+      e.preventDefault();
+
       mouseDownPositionRef.current = e.clientX;
       isDraggingRef.current = true;
 
