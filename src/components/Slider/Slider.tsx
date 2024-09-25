@@ -36,6 +36,7 @@ const Slider = ({
   ...inputProps
 }: SliderProps) => {
   const isDraggingRef = useRef(false);
+  const transitionEnabledRef = useRef(false);
 
   const getValue = useCallback(
     (e: MouseEvent<HTMLDivElement>): number => {
@@ -55,6 +56,7 @@ const Slider = ({
     (e: MouseEvent<HTMLDivElement>): void => {
       if (!onValueChange) return;
 
+      transitionEnabledRef.current = true;
       onValueChange(getValue(e));
     },
     [getValue, onValueChange],
@@ -64,6 +66,7 @@ const Slider = ({
     (e: MouseEvent<HTMLDivElement>): void => {
       if (!onDrag || !isDraggingRef.current) return;
 
+      transitionEnabledRef.current = false;
       onDrag(getValue(e));
     },
     [getValue, onDrag],
@@ -111,6 +114,7 @@ const Slider = ({
           style={{ width: `${((value ?? 0) / max) * 100}%` }}
           className={cn(
             'absolute left-0 top-0 size-full rounded-inherit bg-[#0873FF]',
+            transitionEnabledRef.current && 'transition-all duration-200 ease-in-out',
             trackClassName,
           )}
         />
@@ -118,6 +122,7 @@ const Slider = ({
           style={{ left: `calc(${((value ?? 0) / max) * 100}%)` }}
           className={cn(
             'absolute top-0 rounded-full bg-[#0873FF] h-full aspect-square -translate-x-1/2',
+            transitionEnabledRef.current && 'transition-all duration-200 ease-in-out',
             thumbClassName,
           )}
         />
