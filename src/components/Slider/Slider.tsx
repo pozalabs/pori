@@ -101,6 +101,10 @@ const Slider = ({
       onMouseDown={onSliderDragStart}
       onMouseUp={onSliderDragEnd}
       onMouseLeave={onSliderDragEnd}
+      role="slider"
+      aria-valuemax={max}
+      aria-valuemin={min}
+      aria-valuenow={value}
     >
       <span
         className={cn('absolute left-0 top-0 size-full rounded-inherit bg-gray-100', railClassName)}
