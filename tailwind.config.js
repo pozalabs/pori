@@ -3,7 +3,14 @@ module.exports = {
   content: ['./src/**/*.{js,jsx,ts,tsx}'],
   darkMode: ['class'],
   theme: {
-    extend: {},
+    extend: {
+      borderRadius: {
+        inherit: 'inherit',
+      },
+      boxShadow: {
+        volume: '0px 0px 0px 6px rgba(237, 233, 254, 0.5)',
+      },
+    },
   },
   plugins: [],
   future: {

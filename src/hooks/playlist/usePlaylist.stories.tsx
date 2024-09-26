@@ -63,8 +63,6 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
     };
   }, [changePlaybackRange, dragTime]);
 
-  console.log(duration);
-
   return (
     <div className="flex w-full flex-col items-center gap-4 p-4">
       <div className="flex items-center gap-2">
