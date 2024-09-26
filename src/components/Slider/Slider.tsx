@@ -6,7 +6,10 @@ import { cn } from '@pozalabs/pokit/utils';
 import { SLIDER_DEFAULT_VALUE } from './_constants';
 
 interface SliderProps
-  extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onDrag' | 'onDragStart' | 'onDragEnd'> {
+  extends Omit<
+    InputHTMLAttributes<HTMLInputElement>,
+    'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'
+  > {
   max?: number;
   min?: number;
   step?: number;
@@ -14,7 +17,7 @@ interface SliderProps
   railClassName?: string;
   trackClassName?: string;
   thumbClassName?: string;
-  onValueChange?: (value: number) => void;
+  onChange?: (value: number) => void;
   onDrag?: (value: number) => void;
   onDragStart?: (value: number) => void;
   onDragEnd?: (value: number) => void;
@@ -24,7 +27,7 @@ interface SliderProps
  * 스타일을 커스텀할 수 있는 Slider 컴포넌트입니다.
  * @param SliderProps
  * ```
- * interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onDrag' | 'onDragStart' | 'onDragEnd'> {
+ * interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
  *    max?: number;
  *    min?: number;
  *    step?: number;
@@ -33,7 +36,7 @@ interface SliderProps
  *    trackClassName?: string;
  *    thumbClassName?: string;
  *    railClassName?: string;
- *    onValueChange?: (value: number) => void;
+ *    onChange?: (value: number) => void;
  *    onDrag?: (value: number) => void;
  *    onDragStart?: (value: number) => void;
  *    onDragEnd?: (value: number) => void;
@@ -48,7 +51,7 @@ const Slider = ({
   railClassName,
   trackClassName,
   thumbClassName,
-  onValueChange,
+  onChange,
   onDrag,
   onDragStart,
   onDragEnd,
@@ -73,11 +76,11 @@ const Slider = ({
 
   const onSliderClick = useCallback(
     (e: MouseEvent<HTMLDivElement>): void => {
-      if (!onValueChange) return;
+      if (!onChange) return;
 
-      onValueChange(getValue(e));
+      onChange(getValue(e));
     },
-    [getValue, onValueChange],
+    [getValue, onChange],
   );
 
   const onSliderDrag = useCallback(

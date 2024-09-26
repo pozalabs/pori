@@ -30,7 +30,7 @@ export const Default: Story = {
 
     return (
       <div className="relative">
-        <Slider value={value} onValueChange={onValueChange} onDrag={onValueChange} {...props} />
+        <Slider value={value} onChange={onValueChange} onDrag={onValueChange} {...props} />
         <span className="absolute" style={{ left: `${(value / props.max!) * 100 - 2}%` }}>
           {value}
         </span>
@@ -113,7 +113,7 @@ export const Player: Story = {
           {...props}
           max={duration}
           value={isDragging.current ? dragTime : currentTime}
-          onValueChange={onCurrentTimeSliderChange}
+          onChange={onCurrentTimeSliderChange}
           onDrag={onCurrentTimeSliderDrag}
           onDragStart={onCurrentTimeSliderDragStart}
           onDragEnd={onCurrentTimeSliderDragEnd}
@@ -125,7 +125,7 @@ export const Player: Story = {
             max={1}
             step={0.1}
             value={volume}
-            onValueChange={onVolumeSliderChange}
+            onChange={onVolumeSliderChange}
             onDrag={onVolumeSliderChange}
             className="h-1 w-[100px]"
             trackClassName="bg-violet-300 transition-all duration-100"
