@@ -144,6 +144,16 @@ const useAudio = ({
     audioRef.current.loop = loop;
   }, [loop]);
 
+  useEffect(() => {
+    const audio = audioRef.current;
+
+    return () => {
+      audio.pause();
+      audio.src = '';
+      audio.load();
+    };
+  }, []);
+
   return {
     audioRef,
     currentSrc,
