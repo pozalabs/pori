@@ -191,9 +191,11 @@ const Slider = ({
               }
         }
         className={cn(
-          'absolute rounded-full bg-[rgb(8,115,255)] h-full aspect-square',
+          'absolute rounded-full bg-[#0873FF] aspect-square',
           orientation === 'horizontal' || orientation === 'vertical-reverse' ? 'top-0' : 'bottom-0',
-          orientation.startsWith('horizontal') ? '-translate-x-1/2' : 'left-0 -translate-y-1/2',
+          orientation.startsWith('horizontal')
+            ? 'h-full w-max -translate-x-1/2'
+            : 'w-full h-max left-0 -translate-y-1/2',
           thumbClassName,
         )}
       />
