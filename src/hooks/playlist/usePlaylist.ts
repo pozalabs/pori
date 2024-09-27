@@ -1,4 +1,4 @@
-import { useCallback, useState } from 'react';
+import { useCallback, useMemo, useState } from 'react';
 
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 
@@ -17,6 +17,8 @@ interface UsePlaylistParams extends Omit<Parameters<typeof useAudio>[0], 'src' |
 interface UsePlaylistReturns
   extends ReturnType<typeof useAudio>,
     ReturnType<typeof usePlayingAudio> {
+  hasNextAudio: boolean;
+  hasPrevAudio: boolean;
   playlist: Playlist;
   addAudio: (audio: ArrayElementType<Playlist>, autoplay?: boolean) => void;
   removeAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
@@ -38,6 +40,8 @@ interface UsePlaylistReturns
  * `UsePlaylistReturns`
  * ```
  * interface UsePlaylistReturns extends ReturnType<typeof useAudio> {
+ *    hasNextAudio: boolean;
+ *    hasPrevAudio: boolean;
  *    playingId: ArrayElementType<Playlist>['id'];
  *    playlist: Playlist;
  *    addAudio: (audio: ArrayElementType<Playlist>, autoplay?: boolean) => void;
@@ -71,6 +75,30 @@ const usePlaylist = ({
     resetAudio,
     togglePlayPause,
   });
+
+  const hasNextAudio = useMemo(() => {
+    const playingAudioIndex = findArrayElementById({
+      array: playlist,
+      id: playingId,
+      returnIndex: true,
+    });
+
+    if (playingAudioIndex === undefined) return false;
+
+    return playingAudioIndex < playlist.length - 1;
+  }, [playingId, playlist]);
+
+  const hasPrevAudio = useMemo(() => {
+    const playingAudioIndex = findArrayElementById({
+      array: playlist,
+      id: playingId,
+      returnIndex: true,
+    });
+
+    if (playingAudioIndex === undefined) return false;
+
+    return playingAudioIndex > 0;
+  }, [playingId, playlist]);
 
   usePlaylistEndedEvent({
     audioRef,
@@ -125,6 +153,8 @@ const usePlaylist = ({
 
   return {
     audioRef,
+    hasNextAudio,
+    hasPrevAudio,
     playingId,
     playlist,
     addAudio,

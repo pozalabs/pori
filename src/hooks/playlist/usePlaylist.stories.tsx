@@ -18,6 +18,8 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
     currentTime,
     duration,
     isPlaying,
+    hasNextAudio,
+    hasPrevAudio,
     playbackRange,
     playingId,
     playlist,
@@ -103,14 +105,16 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
           플레이리스트 비우기
         </button>
         <button
-          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1"
+          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-300"
           onClick={() => playPrevAudio(isPlaying)}
+          disabled={!hasPrevAudio}
         >
           이전 곡 재생
         </button>
         <button
-          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1"
+          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-300"
           onClick={() => playNextAudio(isPlaying)}
+          disabled={!hasNextAudio}
         >
           다음 곡 재생
         </button>
