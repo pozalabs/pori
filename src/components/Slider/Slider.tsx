@@ -10,7 +10,7 @@ interface SliderProps
     InputHTMLAttributes<HTMLInputElement>,
     'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'
   > {
-  orientation?: 'horizontal' | 'vertical';
+  orientation?: 'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse';
   max?: number;
   min?: number;
   step?: number;
@@ -29,7 +29,7 @@ interface SliderProps
  * @param SliderProps
  * ```
  * interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
- *    orientation?: 'horizontal' | 'vertical';
+ *    orientation?: 'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse';
  *    max?: number;
  *    min?: number;
  *    step?: number;
@@ -69,13 +69,33 @@ const Slider = ({
 
   const progressPercentage = useMemo(() => ((value ?? 0) / max) * 100, [max, value]);
 
+  const getValueByOrientation = useCallback(
+    (rect: DOMRect, clientX: number, clientY: number): number => {
+      const clickX = clientX - rect.left;
+      const clickY = rect.bottom - clientY;
+
+      switch (orientation) {
+        case 'horizontal': {
+          return (clickX / rect.width) * max;
+        }
+        case 'horizontal-reverse': {
+          return ((rect.width - clickX) / rect.width) * max;
+        }
+        case 'vertical': {
+          return (clickY / rect.height) * max;
+        }
+        case 'vertical-reverse': {
+          return ((rect.height - clickY) / rect.height) * max;
+        }
+      }
+    },
+    [max, orientation],
+  );
+
   const getValue = useCallback(
     (e: MouseEvent<HTMLDivElement>): number => {
       const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-      const clickX = e.clientX - rect.left;
-      const clickY = rect.bottom - e.clientY;
-      const value =
-        orientation === 'horizontal' ? (clickX / rect.width) * max : (clickY / rect.height) * max;
+      const value = getValueByOrientation(rect, e.clientX, e.clientY);
       const formattedValue = Math.round(value / step) * step;
 
       if (formattedValue > max) return max;
@@ -83,7 +103,7 @@ const Slider = ({
 
       return formattedValue;
     },
-    [max, min, orientation, step],
+    [getValueByOrientation, max, min, step],
   );
 
   const onSliderClick = useCallback(
@@ -132,7 +152,7 @@ const Slider = ({
     <div
       className={cn(
         'relative rounded-lg',
-        orientation === 'horizontal' ? 'w-full h-4' : 'w-4 h-full',
+        orientation.startsWith('horizontal') ? 'w-full h-4' : 'w-4 h-full',
         className,
       )}
       onClick={onSliderClick}
@@ -150,25 +170,29 @@ const Slider = ({
       />
       <span
         style={{
-          [orientation === 'horizontal' ? 'width' : 'height']: `${progressPercentage}%`,
+          [orientation.startsWith('horizontal') ? 'width' : 'height']: `${progressPercentage}%`,
         }}
         className={cn(
-          'absolute left-0 size-full rounded-inherit bg-[#0873FF]',
-          orientation === 'horizontal' ? 'top-0' : 'bottom-0',
+          'absolute size-full rounded-inherit bg-[#0873FF]',
+          orientation === 'horizontal' || orientation === 'vertical-reverse' ? 'top-0' : 'bottom-0',
+          orientation === 'horizontal-reverse' ? 'right-0' : 'left-0',
           trackClassName,
         )}
       />
       <span
         style={
-          orientation === 'horizontal'
-            ? { left: `${progressPercentage}%` }
-            : { top: `${100 - progressPercentage}%` }
+          orientation.startsWith('horizontal')
+            ? {
+                left: `${orientation.endsWith('reverse') ? 100 - progressPercentage : progressPercentage}%`,
+              }
+            : {
+                top: `${orientation.endsWith('reverse') ? progressPercentage : 100 - progressPercentage}%`,
+              }
         }
         className={cn(
-          'absolute rounded-full bg-[#0873FF] h-full aspect-square',
-          orientation === 'horizontal'
-            ? 'top-0 -translate-x-1/2'
-            : 'left-0 bottom-0 -translate-y-1/2',
+          'absolute rounded-full bg-[rgb(8,115,255)] h-full aspect-square',
+          orientation === 'horizontal' || orientation === 'vertical-reverse' ? 'top-0' : 'bottom-0',
+          orientation.startsWith('horizontal') ? '-translate-x-1/2' : 'left-0 -translate-y-1/2',
           thumbClassName,
         )}
       />

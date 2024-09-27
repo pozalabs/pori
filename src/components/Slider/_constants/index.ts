@@ -1,5 +1,5 @@
 interface ISliderDefaultValue {
-  orientation: 'horizontal' | 'vertical';
+  orientation: 'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse';
   max: number;
   min: number;
   step: number;
