@@ -19,7 +19,7 @@ type Story = StoryObj<typeof meta>;
 export const Default: Story = {
   args: {
     ...SLIDER_DEFAULT_VALUE,
-    className: 'w-[400px] h-[20px] rounded-full',
+    className: 'w-full h-full rounded-full',
     step: 5,
   },
   render: (props: Parameters<typeof Slider>[0]) => {
@@ -30,7 +30,12 @@ export const Default: Story = {
     };
 
     return (
-      <div className="relative">
+      <div
+        className={cn(
+          'relative',
+          props.orientation?.startsWith('horizontal') ? 'w-[400px] h-[20px]' : 'h-[400px] w-[20px]',
+        )}
+      >
         <Slider value={value} onChange={onValueChange} onDrag={onValueChange} {...props} />
         <span className="absolute" style={{ left: `${(value / props.max!) * 100 - 2}%` }}>
           {value}
