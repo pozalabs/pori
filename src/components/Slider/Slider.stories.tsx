@@ -148,7 +148,7 @@ export const Player: Story = {
                   onDrag={onVolumeSliderChange}
                   className="absolute bottom-[32px] h-[100px] w-1"
                   trackClassName="bg-violet-300 transition-all duration-100"
-                  thumbClassName="bg-violet-300 h-3 border-violet-100 transition-all duration-100 -translate-x-1 hover:shadow-volume"
+                  thumbClassName="bg-violet-300 w-3 border-violet-100 transition-all duration-100 -translate-x-1 hover:shadow-volume"
                 />
               )}
             </div>
