@@ -4,13 +4,14 @@ import { useCallback, useMemo, useRef, type InputHTMLAttributes } from 'react';
 import { cn } from '@pozalabs/pokit/utils';
 
 import { SLIDER_DEFAULT_VALUE } from './_constants';
+import type { SliderOrientationType } from './_types';
 
 interface SliderProps
   extends Omit<
     InputHTMLAttributes<HTMLInputElement>,
     'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'
   > {
-  orientation?: 'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse';
+  orientation?: SliderOrientationType;
   max?: number;
   min?: number;
   step?: number;

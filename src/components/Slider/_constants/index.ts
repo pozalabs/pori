@@ -1,5 +1,7 @@
+import type { SliderOrientationType } from '../_types';
+
 interface ISliderDefaultValue {
-  orientation: 'horizontal' | 'vertical' | 'horizontal-reverse' | 'vertical-reverse';
+  orientation: SliderOrientationType;
   max: number;
   min: number;
   step: number;
