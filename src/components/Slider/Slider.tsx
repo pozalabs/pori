@@ -1,5 +1,5 @@
 import type { MouseEvent } from 'react';
-import { useCallback, useRef, type InputHTMLAttributes } from 'react';
+import { useCallback, useMemo, useRef, type InputHTMLAttributes } from 'react';
 
 import { cn } from '@pozalabs/pokit/utils';
 
@@ -10,6 +10,7 @@ interface SliderProps
     InputHTMLAttributes<HTMLInputElement>,
     'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'
   > {
+  orientation?: 'horizontal' | 'vertical';
   max?: number;
   min?: number;
   step?: number;
@@ -28,6 +29,7 @@ interface SliderProps
  * @param SliderProps
  * ```
  * interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
+ *    orientation?: 'horizontal' | 'vertical';
  *    max?: number;
  *    min?: number;
  *    step?: number;
@@ -42,8 +44,13 @@ interface SliderProps
  *    onDragEnd?: (value: number) => void;
  * }
  * ```
+ * - orientation : 슬라이더의 방향입니다. (default: `horizontal`)
+ * - max : 슬라이더 value의 최댓값입니다. (default: `100`)
+ * - min : 슬라이더 value의 최솟값입니다. (defulat: `0`)
+ * - step : 슬라이더 value의 단위입니다. 클릭 또는 드래그 이벤트를 통해 전달되는 value는 항상 step 단위로 포맷팅됩니다. (default: `1`)
  */
 const Slider = ({
+  orientation = SLIDER_DEFAULT_VALUE.orientation,
   max = SLIDER_DEFAULT_VALUE.max,
   min = SLIDER_DEFAULT_VALUE.min,
   step = SLIDER_DEFAULT_VALUE.step,
@@ -60,18 +67,23 @@ const Slider = ({
 }: SliderProps) => {
   const isDraggingRef = useRef(false);
 
+  const progressPercentage = useMemo(() => ((value ?? 0) / max) * 100, [max, value]);
+
   const getValue = useCallback(
     (e: MouseEvent<HTMLDivElement>): number => {
       const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
       const clickX = e.clientX - rect.left;
-      const value = Math.round(((clickX / rect.width) * max) / step) * step;
+      const clickY = rect.bottom - e.clientY;
+      const value =
+        orientation === 'horizontal' ? (clickX / rect.width) * max : (clickY / rect.height) * max;
+      const formattedValue = Math.round(value / step) * step;
 
-      if (value > max) return max;
-      if (value < min) return min;
+      if (formattedValue > max) return max;
+      if (formattedValue < min) return min;
 
-      return value;
+      return formattedValue;
     },
-    [max, min, step],
+    [max, min, orientation, step],
   );
 
   const onSliderClick = useCallback(
@@ -118,7 +130,11 @@ const Slider = ({
 
   return (
     <div
-      className={cn('relative h-4 rounded-lg', className)}
+      className={cn(
+        'relative rounded-lg',
+        orientation === 'horizontal' ? 'w-full h-4' : 'w-4 h-full',
+        className,
+      )}
       onClick={onSliderClick}
       onMouseMove={onSliderDrag}
       onMouseDown={onSliderDragStart}
@@ -133,16 +149,26 @@ const Slider = ({
         className={cn('absolute left-0 top-0 size-full rounded-inherit bg-gray-100', railClassName)}
       />
       <span
-        style={{ width: `${((value ?? 0) / max) * 100}%` }}
+        style={{
+          [orientation === 'horizontal' ? 'width' : 'height']: `${progressPercentage}%`,
+        }}
         className={cn(
-          'absolute left-0 top-0 size-full rounded-inherit bg-[#0873FF]',
+          'absolute left-0 size-full rounded-inherit bg-[#0873FF]',
+          orientation === 'horizontal' ? 'top-0' : 'bottom-0',
           trackClassName,
         )}
       />
       <span
-        style={{ left: `${((value ?? 0) / max) * 100}%` }}
+        style={
+          orientation === 'horizontal'
+            ? { left: `${progressPercentage}%` }
+            : { top: `${100 - progressPercentage}%` }
+        }
         className={cn(
-          'absolute top-0 rounded-full bg-[#0873FF] h-full aspect-square -translate-x-1/2',
+          'absolute rounded-full bg-[#0873FF] h-full aspect-square',
+          orientation === 'horizontal'
+            ? 'top-0 -translate-x-1/2'
+            : 'left-0 bottom-0 -translate-y-1/2',
           thumbClassName,
         )}
       />
