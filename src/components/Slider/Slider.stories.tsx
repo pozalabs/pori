@@ -48,7 +48,6 @@ export const Default: Story = {
 export const Player: Story = {
   args: {
     ...SLIDER_DEFAULT_VALUE,
-    className: 'w-[400px]',
     railClassName: 'bg-slate-100',
     trackClassName: 'bg-violet-300',
     thumbClassName: 'hidden',
@@ -121,15 +120,23 @@ export const Player: Story = {
           <div
             className={cn('flex items-end gap-4', props.orientation === 'vertical' && 'h-[400px]')}
           >
-            <Slider
-              {...props}
-              max={duration}
-              value={isDragging.current ? dragTime : currentTime}
-              onChange={onCurrentTimeSliderChange}
-              onDrag={onCurrentTimeSliderDrag}
-              onDragStart={onCurrentTimeSliderDragStart}
-              onDragEnd={onCurrentTimeSliderDragEnd}
-            />
+            <div
+              className={
+                props.orientation?.startsWith('horizontal')
+                  ? 'h-[20px] w-[400px]'
+                  : 'h-[400px] w-[20px]'
+              }
+            >
+              <Slider
+                {...props}
+                max={duration}
+                value={isDragging.current ? dragTime : currentTime}
+                onChange={onCurrentTimeSliderChange}
+                onDrag={onCurrentTimeSliderDrag}
+                onDragStart={onCurrentTimeSliderDragStart}
+                onDragEnd={onCurrentTimeSliderDragEnd}
+              />
+            </div>
             <div className="relative flex items-center justify-center gap-2">
               <span
                 className="cursor-pointer text-[12px]"
