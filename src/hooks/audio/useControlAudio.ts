@@ -98,7 +98,7 @@ const useControlAudio = ({
 
   const resetAudio = useCallback((): void => {
     audioRef.current.pause();
-    audioRef.current.src = 'data:,';
+    audioRef.current.src = '';
     audioRef.current.muted = false;
     audioRef.current.volume = 1;
     audioRef.current.playbackRate = 1;
