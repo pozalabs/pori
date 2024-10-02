@@ -31,6 +31,29 @@ export interface AudioPlayerContextDefaultValue {
 
 export type TimeFormat = 'SS' | 'S' | 'MM:SS' | 'M:S' | 'HH:MM:SS' | 'H:M:S';
 
+/**
+ * 오디오 플레이어 Provider에 전달하는 ref의 타입입니다. useAudio, usePlaylist에서 반환하는 모든 함수를 포함합니다. (src 조작 제외)
+ * - addAudio
+ * - changeCurrentTime
+ * - changeMuted
+ * - changePlaybackRate
+ * - changePlaybackRange
+ * - changePlayingAudio
+ * - changeVolume
+ * - clearPlaylist
+ * - play
+ * - pause
+ * - playNextAudio
+ * - playPrevAudio
+ * - removeAudio
+ * - resetAudio
+ * - resetAudioTime
+ * - shiftTimeBackward
+ * - shiftTimeForward
+ * - stop
+ * - toggleMuted
+ * - togglePlayPause
+ */
 export interface AudioPlayerHandles {
   addAudio: (audio: ArrayElementType<Playlist>, autoplay?: boolean) => void;
   changeCurrentTime: (currentTime: number) => void;
