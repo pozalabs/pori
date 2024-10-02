@@ -18,7 +18,7 @@ import findArrayElementById from '../../hooks/playlist/_utils/findArrayElementBy
 
 export const AudioPlayerContext = createContext(AUDIO_PLAYER_CONTEXT_DEFAULT_VALUE);
 
-interface AudioPlayerProviderProps extends Omit<Parameters<typeof usePlaylist>[0], ''> {
+export interface AudioPlayerProviderProps extends Omit<Parameters<typeof usePlaylist>[0], ''> {
   children?: WithArray<ReactNode>;
 }
 
