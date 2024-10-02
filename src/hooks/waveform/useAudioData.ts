@@ -71,13 +71,15 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams): UseA
   );
 
   useEffect(() => {
+    if (!src) return;
+
     const audioContext = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)({
       sampleRate,
       length: OFFLINE_AUDIO_CONTEXT_LENGTH,
     });
 
     getAudioData(audioContext);
-  }, [getAudioData, sampleRate]);
+  }, [getAudioData, sampleRate, src]);
 
   useEffect(() => {
     if (!audioBuffer) return;
