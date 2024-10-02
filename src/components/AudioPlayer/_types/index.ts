@@ -1,3 +1,5 @@
+import type { ArrayElementType } from '@pozalabs/pokit/types';
+
 import type { Playlist, RepeatModeType } from '../../../hooks/playlist/_types';
 
 export interface AudioPlayerContextDefaultValue {
@@ -26,3 +28,10 @@ export interface AudioPlayerContextDefaultValue {
 }
 
 export type TimeFormat = 'SS' | 'S' | 'MM:SS' | 'M:S' | 'HH:MM:SS' | 'H:M:S';
+
+export interface AudioPlayerHandles {
+  addAudio: (audio: ArrayElementType<Playlist>, autoplay?: boolean) => void;
+  changePlayingAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
+  clearPlaylist: () => void;
+  removeAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
+}
