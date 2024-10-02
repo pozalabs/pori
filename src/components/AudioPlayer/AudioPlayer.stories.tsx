@@ -51,10 +51,10 @@ const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
         </div>
         <div className="flex items-center justify-center gap-4">
           <AudioPlayer.SkipStartButton />
-          <AudioPlayer.ShiftForward />
+          <AudioPlayer.ShiftForwardButton />
           <AudioPlayer.PlayPauseButton />
           <AudioPlayer.StopButton />
-          <AudioPlayer.ShiftBackward />
+          <AudioPlayer.ShiftBackwardButton />
           <AudioPlayer.SkipEndButton />
         </div>
         <div>
