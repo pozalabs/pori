@@ -184,7 +184,7 @@ const AudioPlayer = {
    * - width : 이미지의 너비입니다. (default : `32`)
    * - height : 이미지의 높이입니다. (default : `32`)
    */
-  ShiftForward: AudioPlayerShiftForwardButton,
+  ShiftForwardButton: AudioPlayerShiftForwardButton,
   /**
    * timeShift초 이후로 재생 시간을 바꾸는 버튼입니다. (timeShift는 Provider에 전달하는 값입니다.)
    * 이미지 기반으로 동작합니다.
@@ -200,7 +200,7 @@ const AudioPlayer = {
    * - width : 이미지의 너비입니다. (default : `32`)
    * - height : 이미지의 높이입니다. (default : `32`)
    */
-  ShiftBackward: AudioPlayerShiftBackwardButton,
+  ShiftBackwardButton: AudioPlayerShiftBackwardButton,
   /**
    * 현재 재생 시간이 shiftThreshold초 이상이면 곡의 처음으로, 미만이면 이전 곡을 재생하는 버튼입니다.
    * (shiftThreshold는 prop으로 전달하는 값입니다.)
