@@ -1,0 +1,28 @@
+import { useContext } from 'react';
+
+import { AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
+import { AudioPlayerContext } from '../AudioPlayerProvider';
+
+interface AudioPlayerPlayButtonProps {
+  src?: string;
+  width?: number;
+  height?: number;
+  className?: string;
+}
+
+const AudioPlayerPlayButton = ({
+  src = AUDIO_PLAYER_BUTTON_DEFAULT_URL.play,
+  width = 32,
+  height = 32,
+  className,
+}: AudioPlayerPlayButtonProps) => {
+  const { play } = useContext(AudioPlayerContext);
+
+  return (
+    <button type="button" onClick={play}>
+      <img src={src} alt="play button" width={width} height={height} className={className} />
+    </button>
+  );
+};
+
+export default AudioPlayerPlayButton;
