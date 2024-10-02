@@ -1,9 +1,10 @@
-import { useCallback, useContext } from 'react';
+import { useCallback, useContext, useMemo } from 'react';
 
 import { AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
 interface AudioPlayerPauseButtonProps {
+  audioId?: string;
   playSrc?: string;
   pauseSrc?: string;
   width?: number;
@@ -12,23 +13,34 @@ interface AudioPlayerPauseButtonProps {
 }
 
 const AudioPlayerPauseButton = ({
+  audioId,
   playSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.play,
   pauseSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.pause,
   width = 32,
   height = 32,
   className,
 }: AudioPlayerPauseButtonProps) => {
-  const { isPlaying, togglePlayPause } = useContext(AudioPlayerContext);
+  const { isPlaying, playingId, changePlayingAudio, togglePlayPause } =
+    useContext(AudioPlayerContext);
 
   const onButtonClick = useCallback((): void => {
+    if (audioId && playingId !== audioId) {
+      changePlayingAudio(audioId, true);
+    }
+
     togglePlayPause();
-  }, [togglePlayPause]);
+  }, [audioId, changePlayingAudio, playingId, togglePlayPause]);
+
+  const isAudioPlaying = useMemo(
+    () => isPlaying && (!audioId || audioId === playingId),
+    [audioId, isPlaying, playingId],
+  );
 
   return (
     <button type="button" onClick={onButtonClick}>
       <img
-        src={isPlaying ? pauseSrc : playSrc}
-        alt={isPlaying ? 'pause button' : 'play button'}
+        src={isAudioPlaying ? pauseSrc : playSrc}
+        alt={isAudioPlaying ? 'pause button' : 'play button'}
         width={width}
         height={height}
         className={className}

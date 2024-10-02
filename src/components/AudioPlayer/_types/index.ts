@@ -9,11 +9,13 @@ export interface AudioPlayerContextDefaultValue {
   isPlaying: boolean;
   playbackRate: number;
   playlist: Playlist;
+  playingId: string;
   repeatMode: RepeatModeType;
   volume: number;
   changeCurrentSrc: (currentSrc: string) => void;
   changeCurrentTime: (currentTime: number) => void;
   changePlaybackRate: (playbackRate: number) => void;
+  changePlayingAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
   changeRepeatMode: (repeatMode: RepeatModeType) => void;
   changeVolume: (volume: number) => void;
   play: () => void;
