@@ -33,7 +33,23 @@ export type TimeFormat = 'SS' | 'S' | 'MM:SS' | 'M:S' | 'HH:MM:SS' | 'H:M:S';
 
 export interface AudioPlayerHandles {
   addAudio: (audio: ArrayElementType<Playlist>, autoplay?: boolean) => void;
+  changeCurrentTime: (currentTime: number) => void;
+  changeMuted: (muted: boolean) => void;
+  changePlaybackRate: (playbackRate: number) => void;
+  changePlaybackRange: (progress: number) => void;
   changePlayingAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
+  changeVolume: (volume: number) => void;
   clearPlaylist: () => void;
+  play: () => void;
+  pause: () => void;
+  playNextAudio: (autoplay?: boolean) => void;
+  playPrevAudio: (autoplay?: boolean) => void;
   removeAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
+  resetAudio: () => void;
+  resetAudioTime: () => void;
+  shiftTimeBackward: () => void;
+  shiftTimeForward: () => void;
+  stop: () => void;
+  toggleMuted: () => void;
+  togglePlayPause: (src?: string) => void;
 }
