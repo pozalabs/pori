@@ -1,6 +1,6 @@
 import { useContext } from 'react';
 
-import { AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
+import { AUDIO_PLAYER_BUTTON_DEFAULT_SIZE, AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
 interface AudioPlayerVolumeButtonProps {
@@ -14,8 +14,8 @@ interface AudioPlayerVolumeButtonProps {
 const AudioPlayerVolumeButton = ({
   volumeSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.volume,
   mutedSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.muted,
-  width = 32,
-  height = 32,
+  width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
+  height = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   className,
 }: AudioPlayerVolumeButtonProps) => {
   const { volume, toggleMuted } = useContext(AudioPlayerContext);

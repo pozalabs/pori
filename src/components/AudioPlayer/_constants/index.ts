@@ -54,3 +54,5 @@ export const AUDIO_PLAYER_BUTTON_DEFAULT_URL = {
   volume: 'https://img.icons8.com/ios-glyphs/100/medium-volume.png',
   muted: 'https://img.icons8.com/ios-glyphs/100/mute--v1.png',
 };
+
+export const AUDIO_PLAYER_BUTTON_DEFAULT_SIZE = 32;

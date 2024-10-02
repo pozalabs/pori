@@ -1,6 +1,7 @@
 import { useCallback, useContext } from 'react';
 
 import {
+  AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   AUDIO_PLAYER_BUTTON_DEFAULT_URL,
   AUDIO_PLAYER_SKIP_START_BUTTON_DEFAULT_VALUE,
 } from '../_constants';
@@ -17,8 +18,8 @@ interface AudioPlayerSkipStartButtonProps {
 const AudioPlayerSkipStartButton = ({
   src = AUDIO_PLAYER_BUTTON_DEFAULT_URL.skipToStart,
   shiftThreshold = AUDIO_PLAYER_SKIP_START_BUTTON_DEFAULT_VALUE.shiftThreshold,
-  width = 32,
-  height = 32,
+  width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
+  height = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   className,
 }: AudioPlayerSkipStartButtonProps) => {
   const { currentTime, isPlaying, changeCurrentTime, playPrevAudio } =

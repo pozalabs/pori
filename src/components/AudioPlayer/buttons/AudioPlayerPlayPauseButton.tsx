@@ -1,6 +1,6 @@
 import { useCallback, useContext, useMemo } from 'react';
 
-import { AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
+import { AUDIO_PLAYER_BUTTON_DEFAULT_SIZE, AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
 interface AudioPlayerPauseButtonProps {
@@ -16,8 +16,8 @@ const AudioPlayerPauseButton = ({
   audioId,
   playSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.play,
   pauseSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.pause,
-  width = 32,
-  height = 32,
+  width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
+  height = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   className,
 }: AudioPlayerPauseButtonProps) => {
   const { isPlaying, playingId, changePlayingAudio, togglePlayPause } =

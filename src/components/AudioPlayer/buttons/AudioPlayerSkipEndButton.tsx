@@ -1,6 +1,6 @@
 import { useCallback, useContext } from 'react';
 
-import { AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
+import { AUDIO_PLAYER_BUTTON_DEFAULT_SIZE, AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
 interface AudioPlayerSkipEndButtonProps {
@@ -12,8 +12,8 @@ interface AudioPlayerSkipEndButtonProps {
 
 const AudioPlayerSkipEndButton = ({
   src = AUDIO_PLAYER_BUTTON_DEFAULT_URL.skipToEnd,
-  width = 32,
-  height = 32,
+  width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
+  height = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   className,
 }: AudioPlayerSkipEndButtonProps) => {
   const { isPlaying, playNextAudio } = useContext(AudioPlayerContext);
