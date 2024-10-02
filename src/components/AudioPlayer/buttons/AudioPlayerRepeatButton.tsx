@@ -3,7 +3,7 @@ import { useCallback, useContext, useMemo } from 'react';
 import { AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
-interface AudioPlayerSkipStartButtonProps {
+interface AudioPlayerRepeatButtonProps {
   repeatAllSrc?: string;
   repeatOneSrc?: string;
   repeatNoneSrc?: string;
@@ -12,14 +12,14 @@ interface AudioPlayerSkipStartButtonProps {
   className?: string;
 }
 
-const AudioPlayerSkipStartButton = ({
+const AudioPlayerRepeatButton = ({
   repeatAllSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.repeatAll,
   repeatOneSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.repeatOne,
   repeatNoneSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.repeatNone,
   width = 32,
   height = 32,
   className,
-}: AudioPlayerSkipStartButtonProps) => {
+}: AudioPlayerRepeatButtonProps) => {
   const { repeatMode, changeRepeatMode } = useContext(AudioPlayerContext);
 
   const src = useMemo((): string => {
@@ -53,4 +53,4 @@ const AudioPlayerSkipStartButton = ({
   );
 };
 
-export default AudioPlayerSkipStartButton;
+export default AudioPlayerRepeatButton;
