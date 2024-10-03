@@ -36,6 +36,7 @@ const useSvgWaveform = ({
   enabled,
 }: UseTypeWaveformParams<'svg'>) => {
   const [waveform, setWaveform] = useState<SVGSVGElement>();
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
     duration,
@@ -154,6 +155,8 @@ const useSvgWaveform = ({
     waveform.appendChild(initSvg);
     waveform.appendChild(hoveredSvg);
     waveform.appendChild(playedSvg);
+
+    setIsInitialized(true);
   }, [waveform, drawWaveform, width, height, waveColor, progressColor, hoveredColor]);
 
   const updateSvgWaveform = useCallback((): void => {
@@ -171,6 +174,8 @@ const useSvgWaveform = ({
     initWaveform.setAttribute('x', `${initStartPosition}`);
     playedWaveform.setAttribute('width', `${playedPosition}`);
     hoveredWaveform.setAttribute('width', `${hoveredPosition}`);
+
+    setIsInitialized(false);
 
     if (isHovering) {
       hoveredWaveform.style.display = 'block';
@@ -212,7 +217,7 @@ const useSvgWaveform = ({
 
     updateSvgWaveform();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isHovering, waveform, playedPosition, hoveredPosition, enabled]);
+  }, [isHovering, isInitialized, waveform, playedPosition, hoveredPosition, enabled]);
 
   return waveform;
 };
