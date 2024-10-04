@@ -8,7 +8,7 @@ import {
   createRectElement,
   createSvgElement,
   createTitleElement,
-  createGElement,
+  createSymbolElement,
   createUseElement,
 } from './_utils/createElement';
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
@@ -52,7 +52,7 @@ const useSvgWaveform = ({
   });
 
   const drawLineWaveform = useCallback(
-    (element: SVGGElement): void => {
+    (element: SVGSymbolElement): void => {
       const polylineElement = createPolylineElement();
 
       const points = peaks
@@ -77,7 +77,7 @@ const useSvgWaveform = ({
   );
 
   const drawBarWaveform = useCallback(
-    (element: SVGGElement): void => {
+    (element: SVGSymbolElement): void => {
       peaks.forEach((peak, index) => {
         const rectElement = createRectElement();
         const x = index * (gap + BAR_WIDTH);
@@ -122,9 +122,9 @@ const useSvgWaveform = ({
     titleEl.textContent = 'SVG Waveform';
     descEl.textContent = 'Audio Waveform using SVG Elements.';
 
-    const gElement = createGElement();
-    drawWaveform(gElement);
-    gElement.id = 'waveform';
+    const symbolElement = createSymbolElement();
+    drawWaveform(symbolElement);
+    symbolElement.id = 'waveform';
 
     const initUseSvg = createUseElement();
     const playedUseSvg = createUseElement();
@@ -151,7 +151,7 @@ const useSvgWaveform = ({
     waveform.replaceChildren();
     waveform.appendChild(titleEl);
     waveform.appendChild(descEl);
-    waveform.appendChild(gElement);
+    waveform.appendChild(symbolElement);
     waveform.appendChild(initSvg);
     waveform.appendChild(hoveredSvg);
     waveform.appendChild(playedSvg);
