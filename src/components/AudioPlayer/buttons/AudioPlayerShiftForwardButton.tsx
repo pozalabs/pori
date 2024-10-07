@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 
+import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import { AUDIO_PLAYER_BUTTON_DEFAULT_SIZE, AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
@@ -19,7 +20,7 @@ const AudioPlayerShiftForwardButton = ({
   const { shiftTimeForward } = useContext(AudioPlayerContext);
 
   return (
-    <button type="button" onClick={shiftTimeForward}>
+    <AudioPlayerButtonWrapper onClick={shiftTimeForward}>
       <img
         src={src}
         alt="shift time to forward button"
@@ -27,7 +28,7 @@ const AudioPlayerShiftForwardButton = ({
         height={height}
         className={className}
       />
-    </button>
+    </AudioPlayerButtonWrapper>
   );
 };
 

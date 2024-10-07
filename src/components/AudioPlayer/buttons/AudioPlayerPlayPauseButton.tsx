@@ -2,6 +2,7 @@ import { useCallback, useContext, useMemo } from 'react';
 
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 
+import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import type { Playlist } from '../../../hooks';
 import { AUDIO_PLAYER_BUTTON_DEFAULT_SIZE, AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
@@ -40,7 +41,7 @@ const AudioPlayerPauseButton = ({
   );
 
   return (
-    <button type="button" onClick={onButtonClick}>
+    <AudioPlayerButtonWrapper onClick={onButtonClick}>
       <img
         src={isAudioPlaying ? pauseSrc : playSrc}
         alt={isAudioPlaying ? 'pause button' : 'play button'}
@@ -48,7 +49,7 @@ const AudioPlayerPauseButton = ({
         height={height}
         className={className}
       />
-    </button>
+    </AudioPlayerButtonWrapper>
   );
 };
 

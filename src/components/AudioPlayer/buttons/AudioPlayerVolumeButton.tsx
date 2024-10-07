@@ -1,5 +1,6 @@
 import { useContext } from 'react';
 
+import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import { AUDIO_PLAYER_BUTTON_DEFAULT_SIZE, AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
@@ -21,7 +22,7 @@ const AudioPlayerVolumeButton = ({
   const { volume, toggleMuted } = useContext(AudioPlayerContext);
 
   return (
-    <button type="button" onClick={toggleMuted}>
+    <AudioPlayerButtonWrapper onClick={toggleMuted}>
       <img
         src={volume <= 0 ? mutedSrc : volumeSrc}
         alt="volume button"
@@ -29,7 +30,7 @@ const AudioPlayerVolumeButton = ({
         height={height}
         className={className}
       />
-    </button>
+    </AudioPlayerButtonWrapper>
   );
 };
 

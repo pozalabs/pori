@@ -1,5 +1,6 @@
 import { useCallback, useContext } from 'react';
 
+import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import {
   AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   AUDIO_PLAYER_BUTTON_DEFAULT_URL,
@@ -35,7 +36,7 @@ const AudioPlayerSkipStartButton = ({
   }, [changeCurrentTime, currentTime, isPlaying, playPrevAudio, shiftThreshold]);
 
   return (
-    <button type="button" onClick={onButtonClick}>
+    <AudioPlayerButtonWrapper onClick={onButtonClick}>
       <img
         src={src}
         alt="skip to start button"
@@ -43,7 +44,7 @@ const AudioPlayerSkipStartButton = ({
         height={height}
         className={className}
       />
-    </button>
+    </AudioPlayerButtonWrapper>
   );
 };
 

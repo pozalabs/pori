@@ -1,5 +1,6 @@
 import { useCallback, useContext, useMemo } from 'react';
 
+import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import { AUDIO_PLAYER_BUTTON_DEFAULT_SIZE, AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
@@ -47,9 +48,9 @@ const AudioPlayerRepeatButton = ({
   }, [changeRepeatMode, repeatMode]);
 
   return (
-    <button type="button" onClick={onButtonClick}>
+    <AudioPlayerButtonWrapper onClick={onButtonClick}>
       <img src={src} alt="repeat button" width={width} height={height} className={className} />
-    </button>
+    </AudioPlayerButtonWrapper>
   );
 };
 
