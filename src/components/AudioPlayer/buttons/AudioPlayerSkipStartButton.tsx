@@ -8,7 +8,7 @@ import {
 } from '../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
-interface AudioPlayerSkipStartButtonProps {
+export interface AudioPlayerSkipStartButtonProps {
   src?: string;
   shiftThreshold?: number;
   width?: number;

@@ -7,7 +7,7 @@ import type { Playlist } from '../../../hooks';
 import { AUDIO_PLAYER_BUTTON_DEFAULT_SIZE, AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
-interface AudioPlayerPauseButtonProps {
+export interface AudioPlayerPauseButtonProps {
   audioId?: ArrayElementType<Playlist>['id'];
   playSrc?: string;
   pauseSrc?: string;

@@ -7,7 +7,7 @@ import type { TimeFormat } from './_types';
 import formatTime from './_utils/formatTime';
 import { AudioPlayerContext } from './AudioPlayerProvider';
 
-interface AudioPlayerCurrentTimeProps {
+export interface AudioPlayerCurrentTimeProps {
   className?: string;
   format?: TimeFormat;
 }
