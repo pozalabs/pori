@@ -68,7 +68,10 @@ const Slider = ({
 }: SliderProps) => {
   const isDraggingRef = useRef(false);
 
-  const progressPercentage = useMemo(() => ((value ?? 0) / max) * 100, [max, value]);
+  const progressPercentage = useMemo(
+    () => ((value ?? 0) / (max > 0 ? max : 1)) * 100,
+    [max, value],
+  );
 
   const getValueByOrientation = useCallback(
     (rect: DOMRect, clientX: number, clientY: number): number => {
