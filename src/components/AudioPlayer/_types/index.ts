@@ -1,6 +1,7 @@
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 
 import type { Playlist, RepeatModeType } from '../../../hooks/playlist/_types';
+import type Slider from '../../Slider/Slider';
 
 export interface AudioPlayerContextDefaultValue {
   currentSrc: string;
@@ -75,4 +76,12 @@ export interface AudioPlayerHandles {
   stop: () => void;
   toggleMuted: () => void;
   togglePlayPause: (src?: string) => void;
+}
+
+export interface AudioPlayerProgressBarProps
+  extends Omit<
+    Parameters<typeof Slider>[0],
+    'max' | 'min' | 'value' | 'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'
+  > {
+  draggable?: boolean;
 }
