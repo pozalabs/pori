@@ -205,7 +205,18 @@ const useSvgWaveform = ({
 
     initSvgWaveform();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [peaks, variant, waveform, waveColor, progressColor, hoveredColor, bgColor, enabled]);
+  }, [
+    peaks,
+    variant,
+    width,
+    height,
+    waveform,
+    waveColor,
+    progressColor,
+    hoveredColor,
+    bgColor,
+    enabled,
+  ]);
 
   useEffect(() => {
     if (!enabled || !waveform) return;
