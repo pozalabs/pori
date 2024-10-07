@@ -85,3 +85,9 @@ export interface AudioPlayerProgressBarProps
   > {
   draggable?: boolean;
 }
+
+export interface AudioPlayerButtonProps {
+  width?: number;
+  height?: number;
+  className?: string;
+}

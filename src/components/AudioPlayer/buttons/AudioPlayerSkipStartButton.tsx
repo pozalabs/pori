@@ -6,14 +6,12 @@ import {
   AUDIO_PLAYER_BUTTON_DEFAULT_URL,
   AUDIO_PLAYER_SKIP_START_BUTTON_DEFAULT_VALUE,
 } from '../_constants';
+import type { AudioPlayerButtonProps } from '../_types';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
-export interface AudioPlayerSkipStartButtonProps {
+export interface AudioPlayerSkipStartButtonProps extends AudioPlayerButtonProps {
   src?: string;
   shiftThreshold?: number;
-  width?: number;
-  height?: number;
-  className?: string;
 }
 
 const AudioPlayerSkipStartButton = ({

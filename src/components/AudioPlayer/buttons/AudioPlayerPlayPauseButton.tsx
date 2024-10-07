@@ -5,15 +5,13 @@ import type { ArrayElementType } from '@pozalabs/pokit/types';
 import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import type { Playlist } from '../../../hooks';
 import { AUDIO_PLAYER_BUTTON_DEFAULT_SIZE, AUDIO_PLAYER_BUTTON_DEFAULT_URL } from '../_constants';
+import type { AudioPlayerButtonProps } from '../_types';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
-export interface AudioPlayerPauseButtonProps {
+export interface AudioPlayerPauseButtonProps extends AudioPlayerButtonProps {
   audioId?: ArrayElementType<Playlist>['id'];
   playSrc?: string;
   pauseSrc?: string;
-  width?: number;
-  height?: number;
-  className?: string;
 }
 
 const AudioPlayerPauseButton = ({
