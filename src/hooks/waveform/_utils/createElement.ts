@@ -62,10 +62,10 @@ export const createDescElement = (): SVGDescElement => {
   return desc;
 };
 
-export const createGElement = (): SVGGElement => {
-  const g = document.createElementNS('http://www.w3.org/2000/svg', 'g');
+export const createSymbolElement = (): SVGSymbolElement => {
+  const symbol = document.createElementNS('http://www.w3.org/2000/svg', 'symbol');
 
-  return g;
+  return symbol;
 };
 
 export const createUseElement = (): SVGUseElement => {

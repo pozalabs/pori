@@ -8,7 +8,7 @@ import {
   createRectElement,
   createSvgElement,
   createTitleElement,
-  createGElement,
+  createSymbolElement,
   createUseElement,
 } from './_utils/createElement';
 import useUpdateCurrentTimeEvent from './useUpdateCurrentTimeEvent';
@@ -36,6 +36,7 @@ const useSvgWaveform = ({
   enabled,
 }: UseTypeWaveformParams<'svg'>) => {
   const [waveform, setWaveform] = useState<SVGSVGElement>();
+  const [isInitialized, setIsInitialized] = useState(false);
 
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
     duration,
@@ -51,7 +52,7 @@ const useSvgWaveform = ({
   });
 
   const drawLineWaveform = useCallback(
-    (element: SVGGElement): void => {
+    (element: SVGSymbolElement): void => {
       const polylineElement = createPolylineElement();
 
       const points = peaks
@@ -76,7 +77,7 @@ const useSvgWaveform = ({
   );
 
   const drawBarWaveform = useCallback(
-    (element: SVGGElement): void => {
+    (element: SVGSymbolElement): void => {
       peaks.forEach((peak, index) => {
         const rectElement = createRectElement();
         const x = index * (gap + BAR_WIDTH);
@@ -121,9 +122,9 @@ const useSvgWaveform = ({
     titleEl.textContent = 'SVG Waveform';
     descEl.textContent = 'Audio Waveform using SVG Elements.';
 
-    const gElement = createGElement();
-    drawWaveform(gElement);
-    gElement.id = 'waveform';
+    const symbolElement = createSymbolElement();
+    drawWaveform(symbolElement);
+    symbolElement.id = 'waveform';
 
     const initUseSvg = createUseElement();
     const playedUseSvg = createUseElement();
@@ -150,10 +151,12 @@ const useSvgWaveform = ({
     waveform.replaceChildren();
     waveform.appendChild(titleEl);
     waveform.appendChild(descEl);
-    waveform.appendChild(gElement);
+    waveform.appendChild(symbolElement);
     waveform.appendChild(initSvg);
     waveform.appendChild(hoveredSvg);
     waveform.appendChild(playedSvg);
+
+    setIsInitialized(true);
   }, [waveform, drawWaveform, width, height, waveColor, progressColor, hoveredColor]);
 
   const updateSvgWaveform = useCallback((): void => {
@@ -170,9 +173,13 @@ const useSvgWaveform = ({
     initWaveform.setAttribute('viewBox', `${initStartPosition} 0 ${width} ${height}`);
     initWaveform.setAttribute('x', `${initStartPosition}`);
     playedWaveform.setAttribute('width', `${playedPosition}`);
-    hoveredWaveform.setAttribute('width', `${hoveredPosition}`);
 
-    if (isHovering) {
+    setIsInitialized(false);
+
+    if (isHovering && hoveredPosition > playedPosition) {
+      hoveredWaveform.setAttribute('viewBox', `${playedPosition} 0 ${hoveredPosition} ${height}`);
+      hoveredWaveform.setAttribute('x', `${playedPosition}`);
+      hoveredWaveform.setAttribute('width', `${hoveredPosition}`);
       hoveredWaveform.style.display = 'block';
       return;
     }
@@ -198,7 +205,18 @@ const useSvgWaveform = ({
 
     initSvgWaveform();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [peaks, variant, waveform, waveColor, progressColor, hoveredColor, bgColor, enabled]);
+  }, [
+    peaks,
+    variant,
+    width,
+    height,
+    waveform,
+    waveColor,
+    progressColor,
+    hoveredColor,
+    bgColor,
+    enabled,
+  ]);
 
   useEffect(() => {
     if (!enabled || !waveform) return;
@@ -212,7 +230,7 @@ const useSvgWaveform = ({
 
     updateSvgWaveform();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [isHovering, waveform, playedPosition, hoveredPosition, enabled]);
+  }, [isHovering, isInitialized, waveform, playedPosition, hoveredPosition, enabled]);
 
   return waveform;
 };
