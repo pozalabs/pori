@@ -173,11 +173,13 @@ const useSvgWaveform = ({
     initWaveform.setAttribute('viewBox', `${initStartPosition} 0 ${width} ${height}`);
     initWaveform.setAttribute('x', `${initStartPosition}`);
     playedWaveform.setAttribute('width', `${playedPosition}`);
-    hoveredWaveform.setAttribute('width', `${hoveredPosition}`);
 
     setIsInitialized(false);
 
-    if (isHovering) {
+    if (isHovering && hoveredPosition > playedPosition) {
+      hoveredWaveform.setAttribute('viewBox', `${playedPosition} 0 ${hoveredPosition} ${height}`);
+      hoveredWaveform.setAttribute('x', `${playedPosition}`);
+      hoveredWaveform.setAttribute('width', `${hoveredPosition}`);
       hoveredWaveform.style.display = 'block';
       return;
     }
