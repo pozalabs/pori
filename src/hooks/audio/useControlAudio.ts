@@ -2,7 +2,7 @@ import type { MutableRefObject } from 'react';
 import { useCallback } from 'react';
 
 interface UseControlAudioParams {
-  audioRef: MutableRefObject<HTMLAudioElement>;
+  audioRef: MutableRefObject<HTMLAudioElement | null>;
   maxPlaybackRange: number;
   maxVolume: number;
   duration: number;
@@ -38,20 +38,26 @@ const useControlAudio = ({
 }: UseControlAudioParams): UseControlAudioReturns => {
   const changeCurrentSrc = useCallback(
     (currentSrc: string): void => {
+      const audio = audioRef.current;
+
+      if (!audio) return;
+
       const absoluteCurrentSrc = new URL(currentSrc, window.location.href).href;
 
-      if (absoluteCurrentSrc === audioRef.current.currentSrc) return;
+      if (absoluteCurrentSrc === audio.currentSrc) return;
 
-      const playbackRate = audioRef.current.playbackRate;
+      const playbackRate = audio.playbackRate;
 
-      audioRef.current.src = currentSrc;
-      audioRef.current.playbackRate = playbackRate;
+      audio.src = currentSrc;
+      audio.playbackRate = playbackRate;
     },
     [audioRef],
   );
 
   const changeCurrentTime = useCallback(
     (currentTime: number): void => {
+      if (!audioRef.current) return;
+
       audioRef.current.currentTime = currentTime;
     },
     [audioRef],
@@ -59,6 +65,8 @@ const useControlAudio = ({
 
   const changeMuted = useCallback(
     (muted: boolean): void => {
+      if (!audioRef.current) return;
+
       audioRef.current.muted = muted;
     },
     [audioRef],
@@ -66,6 +74,8 @@ const useControlAudio = ({
 
   const changePlaybackRate = useCallback(
     (playbackRate: number): void => {
+      if (!audioRef.current) return;
+
       audioRef.current.playbackRate = playbackRate;
     },
     [audioRef],
@@ -80,6 +90,8 @@ const useControlAudio = ({
 
   const changeVolume = useCallback(
     (volume: number): void => {
+      if (!audioRef.current) return;
+
       audioRef.current.volume = volume / maxVolume;
       audioRef.current.muted = volume <= 0;
     },
@@ -87,39 +99,53 @@ const useControlAudio = ({
   );
 
   const pause = useCallback((): void => {
+    if (!audioRef.current) return;
+
     audioRef.current.pause();
   }, [audioRef]);
 
   const play = useCallback((): void => {
+    if (!audioRef.current) return;
+
     audioRef.current.play().catch(() => {
       pause();
     });
   }, [audioRef, pause]);
 
   const resetAudio = useCallback((): void => {
-    audioRef.current.pause();
-    audioRef.current.src = '';
-    audioRef.current.muted = false;
-    audioRef.current.volume = 1;
-    audioRef.current.playbackRate = 1;
+    const audio = audioRef.current;
+
+    if (!audio) return;
+
+    audio.pause();
+    audio.src = '';
+    audio.muted = false;
+    audio.volume = 1;
+    audio.playbackRate = 1;
   }, [audioRef]);
 
   const resetAudioTime = useCallback((): void => {
+    if (!audioRef.current) return;
+
     audioRef.current.currentTime = 0;
   }, [audioRef]);
 
   const shiftTimeBackward = useCallback((): void => {
-    if (isNaN(audioRef.current.duration)) return;
+    const audio = audioRef.current;
 
-    const currentTime = audioRef.current.currentTime + timeShift;
+    if (!audio || isNaN(audio.duration)) return;
 
-    changeCurrentTime(Math.min(currentTime, audioRef.current.duration));
+    const currentTime = audio.currentTime + timeShift;
+
+    changeCurrentTime(Math.min(currentTime, audio.duration));
   }, [audioRef, changeCurrentTime, timeShift]);
 
   const shiftTimeForward = useCallback((): void => {
-    if (isNaN(audioRef.current.duration)) return;
+    const audio = audioRef.current;
 
-    const currentTime = audioRef.current.currentTime - timeShift;
+    if (!audio || isNaN(audio.duration)) return;
+
+    const currentTime = audio.currentTime - timeShift;
 
     changeCurrentTime(Math.max(currentTime, 0));
   }, [audioRef, changeCurrentTime, timeShift]);
@@ -130,11 +156,15 @@ const useControlAudio = ({
   }, [pause, resetAudioTime]);
 
   const toggleMuted = useCallback((): void => {
+    if (!audioRef.current) return;
+
     audioRef.current.muted = !audioRef.current.muted;
   }, [audioRef]);
 
   const togglePlayPause = useCallback(
     (src?: string): void => {
+      if (!audioRef.current) return;
+
       if (src) {
         audioRef.current.src = src;
         play();
