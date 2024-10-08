@@ -6,7 +6,7 @@ import type { ArrayElementType } from '@pozalabs/pokit/types';
 import { AudioPlayerContext } from './AudioPlayerProvider';
 import type { Playlist } from '../../hooks';
 
-interface AudioPlayerPlaylistProps {
+export interface AudioPlayerPlaylistProps {
   renderItem: (audio: ArrayElementType<Playlist>) => ReactNode;
   className?: string;
 }

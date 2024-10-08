@@ -1,6 +1,6 @@
 import type { MouseEvent, ReactNode } from 'react';
 
-interface AudioPlayerButtonWrapperProps {
+export interface AudioPlayerButtonWrapperProps {
   onClick: (e: MouseEvent<HTMLButtonElement>) => void;
   children: ReactNode;
 }
