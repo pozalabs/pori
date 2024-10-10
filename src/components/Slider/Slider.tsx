@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react';
+import type { MouseEvent, TouchEvent } from 'react';
 import { useCallback, useMemo, useRef, type InputHTMLAttributes } from 'react';
 
 import { cn } from '@pozalabs/pokit/utils';
@@ -97,9 +97,16 @@ const Slider = ({
   );
 
   const getValue = useCallback(
-    (e: MouseEvent<HTMLDivElement>): number => {
+    (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>): number => {
       const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-      const value = getValueByOrientation(rect, e.clientX, e.clientY);
+      const { clientX, clientY } =
+        'changedTouches' in e
+          ? e.type === 'touchend' || e.type === 'touchcancel'
+            ? e.changedTouches[0]
+            : e.touches[0]
+          : e;
+
+      const value = getValueByOrientation(rect, clientX, clientY);
       const formattedValue = Math.round(value / step) * step;
 
       if (formattedValue > max) return max;
@@ -120,7 +127,7 @@ const Slider = ({
   );
 
   const onSliderDrag = useCallback(
-    (e: MouseEvent<HTMLDivElement>): void => {
+    (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>): void => {
       if (!onDrag || !isDraggingRef.current) return;
 
       onDrag(getValue(e));
@@ -129,9 +136,7 @@ const Slider = ({
   );
 
   const onSliderDragStart = useCallback(
-    (e: MouseEvent<HTMLDivElement>): void => {
-      e.preventDefault();
-
+    (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>): void => {
       isDraggingRef.current = true;
 
       if (!onDragStart) return;
@@ -142,7 +147,9 @@ const Slider = ({
   );
 
   const onSliderDragEnd = useCallback(
-    (e: MouseEvent<HTMLDivElement>): void => {
+    (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>): void => {
+      e.preventDefault();
+
       isDraggingRef.current = false;
 
       if (!onDragEnd) return;
@@ -164,6 +171,10 @@ const Slider = ({
       onMouseDown={onSliderDragStart}
       onMouseUp={onSliderDragEnd}
       onMouseLeave={onSliderDragEnd}
+      onTouchMove={onSliderDrag}
+      onTouchStart={onSliderDragStart}
+      onTouchEnd={onSliderDragEnd}
+      onTouchCancel={onSliderDragEnd}
       role="slider"
       aria-valuemax={max}
       aria-valuemin={min}
