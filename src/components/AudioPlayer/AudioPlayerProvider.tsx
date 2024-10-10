@@ -71,6 +71,8 @@ const AudioPlayerProvider = forwardRef(
     useEffect(() => {
       const audio = audioRef.current;
 
+      if (!audio) return;
+
       const onAudioEnded = (): void => {
         const playingAudioIndex = findArrayElementById({
           array: playlist,

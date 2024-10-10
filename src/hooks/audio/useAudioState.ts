@@ -3,7 +3,8 @@ import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 import { DEFAULT_UNMUTE_VOLUME } from './_constants';
 
 interface UseAudioStateParams {
-  audioRef: MutableRefObject<HTMLAudioElement>;
+  audioRef: MutableRefObject<HTMLAudioElement | null>;
+  isAudioInitialized: boolean;
   maxPlaybackRange: number;
   maxVolume: number;
 }
@@ -20,6 +21,7 @@ export interface UseAudioStateReturns {
 
 const useAudioState = ({
   audioRef,
+  isAudioInitialized,
   maxPlaybackRange,
   maxVolume,
 }: UseAudioStateParams): UseAudioStateReturns => {
@@ -37,6 +39,8 @@ const useAudioState = ({
 
   useEffect(() => {
     const audio = audioRef.current;
+
+    if (!audio || !isAudioInitialized) return;
 
     const onAudioMetadataLoaded = (): void => {
       setCurrentSrc(audio.currentSrc);
@@ -91,29 +95,27 @@ const useAudioState = ({
       audio.removeEventListener('ended', onAudioEnded);
       audio.removeEventListener('seeked', onAudioSeeked);
     };
-  }, [audioRef, maxPlaybackRange]);
+  }, [audioRef, isAudioInitialized, maxPlaybackRange]);
 
   useEffect(() => {
     const audio = audioRef.current;
 
+    if (!audio || !isAudioInitialized) return;
+
     const onAudioVolumeChange = (): void => {
-      setVolume(audioRef.current.volume * maxVolume);
+      setVolume(audio.volume * maxVolume);
 
-      if (muted === audioRef.current.muted) return;
+      if (muted === audio.muted) return;
 
-      setMuted(audioRef.current.muted);
+      setMuted(audio.muted);
 
-      if (audioRef.current.muted) {
+      if (audio.muted) {
         prevVolumeRef.current = volume;
         setVolume(0);
         return;
       }
 
-      setVolume(
-        audioRef.current.volume > 0
-          ? audioRef.current.volume * maxVolume
-          : DEFAULT_UNMUTE_VOLUME * maxVolume,
-      );
+      setVolume(audio.volume > 0 ? audio.volume * maxVolume : DEFAULT_UNMUTE_VOLUME * maxVolume);
       prevVolumeRef.current = 0;
     };
 
@@ -122,10 +124,12 @@ const useAudioState = ({
     return () => {
       audio.removeEventListener('volumechange', onAudioVolumeChange);
     };
-  }, [audioRef, maxVolume, muted, volume]);
+  }, [audioRef, isAudioInitialized, maxVolume, muted, volume]);
 
   useEffect(() => {
     const audio = audioRef.current;
+
+    if (!audio || !isAudioInitialized) return;
 
     const onAudioRateChange = (): void => {
       setPlaybackRate(audio.playbackRate);
@@ -146,7 +150,7 @@ const useAudioState = ({
       audio.removeEventListener('ratechange', onAudioRateChange);
       audio.removeEventListener('error', onAudioError);
     };
-  }, [audioRef]);
+  }, [audioRef, isAudioInitialized]);
 
   return {
     currentSrc,

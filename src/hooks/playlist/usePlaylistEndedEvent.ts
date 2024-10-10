@@ -7,7 +7,7 @@ import type { Playlist, RepeatModeType } from './_types';
 import findArrayElementById from './_utils/findArrayElementById';
 
 interface UsePlaylistEndedEventParams {
-  audioRef: MutableRefObject<HTMLAudioElement>;
+  audioRef: MutableRefObject<HTMLAudioElement | null>;
   playingId: string;
   playlist: Playlist;
   repeatMode: RepeatModeType;
@@ -23,6 +23,8 @@ const usePlaylistEndedEvent = ({
 }: UsePlaylistEndedEventParams) => {
   useEffect(() => {
     const audioElement = audioRef.current;
+
+    if (!audioElement) return;
 
     const onAudioEnded = (): void => {
       const playingAudioIndex = findArrayElementById({

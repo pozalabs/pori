@@ -1,4 +1,4 @@
-import { useEffect, useRef, type MutableRefObject } from 'react';
+import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 
 import { AUDIO_DEFAULT_VALUE } from './_constants';
 import type { UseAudioStateReturns } from './useAudioState';
@@ -19,7 +19,7 @@ interface UseAudioParams {
 }
 
 interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
-  audioRef: MutableRefObject<HTMLAudioElement>;
+  audioRef: MutableRefObject<HTMLAudioElement | null>;
 }
 
 /**
@@ -86,11 +86,13 @@ const useAudio = ({
   src = AUDIO_DEFAULT_VALUE.src,
   timeShift = AUDIO_DEFAULT_VALUE.timeShift,
 }: UseAudioParams): UseAudioReturns => {
-  const audioRef = useRef(new Audio());
+  const audioRef = useRef<HTMLAudioElement | null>(null);
+  const [isAudioInitialized, setIsAudioInitialized] = useState(false);
 
   const { currentSrc, currentTime, duration, isPlaying, playbackRate, playbackRange, volume } =
     useAudioState({
       audioRef,
+      isAudioInitialized,
       maxPlaybackRange,
       maxVolume,
     });
@@ -133,14 +135,25 @@ const useAudio = ({
   });
 
   useEffect(() => {
+    audioRef.current = new Audio();
+    setIsAudioInitialized(true);
+  }, []);
+
+  useEffect(() => {
+    if (!audioRef.current) return;
+
     audioRef.current.src = src;
   }, [src]);
 
   useEffect(() => {
+    if (!audioRef.current) return;
+
     audioRef.current.autoplay = autoplay;
   }, [autoplay]);
 
   useEffect(() => {
+    if (!audioRef.current) return;
+
     audioRef.current.loop = loop;
   }, [loop]);
 
@@ -148,6 +161,8 @@ const useAudio = ({
     const audio = audioRef.current;
 
     return () => {
+      if (!audio) return;
+
       audio.pause();
       audio.src = '';
       audio.load();
