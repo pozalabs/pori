@@ -105,22 +105,23 @@ const useWaveform = <T extends WaveformType = 'canvas'>({
   const [isHovering, setIsHovering] = useState(false);
   const [hoveredPosition, setHoveredPosition] = useState(0);
 
-  const showHoveredWaveform = useCallback((e: Event, positionX?: number): void => {
-    const element =
-      e.target instanceof HTMLCanvasElement
-        ? e.target
-        : e.currentTarget instanceof SVGSVGElement
-          ? e.currentTarget
-          : null;
-    if (!(e instanceof MouseEvent) || !element) return;
+  const showHoveredWaveform = useCallback(
+    (e: Event, positionX?: number): void => {
+      const element = e.target as HTMLCanvasElement | SVGSVGElement;
+      if (!(e instanceof MouseEvent) || !element) return;
 
-    const rect = element.getBoundingClientRect();
+      const rect = element.getBoundingClientRect();
 
-    const hoveredPosition = e.clientX - rect.left;
+      const hoveredX = e.clientX - rect.left;
+      const percent = (hoveredX / rect.width) * 100;
+      const hoveredTime = (percent * duration) / 100;
+      const hoveredPosition = (hoveredTime / duration) * width;
 
-    setHoveredPosition(Math.max(0, positionX ?? hoveredPosition));
-    setIsHovering(true);
-  }, []);
+      setHoveredPosition(isNaN(hoveredPosition) ? 0 : Math.max(0, positionX ?? hoveredPosition));
+      setIsHovering(true);
+    },
+    [duration, width],
+  );
 
   const hideHoveredWaveform = useCallback((): void => {
     setIsHovering(false);
