@@ -117,7 +117,7 @@ const useWaveform = <T extends WaveformType = 'canvas'>({
       const hoveredTime = (percent * duration) / 100;
       const hoveredPosition = (hoveredTime / duration) * width;
 
-      setHoveredPosition(Math.max(0, positionX ?? hoveredPosition));
+      setHoveredPosition(isNaN(hoveredPosition) ? 0 : Math.max(0, positionX ?? hoveredPosition));
       setIsHovering(true);
     },
     [duration, width],
