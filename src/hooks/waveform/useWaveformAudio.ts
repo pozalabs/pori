@@ -28,9 +28,13 @@ const useWaveformAudio = ({
   });
 
   useEffect(() => {
-    if (!audioRef.current) return;
+    const audio = audioRef.current;
 
-    Object.keys(eventHandlers).forEach(eventType => {
+    if (!audio) return;
+
+    const events = Object.keys(eventHandlers).reduce<
+      { [key: string]: (event: Event) => void } | undefined
+    >((acc, eventType) => {
       const eventHandler = convertReactHandlerToNativeHandler(
         eventHandlers[eventType as keyof HTMLAudioElementEventType],
       );
@@ -41,8 +45,18 @@ const useWaveformAudio = ({
         .slice(2)
         .toLocaleLowerCase() as keyof HTMLMediaElementEventMap;
 
-      audioRef.current?.addEventListener(formattedEventType, eventHandler);
-    });
+      audio.addEventListener(formattedEventType, eventHandler);
+
+      return { ...acc, [formattedEventType]: eventHandler };
+    }, {});
+
+    return () => {
+      if (!events) return;
+
+      Object.keys(events).forEach(eventType => {
+        audio.removeEventListener(eventType, events[eventType]);
+      });
+    };
   }, [audioRef, eventHandlers]);
 
   return {
