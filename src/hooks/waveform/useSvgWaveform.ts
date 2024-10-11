@@ -68,7 +68,7 @@ const useSvgWaveform = ({
 
       polylineElement.setAttribute('points', points);
       polylineElement.style.strokeWidth = `${BAR_WIDTH}`;
-      polylineElement.setAttribute('stroke', 'currentColor');
+      polylineElement.setAttribute('stroke', 'inherit');
       polylineElement.setAttribute('fill', 'none');
 
       element.appendChild(polylineElement);
@@ -89,7 +89,8 @@ const useSvgWaveform = ({
         rectElement.setAttribute('y', `${yTop}`);
         rectElement.setAttribute('width', `${BAR_WIDTH}`);
         rectElement.setAttribute('height', `${2 * formattedBarHeight}`);
-        rectElement.setAttribute('fill', 'currentColor');
+        rectElement.setAttribute('fill', 'inherit');
+        rectElement.setAttribute('stroke', 'none');
 
         element.appendChild(rectElement);
       });
@@ -133,6 +134,13 @@ const useSvgWaveform = ({
     playedUseSvg.setAttribute('href', '#waveform');
     hoveredUseSvg.setAttribute('href', '#waveform');
 
+    initUseSvg.setAttribute('fill', waveColor);
+    playedUseSvg.setAttribute('fill', progressColor);
+    hoveredUseSvg.setAttribute('fill', hoveredColor);
+    initUseSvg.setAttribute('stroke', waveColor);
+    playedUseSvg.setAttribute('stroke', progressColor);
+    hoveredUseSvg.setAttribute('stroke', hoveredColor);
+
     const initSvg = createSvgElement(width, height);
     const playedSvg = createSvgElement(width, height);
     const hoveredSvg = createSvgElement(width, height);
@@ -143,10 +151,6 @@ const useSvgWaveform = ({
     initSvg.appendChild(initUseSvg);
     playedSvg.appendChild(playedUseSvg);
     hoveredSvg.appendChild(hoveredUseSvg);
-
-    initSvg.style.color = waveColor;
-    playedSvg.style.color = progressColor;
-    hoveredSvg.style.color = hoveredColor;
 
     waveform.replaceChildren();
     waveform.appendChild(titleEl);
