@@ -1,4 +1,4 @@
-import { useCallback, useEffect, useState, useMemo } from 'react';
+import { useCallback, useEffect, useState, useMemo, useId } from 'react';
 
 import { BAR_WIDTH } from './_constants';
 import type { UseTypeWaveformParams } from './_types';
@@ -37,6 +37,8 @@ const useSvgWaveform = ({
 }: UseTypeWaveformParams<'svg'>) => {
   const [waveform, setWaveform] = useState<SVGSVGElement>();
   const [isInitialized, setIsInitialized] = useState(false);
+
+  const waveformId = useId();
 
   const { addEventListeners, removeEventListeners } = useUpdateCurrentTimeEvent({
     duration,
@@ -125,14 +127,14 @@ const useSvgWaveform = ({
 
     const symbolElement = createSymbolElement();
     drawWaveform(symbolElement);
-    symbolElement.id = 'waveform';
+    symbolElement.id = waveformId;
 
     const initUseSvg = createUseElement();
     const playedUseSvg = createUseElement();
     const hoveredUseSvg = createUseElement();
-    initUseSvg.setAttribute('href', '#waveform');
-    playedUseSvg.setAttribute('href', '#waveform');
-    hoveredUseSvg.setAttribute('href', '#waveform');
+    initUseSvg.setAttribute('href', `#${waveformId}`);
+    playedUseSvg.setAttribute('href', `#${waveformId}`);
+    hoveredUseSvg.setAttribute('href', `#${waveformId}`);
 
     initUseSvg.setAttribute('fill', waveColor);
     playedUseSvg.setAttribute('fill', progressColor);
@@ -161,7 +163,7 @@ const useSvgWaveform = ({
     waveform.appendChild(playedSvg);
 
     setIsInitialized(true);
-  }, [waveform, drawWaveform, width, height, waveColor, progressColor, hoveredColor]);
+  }, [waveform, drawWaveform, waveformId, waveColor, progressColor, hoveredColor, width, height]);
 
   const updateSvgWaveform = useCallback((): void => {
     const initWaveform = waveform?.getElementById('init') as SVGSVGElement;
