@@ -52,10 +52,6 @@ interface SliderProps
  */
 const Slider = ({
   orientation = SLIDER_DEFAULT_VALUE.orientation,
-  max = SLIDER_DEFAULT_VALUE.max,
-  min = SLIDER_DEFAULT_VALUE.min,
-  step = SLIDER_DEFAULT_VALUE.step,
-  value,
   railClassName,
   trackClassName,
   thumbClassName,
@@ -67,16 +63,21 @@ const Slider = ({
   ...inputProps
 }: SliderProps) => {
   const isDraggingRef = useRef(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const progressPercentage = useMemo(
-    () => ((value ?? 0) / (max > 0 ? max : 1)) * 100,
-    [max, value],
-  );
+  const progressPercentage = useMemo(() => {
+    const max = Number(inputRef.current?.max);
+    return ((inputProps.value ?? 0) / (max > 0 ? max : 1)) * 100;
+  }, [inputProps.value]);
 
   const getValueByOrientation = useCallback(
     (rect: DOMRect, clientX: number, clientY: number): number => {
+      if (!inputRef.current) return 0;
+
       const clickX = clientX - rect.left;
       const clickY = rect.bottom - clientY;
+
+      const max = Number(inputRef.current.max);
 
       switch (orientation) {
         case 'horizontal': {
@@ -93,11 +94,17 @@ const Slider = ({
         }
       }
     },
-    [max, orientation],
+    [orientation],
   );
 
   const getValue = useCallback(
     (e: MouseEvent<HTMLDivElement>): number => {
+      if (!inputRef.current) return 0;
+
+      const max = Number(inputRef.current.max);
+      const min = Number(inputRef.current.min);
+      const step = Number(inputRef.current.step);
+
       const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
       const value = getValueByOrientation(rect, e.clientX, e.clientY);
       const formattedValue = Math.round(value / step) * step;
@@ -107,7 +114,7 @@ const Slider = ({
 
       return formattedValue;
     },
-    [getValueByOrientation, max, min, step],
+    [getValueByOrientation],
   );
 
   const onSliderClick = useCallback(
@@ -165,9 +172,9 @@ const Slider = ({
       onMouseUp={onSliderDragEnd}
       onMouseLeave={onSliderDragEnd}
       role="slider"
-      aria-valuemax={max}
-      aria-valuemin={min}
-      aria-valuenow={value}
+      aria-valuemax={Number(inputRef.current?.max ?? '0')}
+      aria-valuemin={Number(inputRef.current?.min ?? '0')}
+      aria-valuenow={Number(inputRef.current?.value ?? '0')}
     >
       <span
         className={cn('absolute left-0 top-0 size-full rounded-inherit bg-gray-100', railClassName)}
@@ -203,14 +210,15 @@ const Slider = ({
         )}
       />
       <input
+        {...inputProps}
         type="range"
         style={{ display: 'none' }}
-        max={max}
-        min={min}
-        step={step}
-        value={value}
+        max={inputProps.max ?? SLIDER_DEFAULT_VALUE.max}
+        min={inputProps.min ?? SLIDER_DEFAULT_VALUE.min}
+        step={inputProps.step ?? SLIDER_DEFAULT_VALUE.step}
+        value={inputProps.value}
         readOnly
-        {...inputProps}
+        ref={inputRef}
       />
     </div>
   );
