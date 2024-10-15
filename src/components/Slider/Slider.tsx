@@ -66,7 +66,7 @@ const Slider = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const progressPercentage = useMemo(() => {
-    const max = Number(inputRef.current?.max);
+    const max = Number(inputRef.current?.max ?? '0');
     return ((inputProps.value ?? 0) / (max > 0 ? max : 1)) * 100;
   }, [inputProps.value]);
 
