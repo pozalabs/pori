@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 import { useContext } from 'react';
 
 import type { ArrayElementType } from '@pozalabs/pokit/types';
@@ -6,15 +6,14 @@ import type { ArrayElementType } from '@pozalabs/pokit/types';
 import { AudioPlayerContext } from './AudioPlayerProvider';
 import type { Playlist } from '../../hooks';
 
-export interface AudioPlayerPlaylistProps {
+export interface AudioPlayerPlaylistProps extends HTMLAttributes<HTMLUListElement> {
   renderItem: (audio: ArrayElementType<Playlist>, index?: number) => ReactNode;
-  className?: string;
 }
 
-const AudioPlayerPlaylist = ({ renderItem, className }: AudioPlayerPlaylistProps) => {
+const AudioPlayerPlaylist = ({ renderItem, ...ulProps }: AudioPlayerPlaylistProps) => {
   const { playlist } = useContext(AudioPlayerContext);
 
-  return <ul className={className}>{playlist.map((audio, index) => renderItem(audio, index))}</ul>;
+  return <ul {...ulProps}>{playlist.map((audio, index) => renderItem(audio, index))}</ul>;
 };
 
 export default AudioPlayerPlaylist;
