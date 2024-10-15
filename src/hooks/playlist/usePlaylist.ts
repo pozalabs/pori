@@ -22,6 +22,7 @@ interface UsePlaylistReturns
   playlist: Playlist;
   addAudio: (audio: ArrayElementType<Playlist>, autoplay?: boolean) => void;
   removeAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
+  changeAudioIndex: (id: ArrayElementType<Playlist>['id'], index: number) => void;
   clearPlaylist: () => void;
 }
 
@@ -45,8 +46,9 @@ interface UsePlaylistReturns
  *    playingId: ArrayElementType<Playlist>['id'];
  *    playlist: Playlist;
  *    addAudio: (audio: ArrayElementType<Playlist>, autoplay?: boolean) => void;
- *    clearPlaylist: () => void;
+ *    changeAudioIndex: (id: ArrayElementType<Playlist>['id'], index: number) => void;
  *    changePlayingAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
+ *    clearPlaylist: () => void;
  *    playNextAudio: (autoplay?: boolean) => void;
  *    playPrevAudio: (autoplay?: boolean) => void;
  *    removeAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
@@ -147,6 +149,20 @@ const usePlaylist = ({
     [changePlayingAudio, playingId, playlist],
   );
 
+  const changeAudioIndex = useCallback(
+    (id: ArrayElementType<Playlist>['id'], index: number): void => {
+      const audio = findArrayElementById({ array: playlist, id, returnIndex: false });
+
+      if (index < 0 || index >= playlist.length || audio === undefined) return;
+
+      setPlaylist(prev => {
+        const newPlaylist = prev.filter(audio => audio.id !== id);
+        return [...newPlaylist.slice(0, index), audio, ...newPlaylist.slice(index)];
+      });
+    },
+    [playlist],
+  );
+
   const clearPlaylist = useCallback((): void => {
     setPlaylist([]);
   }, []);
@@ -158,6 +174,7 @@ const usePlaylist = ({
     playingId,
     playlist,
     addAudio,
+    changeAudioIndex,
     changeCurrentSrc,
     changePlayingAudio,
     clearPlaylist,
