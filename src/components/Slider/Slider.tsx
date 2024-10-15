@@ -1,4 +1,4 @@
-import type { MouseEvent } from 'react';
+import type { MouseEvent, TouchEvent } from 'react';
 import { useCallback, useMemo, useRef, type InputHTMLAttributes } from 'react';
 
 import { cn } from '@pozalabs/pokit/utils';
@@ -47,7 +47,7 @@ interface SliderProps
  * ```
  * - orientation : 슬라이더의 방향입니다. (default: `horizontal`)
  * - max : 슬라이더 value의 최댓값입니다. (default: `100`)
- * - min : 슬라이더 value의 최솟값입니다. (defulat: `0`)
+ * - min : 슬라이더 value의 최솟값입니다. (default: `0`)
  * - step : 슬라이더 value의 단위입니다. 클릭 또는 드래그 이벤트를 통해 전달되는 value는 항상 step 단위로 포맷팅됩니다. (default: `1`)
  */
 const Slider = ({
@@ -98,7 +98,7 @@ const Slider = ({
   );
 
   const getValue = useCallback(
-    (e: MouseEvent<HTMLDivElement>): number => {
+    (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>): number => {
       if (!inputRef.current) return 0;
 
       const max = Number(inputRef.current.max);
@@ -106,7 +106,14 @@ const Slider = ({
       const step = Number(inputRef.current.step);
 
       const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
-      const value = getValueByOrientation(rect, e.clientX, e.clientY);
+      const { clientX, clientY } =
+        'changedTouches' in e
+          ? e.type === 'touchend' || e.type === 'touchcancel'
+            ? e.changedTouches[0]
+            : e.touches[0]
+          : e;
+
+      const value = getValueByOrientation(rect, clientX, clientY);
       const formattedValue = Math.round(value / step) * step;
 
       if (formattedValue > max) return max;
@@ -127,7 +134,7 @@ const Slider = ({
   );
 
   const onSliderDrag = useCallback(
-    (e: MouseEvent<HTMLDivElement>): void => {
+    (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>): void => {
       if (!onDrag || !isDraggingRef.current) return;
 
       onDrag(getValue(e));
@@ -136,9 +143,7 @@ const Slider = ({
   );
 
   const onSliderDragStart = useCallback(
-    (e: MouseEvent<HTMLDivElement>): void => {
-      e.preventDefault();
-
+    (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>): void => {
       isDraggingRef.current = true;
 
       if (!onDragStart) return;
@@ -149,7 +154,9 @@ const Slider = ({
   );
 
   const onSliderDragEnd = useCallback(
-    (e: MouseEvent<HTMLDivElement>): void => {
+    (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>): void => {
+      e.preventDefault();
+
       isDraggingRef.current = false;
 
       if (!onDragEnd) return;
@@ -171,6 +178,10 @@ const Slider = ({
       onMouseDown={onSliderDragStart}
       onMouseUp={onSliderDragEnd}
       onMouseLeave={onSliderDragEnd}
+      onTouchMove={onSliderDrag}
+      onTouchStart={onSliderDragStart}
+      onTouchEnd={onSliderDragEnd}
+      onTouchCancel={onSliderDragEnd}
       role="slider"
       aria-valuemax={Number(inputRef.current?.max ?? '0')}
       aria-valuemin={Number(inputRef.current?.min ?? '0')}
