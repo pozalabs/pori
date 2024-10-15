@@ -57,6 +57,7 @@ export type TimeFormat = 'SS' | 'S' | 'MM:SS' | 'M:S' | 'HH:MM:SS' | 'H:M:S';
  */
 export interface AudioPlayerHandles {
   addAudio: (audio: ArrayElementType<Playlist>, autoplay?: boolean) => void;
+  changeAudioIndex: (id: ArrayElementType<Playlist>['id'], index: number) => void;
   changeCurrentTime: (currentTime: number) => void;
   changeMuted: (muted: boolean) => void;
   changePlaybackRate: (playbackRate: number) => void;

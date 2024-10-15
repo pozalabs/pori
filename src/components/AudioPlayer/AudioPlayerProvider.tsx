@@ -42,6 +42,7 @@ const AudioPlayerProvider = forwardRef(
       playingId,
       volume,
       addAudio,
+      changeAudioIndex,
       changeCurrentSrc,
       changeCurrentTime,
       changeMuted,
@@ -99,6 +100,7 @@ const AudioPlayerProvider = forwardRef(
       ref,
       () => ({
         addAudio,
+        changeAudioIndex,
         changeCurrentTime,
         changeMuted,
         changePlaybackRate,
@@ -121,6 +123,7 @@ const AudioPlayerProvider = forwardRef(
       }),
       [
         addAudio,
+        changeAudioIndex,
         changeCurrentTime,
         changeMuted,
         changePlaybackRange,
