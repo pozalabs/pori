@@ -1,10 +1,11 @@
-import type { ForwardedRef } from 'react';
+import type { ForwardedRef, RefObject } from 'react';
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
 import type { WaveformType } from '../../hooks/waveform/_types';
 import useWaveform, { type UseWaveformParams } from '../../hooks/waveform/useWaveform';
 
 export interface WaveformHandles {
+  waveformRef: RefObject<HTMLDivElement>;
   isPlaying: boolean;
   currentTime: number;
   duration: number;
@@ -53,6 +54,7 @@ const Waveform = forwardRef(
     useImperativeHandle(
       ref,
       () => ({
+        waveformRef: containerRef,
         isPlaying,
         currentTime,
         duration,
@@ -60,7 +62,7 @@ const Waveform = forwardRef(
         pause,
         changeCurrentTime,
       }),
-      [isPlaying, currentTime, duration, play, pause, changeCurrentTime],
+      [containerRef, isPlaying, currentTime, duration, play, pause, changeCurrentTime],
     );
 
     return <div ref={containerRef} className="size-max" />;
