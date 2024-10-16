@@ -17,6 +17,22 @@ import useWaveform from '../../hooks/waveform/useWaveform';
 const WaveformWithControlButton = <T extends WaveformType>(props: UseWaveformParams<T>) => {
   const ref = useRef<WaveformHandles>(null);
 
+  useEffect(() => {
+    const waveformElement = ref.current?.waveformRef.current;
+
+    if (!waveformElement) return;
+
+    const { play } = ref.current;
+
+    waveformElement.addEventListener('click', play);
+
+    return () => {
+      if (!waveformElement) return;
+
+      waveformElement.removeEventListener('click', play);
+    };
+  }, []);
+
   return (
     <div className="flex w-fit flex-col gap-4">
       <Waveform ref={ref} {...props} />
