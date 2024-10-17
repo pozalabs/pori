@@ -179,9 +179,11 @@ const Slider = ({
       aria-valuemax={max}
       aria-valuemin={min}
       aria-valuenow={value}
+      data-testid="slider"
     >
       <span
         className={cn('absolute left-0 top-0 size-full rounded-inherit bg-gray-100', railClassName)}
+        data-testid="sliderRail"
       />
       <span
         style={{
@@ -193,6 +195,7 @@ const Slider = ({
           orientation === 'horizontal-reverse' ? 'right-0' : 'left-0',
           trackClassName,
         )}
+        data-testid="sliderTrack"
       />
       <span
         style={
@@ -212,6 +215,7 @@ const Slider = ({
             : 'w-full h-max left-0 -translate-y-1/2',
           thumbClassName,
         )}
+        data-testid="sliderThumb"
       />
       <input
         type="range"
