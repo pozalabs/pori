@@ -4,6 +4,18 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import useAudio from './useAudio';
 
 describe('useAudio 테스트', () => {
+  beforeEach(() => {
+    window.HTMLMediaElement.prototype.play = vi.fn(() => Promise.resolve());
+    window.HTMLMediaElement.prototype.pause = vi.fn();
+    window.HTMLMediaElement.prototype.load = vi.fn();
+  });
+
+  afterEach(() => {
+    (window.HTMLMediaElement.prototype.play as ReturnType<typeof vi.fn>).mockClear();
+    (window.HTMLMediaElement.prototype.pause as ReturnType<typeof vi.fn>).mockClear();
+    (window.HTMLMediaElement.prototype.load as ReturnType<typeof vi.fn>).mockClear();
+  });
+
   describe('반환값 테스트', () => {
     it('useAudio는 audio element 타입의 ref를 반환한다.', () => {
       const {
@@ -81,16 +93,6 @@ describe('useAudio 테스트', () => {
   });
 
   describe('동작 테스트', () => {
-    beforeEach(() => {
-      window.HTMLMediaElement.prototype.play = vi.fn(() => Promise.resolve());
-      window.HTMLMediaElement.prototype.pause = vi.fn();
-    });
-
-    afterEach(() => {
-      (window.HTMLMediaElement.prototype.play as ReturnType<typeof vi.fn>).mockClear();
-      (window.HTMLMediaElement.prototype.pause as ReturnType<typeof vi.fn>).mockClear();
-    });
-
     it('useAudio에 src 파라미터를 전달하면 그에 대응하는 값으로 currentSrc가 설정된다.', () => {
       const src = 'hi.mp3';
 

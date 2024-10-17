@@ -15,6 +15,7 @@ describe('useWaveform 테스트', () => {
     window.OfflineAudioContext = OfflineAudioContext as any;
     window.HTMLMediaElement.prototype.play = vi.fn();
     window.HTMLMediaElement.prototype.pause = vi.fn();
+    window.HTMLMediaElement.prototype.load = vi.fn();
     window.OffscreenCanvas = vi.fn().mockImplementation((width: number, height: number) => {
       return {
         height,
@@ -35,6 +36,7 @@ describe('useWaveform 테스트', () => {
     window.OfflineAudioContext = offlineAudioContext;
     (window.HTMLMediaElement.prototype.play as ReturnType<typeof vi.fn>).mockClear();
     (window.HTMLMediaElement.prototype.pause as ReturnType<typeof vi.fn>).mockClear();
+    (window.HTMLMediaElement.prototype.load as ReturnType<typeof vi.fn>).mockClear();
     (window.OffscreenCanvas as ReturnType<typeof vi.fn>).mockClear();
   });
 
