@@ -47,15 +47,11 @@ interface SliderProps
  * ```
  * - orientation : 슬라이더의 방향입니다. (default: `horizontal`)
  * - max : 슬라이더 value의 최댓값입니다. (default: `100`)
- * - min : 슬라이더 value의 최솟값입니다. (defulat: `0`)
+ * - min : 슬라이더 value의 최솟값입니다. (default: `0`)
  * - step : 슬라이더 value의 단위입니다. 클릭 또는 드래그 이벤트를 통해 전달되는 value는 항상 step 단위로 포맷팅됩니다. (default: `1`)
  */
 const Slider = ({
   orientation = SLIDER_DEFAULT_VALUE.orientation,
-  max = SLIDER_DEFAULT_VALUE.max,
-  min = SLIDER_DEFAULT_VALUE.min,
-  step = SLIDER_DEFAULT_VALUE.step,
-  value,
   railClassName,
   trackClassName,
   thumbClassName,
@@ -67,16 +63,21 @@ const Slider = ({
   ...inputProps
 }: SliderProps) => {
   const isDraggingRef = useRef(false);
+  const inputRef = useRef<HTMLInputElement | null>(null);
 
-  const progressPercentage = useMemo(
-    () => ((value ?? 0) / (max > 0 ? max : 1)) * 100,
-    [max, value],
-  );
+  const progressPercentage = useMemo(() => {
+    const max = Number(inputRef.current?.max ?? '0');
+    return ((inputProps.value ?? 0) / (max > 0 ? max : 1)) * 100;
+  }, [inputProps.value]);
 
   const getValueByOrientation = useCallback(
     (rect: DOMRect, clientX: number, clientY: number): number => {
+      if (!inputRef.current) return 0;
+
       const clickX = clientX - rect.left;
       const clickY = rect.bottom - clientY;
+
+      const max = Number(inputRef.current.max);
 
       switch (orientation) {
         case 'horizontal': {
@@ -93,11 +94,17 @@ const Slider = ({
         }
       }
     },
-    [max, orientation],
+    [orientation],
   );
 
   const getValue = useCallback(
     (e: MouseEvent<HTMLDivElement> | TouchEvent<HTMLDivElement>): number => {
+      if (!inputRef.current) return 0;
+
+      const max = Number(inputRef.current.max);
+      const min = Number(inputRef.current.min);
+      const step = Number(inputRef.current.step);
+
       const rect = (e.currentTarget as HTMLDivElement).getBoundingClientRect();
       const { clientX, clientY } =
         'changedTouches' in e
@@ -114,7 +121,7 @@ const Slider = ({
 
       return formattedValue;
     },
-    [getValueByOrientation, max, min, step],
+    [getValueByOrientation],
   );
 
   const onSliderClick = useCallback(
@@ -176,9 +183,9 @@ const Slider = ({
       onTouchEnd={onSliderDragEnd}
       onTouchCancel={onSliderDragEnd}
       role="slider"
-      aria-valuemax={max}
-      aria-valuemin={min}
-      aria-valuenow={value}
+      aria-valuemax={Number(inputRef.current?.max ?? '0')}
+      aria-valuemin={Number(inputRef.current?.min ?? '0')}
+      aria-valuenow={Number(inputRef.current?.value ?? '0')}
       data-testid="slider"
     >
       <span
@@ -218,14 +225,15 @@ const Slider = ({
         data-testid="sliderThumb"
       />
       <input
+        {...inputProps}
         type="range"
         style={{ display: 'none' }}
-        max={max}
-        min={min}
-        step={step}
-        value={value}
+        max={inputProps.max ?? SLIDER_DEFAULT_VALUE.max}
+        min={inputProps.min ?? SLIDER_DEFAULT_VALUE.min}
+        step={inputProps.step ?? SLIDER_DEFAULT_VALUE.step}
+        value={inputProps.value}
         readOnly
-        {...inputProps}
+        ref={inputRef}
       />
     </div>
   );
