@@ -66,9 +66,9 @@ const Slider = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const progressPercentage = useMemo(() => {
-    const max = Number(inputRef.current?.max ?? '0');
-    return ((inputProps.value ?? 0) / (max > 0 ? max : 1)) * 100;
-  }, [inputProps.value]);
+    const max = Number(inputProps.max ?? '0');
+    return (Number(inputProps.value ?? '0') / max) * 100;
+  }, [inputProps.max, inputProps.value]);
 
   const getValueByOrientation = useCallback(
     (rect: DOMRect, clientX: number, clientY: number): number => {
@@ -186,9 +186,11 @@ const Slider = ({
       aria-valuemax={Number(inputRef.current?.max ?? '0')}
       aria-valuemin={Number(inputRef.current?.min ?? '0')}
       aria-valuenow={Number(inputRef.current?.value ?? '0')}
+      data-testid="slider"
     >
       <span
         className={cn('absolute left-0 top-0 size-full rounded-inherit bg-gray-100', railClassName)}
+        data-testid="sliderRail"
       />
       <span
         style={{
@@ -200,6 +202,7 @@ const Slider = ({
           orientation === 'horizontal-reverse' ? 'right-0' : 'left-0',
           trackClassName,
         )}
+        data-testid="sliderTrack"
       />
       <span
         style={
@@ -219,6 +222,7 @@ const Slider = ({
             : 'w-full h-max left-0 -translate-y-1/2',
           thumbClassName,
         )}
+        data-testid="sliderThumb"
       />
       <input
         {...inputProps}
