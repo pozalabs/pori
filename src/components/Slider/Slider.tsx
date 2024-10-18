@@ -66,9 +66,9 @@ const Slider = ({
   const inputRef = useRef<HTMLInputElement | null>(null);
 
   const progressPercentage = useMemo(() => {
-    const max = Number(inputRef.current?.max ?? '0');
-    return ((inputProps.value ?? 0) / (max > 0 ? max : 1)) * 100;
-  }, [inputProps.value]);
+    const max = Number(inputProps.max ?? '0');
+    return (Number(inputProps.value ?? '0') / max) * 100;
+  }, [inputProps.max, inputProps.value]);
 
   const getValueByOrientation = useCallback(
     (rect: DOMRect, clientX: number, clientY: number): number => {
