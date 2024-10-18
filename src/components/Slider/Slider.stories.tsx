@@ -94,6 +94,10 @@ const PlayerSlider = (props: Parameters<typeof Slider>[0]) => {
     changeVolume(volume);
   };
 
+  const toggleIsVolumeSliderShowing = (): void => {
+    setIsVolumeShowing(prev => !prev);
+  };
+
   useEffect(() => {
     const onMouseUp = () => {
       if (!isDragging.current) return;
@@ -133,10 +137,7 @@ const PlayerSlider = (props: Parameters<typeof Slider>[0]) => {
             />
           </div>
           <div className="relative flex items-center justify-center gap-2">
-            <span
-              className="cursor-pointer text-[12px]"
-              onClick={() => setIsVolumeShowing(prev => !prev)}
-            >
+            <span className="cursor-pointer text-[12px]" onClick={toggleIsVolumeSliderShowing}>
               볼륨
             </span>
             {isVolumeShowing && (
