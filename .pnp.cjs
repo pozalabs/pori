@@ -72,14 +72,12 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-tailwindcss", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:3.17.4"],\
           ["globals", "npm:15.9.0"],\
           ["jsdom", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:24.1.0"],\
-          ["konva", "npm:9.3.14"],\
           ["msw", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:2.3.1"],\
           ["postcss", "npm:8.4.39"],\
           ["postcss-loader", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:8.1.1"],\
           ["prettier", "npm:3.3.3"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:18.3.1"],\
-          ["react-konva", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:18.2.10"],\
           ["standardized-audio-context-mock", "npm:9.7.7"],\
           ["storybook", "npm:8.3.5"],\
           ["style-loader", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:4.0.0"],\
@@ -1541,14 +1539,12 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-tailwindcss", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:3.17.4"],\
           ["globals", "npm:15.9.0"],\
           ["jsdom", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:24.1.0"],\
-          ["konva", "npm:9.3.14"],\
           ["msw", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:2.3.1"],\
           ["postcss", "npm:8.4.39"],\
           ["postcss-loader", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:8.1.1"],\
           ["prettier", "npm:3.3.3"],\
           ["react", "npm:18.3.1"],\
           ["react-dom", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:18.3.1"],\
-          ["react-konva", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:18.2.10"],\
           ["standardized-audio-context-mock", "npm:9.7.7"],\
           ["storybook", "npm:8.3.5"],\
           ["style-loader", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:4.0.0"],\
@@ -3559,16 +3555,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/@types-react-dom-npm-18.3.0-111444d3eb-6c90d2ed72.zip/node_modules/@types/react-dom/",\
         "packageDependencies": [\
           ["@types/react-dom", "npm:18.3.0"],\
-          ["@types/react", "npm:18.3.3"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["@types/react-reconciler", [\
-      ["npm:0.28.8", {\
-        "packageLocation": "./.yarn/cache/@types-react-reconciler-npm-0.28.8-6627bc4c20-ca95cffcdf.zip/node_modules/@types/react-reconciler/",\
-        "packageDependencies": [\
-          ["@types/react-reconciler", "npm:0.28.8"],\
           ["@types/react", "npm:18.3.3"]\
         ],\
         "linkType": "HARD"\
@@ -8521,29 +8507,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["its-fine", [\
-      ["npm:1.2.5", {\
-        "packageLocation": "./.yarn/cache/its-fine-npm-1.2.5-e6a757d915-5618955ac7.zip/node_modules/its-fine/",\
-        "packageDependencies": [\
-          ["its-fine", "npm:1.2.5"]\
-        ],\
-        "linkType": "SOFT"\
-      }],\
-      ["virtual:d0654a1947783d4a65d059b4c71a33f92f411346d10a8a8d2775b8e94d8dea9c522e08a11c51fe02bbd3f62170a59ed976fc9497d0e5c3a3bacf8ddbe6c2f085#npm:1.2.5", {\
-        "packageLocation": "./.yarn/__virtual__/its-fine-virtual-3a1e2f5cbd/0/cache/its-fine-npm-1.2.5-e6a757d915-5618955ac7.zip/node_modules/its-fine/",\
-        "packageDependencies": [\
-          ["its-fine", "virtual:d0654a1947783d4a65d059b4c71a33f92f411346d10a8a8d2775b8e94d8dea9c522e08a11c51fe02bbd3f62170a59ed976fc9497d0e5c3a3bacf8ddbe6c2f085#npm:1.2.5"],\
-          ["@types/react", "npm:18.3.3"],\
-          ["@types/react-reconciler", "npm:0.28.8"],\
-          ["react", "npm:18.3.1"]\
-        ],\
-        "packagePeers": [\
-          "@types/react",\
-          "react"\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["jackspeak", [\
       ["npm:3.4.3", {\
         "packageLocation": "./.yarn/cache/jackspeak-npm-3.4.3-546bfad080-6acc10d139.zip/node_modules/jackspeak/",\
@@ -8791,15 +8754,6 @@ const RAW_RUNTIME_STATE =
         "packageDependencies": [\
           ["keyv", "npm:4.5.4"],\
           ["json-buffer", "npm:3.0.1"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["konva", [\
-      ["npm:9.3.14", {\
-        "packageLocation": "./.yarn/cache/konva-npm-9.3.14-1af6d2b41a-25dff31140.zip/node_modules/konva/",\
-        "packageDependencies": [\
-          ["konva", "npm:9.3.14"]\
         ],\
         "linkType": "HARD"\
       }]\
@@ -10734,64 +10688,6 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/react-is-npm-18.1.0-6642a99f70-558874e4c3.zip/node_modules/react-is/",\
         "packageDependencies": [\
           ["react-is", "npm:18.1.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["react-konva", [\
-      ["npm:18.2.10", {\
-        "packageLocation": "./.yarn/cache/react-konva-npm-18.2.10-25aab7f08f-4eb2e96182.zip/node_modules/react-konva/",\
-        "packageDependencies": [\
-          ["react-konva", "npm:18.2.10"]\
-        ],\
-        "linkType": "SOFT"\
-      }],\
-      ["virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:18.2.10", {\
-        "packageLocation": "./.yarn/__virtual__/react-konva-virtual-d0654a1947/0/cache/react-konva-npm-18.2.10-25aab7f08f-4eb2e96182.zip/node_modules/react-konva/",\
-        "packageDependencies": [\
-          ["react-konva", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:18.2.10"],\
-          ["@types/konva", null],\
-          ["@types/react", "npm:18.3.3"],\
-          ["@types/react-dom", "npm:18.3.0"],\
-          ["@types/react-reconciler", "npm:0.28.8"],\
-          ["its-fine", "virtual:d0654a1947783d4a65d059b4c71a33f92f411346d10a8a8d2775b8e94d8dea9c522e08a11c51fe02bbd3f62170a59ed976fc9497d0e5c3a3bacf8ddbe6c2f085#npm:1.2.5"],\
-          ["konva", "npm:9.3.14"],\
-          ["react", "npm:18.3.1"],\
-          ["react-dom", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:18.3.1"],\
-          ["react-reconciler", "virtual:d0654a1947783d4a65d059b4c71a33f92f411346d10a8a8d2775b8e94d8dea9c522e08a11c51fe02bbd3f62170a59ed976fc9497d0e5c3a3bacf8ddbe6c2f085#npm:0.29.2"],\
-          ["scheduler", "npm:0.23.2"]\
-        ],\
-        "packagePeers": [\
-          "@types/konva",\
-          "@types/react-dom",\
-          "@types/react",\
-          "konva",\
-          "react-dom",\
-          "react"\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
-    ["react-reconciler", [\
-      ["npm:0.29.2", {\
-        "packageLocation": "./.yarn/cache/react-reconciler-npm-0.29.2-9982426dcb-94f48ddc34.zip/node_modules/react-reconciler/",\
-        "packageDependencies": [\
-          ["react-reconciler", "npm:0.29.2"]\
-        ],\
-        "linkType": "SOFT"\
-      }],\
-      ["virtual:d0654a1947783d4a65d059b4c71a33f92f411346d10a8a8d2775b8e94d8dea9c522e08a11c51fe02bbd3f62170a59ed976fc9497d0e5c3a3bacf8ddbe6c2f085#npm:0.29.2", {\
-        "packageLocation": "./.yarn/__virtual__/react-reconciler-virtual-87f6e9d13e/0/cache/react-reconciler-npm-0.29.2-9982426dcb-94f48ddc34.zip/node_modules/react-reconciler/",\
-        "packageDependencies": [\
-          ["react-reconciler", "virtual:d0654a1947783d4a65d059b4c71a33f92f411346d10a8a8d2775b8e94d8dea9c522e08a11c51fe02bbd3f62170a59ed976fc9497d0e5c3a3bacf8ddbe6c2f085#npm:0.29.2"],\
-          ["@types/react", "npm:18.3.3"],\
-          ["loose-envify", "npm:1.4.0"],\
-          ["react", "npm:18.3.1"],\
-          ["scheduler", "npm:0.23.2"]\
-        ],\
-        "packagePeers": [\
-          "@types/react",\
-          "react"\
         ],\
         "linkType": "HARD"\
       }]\
