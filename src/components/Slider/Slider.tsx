@@ -67,7 +67,9 @@ const Slider = ({
 
   const progressPercentage = useMemo(() => {
     const max = Number(inputProps.max ?? '0');
-    return (Number(inputProps.value ?? '0') / max) * 100;
+    const progress = (Number(inputProps.value ?? '0') / max) * 100;
+
+    return isNaN(progress) ? 0 : progress;
   }, [inputProps.max, inputProps.value]);
 
   const getValueByOrientation = useCallback(
