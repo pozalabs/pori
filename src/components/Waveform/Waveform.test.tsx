@@ -14,6 +14,7 @@ describe('Waveform 컴포넌트 렌더링 테스트', () => {
     // eslint-disable-next-line @typescript-eslint/no-explicit-any
     window.OfflineAudioContext = OfflineAudioContext as any;
     window.HTMLMediaElement.prototype.pause = vi.fn();
+    window.HTMLMediaElement.prototype.load = vi.fn();
     window.OffscreenCanvas = vi.fn().mockImplementation((width: number, height: number) => {
       return {
         height,
@@ -33,6 +34,7 @@ describe('Waveform 컴포넌트 렌더링 테스트', () => {
   afterEach(() => {
     window.OfflineAudioContext = offlineAudioContext;
     (window.HTMLMediaElement.prototype.pause as ReturnType<typeof vi.fn>).mockClear();
+    (window.HTMLMediaElement.prototype.load as ReturnType<typeof vi.fn>).mockClear();
     (window.OffscreenCanvas as ReturnType<typeof vi.fn>).mockClear();
   });
 
