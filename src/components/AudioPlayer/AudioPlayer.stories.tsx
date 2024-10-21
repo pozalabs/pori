@@ -1,4 +1,4 @@
-import type { ReactNode } from 'react';
+import type { DragEvent, ReactNode } from 'react';
 import { useRef } from 'react';
 
 import type { ArrayElementType } from '@pozalabs/pokit/types';
@@ -25,9 +25,36 @@ const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
     );
   };
 
+  const onPlaylistItemDragStart =
+    (id: ArrayElementType<Playlist>['id']) =>
+    (e: DragEvent<HTMLLIElement>): void => {
+      e.dataTransfer.setData('draggedItem', id);
+    };
+
+  const onPlaylistDragOver = (e: DragEvent<HTMLUListElement>): void => {
+    e.preventDefault();
+  };
+
+  const onPlaylistDrop = (e: DragEvent<HTMLUListElement>): void => {
+    e.preventDefault();
+
+    const draggedItemId = e.dataTransfer.getData('draggedItem');
+    const target = (e.target as HTMLLIElement).closest('li');
+
+    if (!target) return;
+
+    const index = Array.from((target.parentNode as HTMLUListElement).children).indexOf(target);
+    ref.current?.changeAudioIndex(draggedItemId, index!);
+  };
+
   const renderPlaylistItem = (audio: ArrayElementType<Playlist>): ReactNode => {
     return (
-      <li key={audio.id} className="flex items-center justify-between gap-4">
+      <li
+        key={audio.id}
+        draggable
+        className="flex cursor-grab items-center justify-between gap-4 active:cursor-grabbing"
+        onDragStart={onPlaylistItemDragStart(audio.id)}
+      >
         <span>{audio.title as string}</span>
         <AudioPlayer.PlayPauseButton audioId={audio.id} />
       </li>
@@ -61,8 +88,11 @@ const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
           <AudioPlayer.RepeatButton />
         </div>
         <AudioPlayer.Playlist
+          draggable
           renderItem={renderPlaylistItem}
           className="flex w-4/5 flex-col gap-4"
+          onDragOver={onPlaylistDragOver}
+          onDrop={onPlaylistDrop}
         />
       </AudioPlayer.Provider>
       <button onClick={addPlaylist}>플레이리스트에 곡 추가</button>

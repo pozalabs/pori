@@ -50,8 +50,7 @@ const usePlaylistEndedEvent = ({
     return () => {
       audioElement.removeEventListener('ended', onAudioEnded);
     };
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [audioRef, playingId, repeatMode]);
+  }, [audioRef, changePlayingAudio, playingId, playlist, repeatMode]);
 };
 
 export default usePlaylistEndedEvent;
