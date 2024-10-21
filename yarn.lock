@@ -1206,7 +1206,7 @@ __metadata:
     "@vitest/coverage-v8": "npm:^2.0.3"
     autoprefixer: "npm:^10.4.19"
     blob-polyfill: "npm:^9.0.20240710"
-    chromatic: "npm:^11.5.6"
+    chromatic: "npm:^11.12.6"
     css-loader: "npm:^7.1.2"
     eslint: "npm:^9.9.0"
     eslint-config-prettier: "npm:^9.1.0"
@@ -3802,6 +3802,25 @@ __metadata:
   languageName: node
   linkType: hard
 
+"chromatic@npm:^11.12.6":
+  version: 11.12.6
+  resolution: "chromatic@npm:11.12.6"
+  peerDependencies:
+    "@chromatic-com/cypress": ^0.*.* || ^1.0.0
+    "@chromatic-com/playwright": ^0.*.* || ^1.0.0
+  peerDependenciesMeta:
+    "@chromatic-com/cypress":
+      optional: true
+    "@chromatic-com/playwright":
+      optional: true
+  bin:
+    chroma: dist/bin.js
+    chromatic: dist/bin.js
+    chromatic-cli: dist/bin.js
+  checksum: 10c0/7d161c52bc239ac6e8380f9a64533dd3792819d8f103d0083a805d5c9ece0844787eedd45c19c41e69d0ef0a3756051fa3e5c1f2fc9630d60f2ada4d5452e929
+  languageName: node
+  linkType: hard
+
 "chromatic@npm:^11.4.0":
   version: 11.5.5
   resolution: "chromatic@npm:11.5.5"
@@ -3818,25 +3837,6 @@ __metadata:
     chromatic: dist/bin.js
     chromatic-cli: dist/bin.js
   checksum: 10c0/3d812122548f9c29ab7116f7054e03cbf523b30ddde7e3142017cd23c42b6b99b3023e0146ef3afcfe4245a8cbb2ed97cedecca4e2cf9e5f6e8666db84a827d4
-  languageName: node
-  linkType: hard
-
-"chromatic@npm:^11.5.6":
-  version: 11.5.6
-  resolution: "chromatic@npm:11.5.6"
-  peerDependencies:
-    "@chromatic-com/cypress": ^0.*.* || ^1.0.0
-    "@chromatic-com/playwright": ^0.*.* || ^1.0.0
-  peerDependenciesMeta:
-    "@chromatic-com/cypress":
-      optional: true
-    "@chromatic-com/playwright":
-      optional: true
-  bin:
-    chroma: dist/bin.js
-    chromatic: dist/bin.js
-    chromatic-cli: dist/bin.js
-  checksum: 10c0/fabfa96be99802f849fd1ec030914bfd3583e2f380b3d5857c527c906514b8a3250b816d3ceff6975fb69730cf981b087ad7ec6cb469f824c27929e46123cb83
   languageName: node
   linkType: hard
 

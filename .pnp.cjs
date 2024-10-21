@@ -59,7 +59,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/coverage-v8", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:2.0.3"],\
           ["autoprefixer", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:10.4.19"],\
           ["blob-polyfill", "npm:9.0.20240710"],\
-          ["chromatic", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:11.5.6"],\
+          ["chromatic", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:11.12.6"],\
           ["css-loader", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:7.1.2"],\
           ["eslint", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:9.9.0"],\
           ["eslint-config-prettier", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:9.1.0"],\
@@ -1526,7 +1526,7 @@ const RAW_RUNTIME_STATE =
           ["@vitest/coverage-v8", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:2.0.3"],\
           ["autoprefixer", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:10.4.19"],\
           ["blob-polyfill", "npm:9.0.20240710"],\
-          ["chromatic", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:11.5.6"],\
+          ["chromatic", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:11.12.6"],\
           ["css-loader", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:7.1.2"],\
           ["eslint", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:9.9.0"],\
           ["eslint-config-prettier", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:9.1.0"],\
@@ -5117,6 +5117,13 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["chromatic", [\
+      ["npm:11.12.6", {\
+        "packageLocation": "./.yarn/cache/chromatic-npm-11.12.6-29ee403e69-7d161c52bc.zip/node_modules/chromatic/",\
+        "packageDependencies": [\
+          ["chromatic", "npm:11.12.6"]\
+        ],\
+        "linkType": "SOFT"\
+      }],\
       ["npm:11.5.5", {\
         "packageLocation": "./.yarn/cache/chromatic-npm-11.5.5-fb5bdc610c-3d81212254.zip/node_modules/chromatic/",\
         "packageDependencies": [\
@@ -5124,17 +5131,10 @@ const RAW_RUNTIME_STATE =
         ],\
         "linkType": "SOFT"\
       }],\
-      ["npm:11.5.6", {\
-        "packageLocation": "./.yarn/cache/chromatic-npm-11.5.6-7627dab20b-fabfa96be9.zip/node_modules/chromatic/",\
+      ["virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:11.12.6", {\
+        "packageLocation": "./.yarn/__virtual__/chromatic-virtual-ac3099c039/0/cache/chromatic-npm-11.12.6-29ee403e69-7d161c52bc.zip/node_modules/chromatic/",\
         "packageDependencies": [\
-          ["chromatic", "npm:11.5.6"]\
-        ],\
-        "linkType": "SOFT"\
-      }],\
-      ["virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:11.5.6", {\
-        "packageLocation": "./.yarn/__virtual__/chromatic-virtual-396ddf83a0/0/cache/chromatic-npm-11.5.6-7627dab20b-fabfa96be9.zip/node_modules/chromatic/",\
-        "packageDependencies": [\
-          ["chromatic", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:11.5.6"],\
+          ["chromatic", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:11.12.6"],\
           ["@chromatic-com/cypress", null],\
           ["@chromatic-com/playwright", null],\
           ["@types/chromatic-com__cypress", null],\
