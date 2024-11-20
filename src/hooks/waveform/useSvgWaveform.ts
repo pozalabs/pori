@@ -7,7 +7,6 @@ import {
   createPolylineElement,
   createRectElement,
   createSvgElement,
-  createTitleElement,
   createSymbolElement,
   createUseElement,
 } from './_utils/createElement';
@@ -120,9 +119,7 @@ const useSvgWaveform = ({
   const initSvgWaveform = useCallback((): void => {
     if (!waveform) return;
 
-    const titleEl = createTitleElement();
     const descEl = createDescElement();
-    titleEl.textContent = 'SVG Waveform';
     descEl.textContent = 'Audio Waveform using SVG Elements.';
 
     const symbolElement = createSymbolElement();
@@ -155,7 +152,6 @@ const useSvgWaveform = ({
     hoveredSvg.appendChild(hoveredUseSvg);
 
     waveform.replaceChildren();
-    waveform.appendChild(titleEl);
     waveform.appendChild(descEl);
     waveform.appendChild(symbolElement);
     waveform.appendChild(initSvg);
