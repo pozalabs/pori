@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import 'vitest-canvas-mock';
 
 import useWaveform from './useWaveform';
-import { FILE_SRC } from '../../mocks/constants';
+import { FILE_SRC, MOCK_PEAKS } from '../../mocks/constants';
 
 describe('useWaveform 테스트', () => {
   let offlineAudioContext: typeof window.OfflineAudioContext;
@@ -42,14 +42,18 @@ describe('useWaveform 테스트', () => {
 
   describe('반환 값 테스트', () => {
     it('useWaveform은 type이 canvas일 때 canvas로 그려진 waveform 엘리먼트를 반환한다.', () => {
-      const { result } = renderHook(() => useWaveform({ type: 'canvas', src: FILE_SRC['30'] }));
+      const { result } = renderHook(() =>
+        useWaveform({ type: 'canvas', src: FILE_SRC['30'], peaks: MOCK_PEAKS }),
+      );
 
       expect(result.current.waveform).toBeDefined();
       expect(result.current.waveform instanceof HTMLCanvasElement).toBeTruthy();
     });
 
     it('useWaveform은 type이 svg일 때 svg로 그려진 waveform 엘리먼트를 반환한다.', () => {
-      const { result } = renderHook(() => useWaveform({ type: 'svg', src: FILE_SRC['30'] }));
+      const { result } = renderHook(() =>
+        useWaveform({ type: 'svg', src: FILE_SRC['30'], peaks: MOCK_PEAKS }),
+      );
 
       expect(result.current.waveform).toBeDefined();
       expect(result.current.waveform instanceof SVGSVGElement).toBeTruthy();
@@ -62,6 +66,7 @@ describe('useWaveform 테스트', () => {
         useWaveform({
           type: 'canvas',
           src: FILE_SRC['30'],
+          peaks: MOCK_PEAKS,
           width: 500,
           height: 200,
         }),
@@ -78,6 +83,7 @@ describe('useWaveform 테스트', () => {
         useWaveform({
           type: 'svg',
           src: FILE_SRC['30'],
+          peaks: MOCK_PEAKS,
           width: 500,
           height: 200,
         }),
