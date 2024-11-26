@@ -65,8 +65,8 @@ const useCanvasWaveform = ({
     peaks.forEach((peak, index) => {
       const x = (index * (gap + BAR_WIDTH) + halfBarOffset) / scaleFactor;
       const barHeight = Math.round((peak * maxHeight) / 2);
-      const yTop = (halfHeight - barHeight) / scaleFactor;
-      const yBottom = (halfHeight + barHeight) / scaleFactor;
+      const yTop = Math.round(((halfHeight - barHeight) / scaleFactor) * 4) / 4;
+      const yBottom = Math.round(((halfHeight + barHeight) / scaleFactor) * 4) / 4;
 
       if (variant === 'line') {
         path.lineTo(x, yTop);
