@@ -42,6 +42,7 @@ export interface UseWaveformReturns<T extends WaveformType> {
  * ```ts
  * interface UseWaveformParams {
  *    src: string;
+ *    peaks: number[];
  *    type?: 'canvas' | 'svg';
  *    variant?: 'line' | 'bar';
  *    width?: number;
