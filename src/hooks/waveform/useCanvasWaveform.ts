@@ -126,6 +126,14 @@ const useCanvasWaveform = ({
     initCtx.clearRect(0, 0, width, height);
     initCtx.fillRect(0, 0, width, height);
     initCtx.fill();
+    playedCtx.fillStyle = bgColor;
+    playedCtx.clearRect(0, 0, width, height);
+    playedCtx.fillRect(0, 0, width, height);
+    playedCtx.fill();
+    hoveredCtx.fillStyle = bgColor;
+    hoveredCtx.clearRect(0, 0, width, height);
+    hoveredCtx.fillRect(0, 0, width, height);
+    hoveredCtx.fill();
 
     const path = getWaveformPath();
 
