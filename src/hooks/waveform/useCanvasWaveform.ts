@@ -163,6 +163,9 @@ const useCanvasWaveform = ({
 
     waveformCtx.clearRect(0, 0, width, height);
 
+    if (variant === 'line') waveformCtx.imageSmoothingQuality = 'high';
+    if (variant === 'bar') waveformCtx.imageSmoothingEnabled = false;
+
     const initStartPosition = isHovering
       ? Math.max(playedPosition, hoveredPosition)
       : playedPosition;
@@ -202,14 +205,15 @@ const useCanvasWaveform = ({
       height,
     );
   }, [
-    width,
-    height,
-    playedPosition,
     waveform,
-    isHovering,
     initWaveform,
     playedWaveform,
     hoveredWaveform,
+    width,
+    height,
+    variant,
+    isHovering,
+    playedPosition,
     hoveredPosition,
   ]);
 
