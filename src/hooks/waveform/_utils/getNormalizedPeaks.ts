@@ -1,12 +1,3 @@
-import { BAR_WIDTH } from '../_constants';
-
-const getPeakLength = (width: number, gap: number): number => {
-  const processedGap = gap >= 0 ? gap : 0;
-  const peakLength = Math.floor(width / (processedGap + BAR_WIDTH));
-
-  return peakLength;
-};
-
 const upsamplePeaks = (peaks: number[], peakLength: number): number[] => {
   const scaleFactor = (peaks.length - 1) / (peakLength - 1);
 
@@ -44,17 +35,7 @@ const downsamplePeaks = (peaks: number[], peakLength: number): number[] => {
   return result;
 };
 
-const getNormalizedPeaks = ({
-  peaks,
-  width,
-  gap,
-}: {
-  peaks: number[];
-  width: number;
-  gap: number;
-}): number[] => {
-  const peakLength = getPeakLength(width, gap);
-
+const getNormalizedPeaks = (peaks: number[], peakLength: number): number[] => {
   if (peakLength === peaks.length) {
     return peaks;
   }

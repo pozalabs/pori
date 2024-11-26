@@ -1,0 +1,107 @@
+import { useCallback, useEffect, useState } from 'react';
+
+import { OFFLINE_AUDIO_CONTEXT_LENGTH } from './_constants';
+import getNormalizedPeaks from './_utils/getNormalizedPeaks';
+import fetchAudio from '../../utils/fetchAudio';
+
+interface UseAudioDataParams {
+  src: string;
+  sampleRate: number;
+  peakLength: number;
+  initPeaks?: number[];
+}
+
+interface UseAudioDataReturns {
+  audioUrl: string;
+  audioBuffer: AudioBuffer | null;
+  peaks: number[];
+}
+
+const useAudioData = ({
+  src,
+  sampleRate,
+  peakLength,
+  initPeaks,
+}: UseAudioDataParams): UseAudioDataReturns => {
+  const [audioBuffer, setAudioBuffer] = useState<AudioBuffer | null>(null);
+  const [audioUrl, setAudioUrl] = useState<string>('');
+  const [peaks, setPeaks] = useState<number[]>([]);
+  const [error, setError] = useState<unknown>(null);
+
+  if (error) throw error;
+
+  const normalizePeaks = useCallback((peaks: number[]): number[] => {
+    const peak = Math.max(...peaks);
+    const multiplier = Math.pow(peak, -1);
+
+    return peaks.map(peak => peak * multiplier);
+  }, []);
+
+  const getPeaks = useCallback((): number[] => {
+    if (!audioBuffer) return [];
+
+    const channelData = audioBuffer.getChannelData(0);
+    const sampleSize = Math.floor(channelData.length / peakLength);
+
+    const peaks = [...Array(peakLength).keys()].reduce<number[]>((acc, peakIndex) => {
+      const samples = channelData.slice(
+        Math.floor(peakIndex * sampleSize),
+        Math.ceil((peakIndex + 1) * sampleSize),
+      );
+      const max = samples.reduce((prevMax, sample) => {
+        if (Math.abs(sample) > Math.abs(prevMax)) return Math.abs(sample);
+        return prevMax;
+      }, 0);
+
+      return [...acc, max];
+    }, []);
+
+    return normalizePeaks(peaks);
+  }, [normalizePeaks, peakLength, audioBuffer]);
+
+  const getAudioData = useCallback(
+    async (audioContext: OfflineAudioContext): Promise<void> => {
+      try {
+        const { url, arrayBuffer } = await fetchAudio({
+          src,
+        });
+        setAudioUrl(url);
+
+        audioContext.decodeAudioData(arrayBuffer, audioBuffer => {
+          setAudioBuffer(audioBuffer);
+        });
+      } catch (err) {
+        setError(err);
+      }
+    },
+    [src],
+  );
+
+  useEffect(() => {
+    console.log(initPeaks);
+    if (!initPeaks) {
+      const audioContext = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)({
+        sampleRate,
+        length: OFFLINE_AUDIO_CONTEXT_LENGTH,
+      });
+      getAudioData(audioContext);
+
+      return;
+    }
+
+    const peaks = getNormalizedPeaks(initPeaks, peakLength);
+
+    setPeaks(peaks);
+    setAudioUrl(src);
+  }, [getAudioData, initPeaks, peakLength, sampleRate, src]);
+
+  useEffect(() => {
+    if (!audioBuffer || initPeaks) return;
+
+    setPeaks(getPeaks());
+  }, [audioBuffer, peakLength, getPeaks, initPeaks]);
+
+  return { audioUrl, audioBuffer, peaks };
+};
+
+export default useAudioData;

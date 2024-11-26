@@ -1,17 +1,19 @@
-import { useCallback, useMemo, useState } from 'react';
+import { useCallback, useState } from 'react';
 
 import { WAVEFORM_DEFAULT_VALUE } from './_constants';
 import type { HTMLAudioElementEventType, WaveformType } from './_types';
-import getNormalizedPeaks from './_utils/getNormalizedPeaks';
+import getPeakLength from './_utils/getPeakLength';
+import useAudioData from './useAudioData';
 import useCanvasWaveform from './useCanvasWaveform';
 import useSvgWaveform from './useSvgWaveform';
 import useWaveformAudio from './useWaveformAudio';
 
 export interface UseWaveformParams<T extends WaveformType> extends HTMLAudioElementEventType {
   src: string;
-  peaks: number[];
   type?: T;
   variant?: 'line' | 'bar';
+  peaks?: number[];
+  sampleRate?: number;
   width?: number;
   height?: number;
   gap?: number;
@@ -42,9 +44,10 @@ export interface UseWaveformReturns<T extends WaveformType> {
  * ```ts
  * interface UseWaveformParams {
  *    src: string;
- *    peaks: number[];
  *    type?: 'canvas' | 'svg';
  *    variant?: 'line' | 'bar';
+ *    peaks?: number[];
+ *    sampleRate?: number;
  *    width?: number;
  *    height?: number;
  *    gap?: number;
@@ -75,9 +78,10 @@ export interface UseWaveformReturns<T extends WaveformType> {
  */
 const useWaveform = <T extends WaveformType = 'canvas'>({
   src,
-  peaks: initPeaks,
   type = WAVEFORM_DEFAULT_VALUE['type'] as T,
   variant = WAVEFORM_DEFAULT_VALUE['variant'],
+  peaks: initPeaks,
+  sampleRate = WAVEFORM_DEFAULT_VALUE['sampleRate'],
   width = WAVEFORM_DEFAULT_VALUE['width'],
   height = WAVEFORM_DEFAULT_VALUE['height'],
   gap = WAVEFORM_DEFAULT_VALUE['gap'],
@@ -90,12 +94,14 @@ const useWaveform = <T extends WaveformType = 'canvas'>({
   autoplay = WAVEFORM_DEFAULT_VALUE['autoplay'],
   ...eventHandlers
 }: UseWaveformParams<T>): UseWaveformReturns<T> => {
-  const peaks = useMemo(
-    () => getNormalizedPeaks({ peaks: initPeaks, width, gap }),
-    [gap, initPeaks, width],
-  );
-  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } = useWaveformAudio({
+  const { audioUrl, peaks } = useAudioData({
     src,
+    sampleRate,
+    peakLength: getPeakLength(width, gap),
+    initPeaks,
+  });
+  const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } = useWaveformAudio({
+    src: audioUrl,
     autoplay,
     ...eventHandlers,
   });
