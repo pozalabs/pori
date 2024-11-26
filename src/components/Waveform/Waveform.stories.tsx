@@ -56,7 +56,8 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 
-const src = 'https://cdn.pixabay.com/audio/2023/06/12/audio_23ef6b7464.mp3';
+const src =
+  'https://dev.cdn.eapy.io/boards/670884cb3d463893a0bd2f60/assets/670884dc3d463893a0bd2f66';
 
 export const Canvas: Story = {
   args: { ...WAVEFORM_DEFAULT_VALUE, type: 'canvas', src },
