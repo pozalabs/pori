@@ -7,6 +7,7 @@ import Waveform from './Waveform';
 import { WAVEFORM_DEFAULT_VALUE } from '../../hooks/waveform/_constants';
 import type { WaveformType } from '../../hooks/waveform/_types';
 import type { UseWaveformParams } from '../../hooks/waveform/useWaveform';
+import { MOCK_PEAKS } from '../../mocks/constants';
 
 const WaveformWithControlButton = <T extends WaveformType>(props: UseWaveformParams<T>) => {
   const ref = useRef<WaveformHandles>(null);
@@ -57,11 +58,11 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const src =
-  'https://dev.cdn.eapy.io/boards/670884cb3d463893a0bd2f60/assets/670884dc3d463893a0bd2f66';
+  'https://dev.cdn.eapy.io/boards/670884cb3d463893a0bd2f60/assets/670884dc3d463893a0bd2f66?format=mp3';
 
 export const Canvas: Story = {
-  args: { ...WAVEFORM_DEFAULT_VALUE, type: 'canvas', src },
+  args: { ...WAVEFORM_DEFAULT_VALUE, type: 'canvas', src, peaks: MOCK_PEAKS },
 };
 export const Svg: Story = {
-  args: { ...WAVEFORM_DEFAULT_VALUE, type: 'svg', src },
+  args: { ...WAVEFORM_DEFAULT_VALUE, type: 'svg', src, peaks: MOCK_PEAKS },
 };

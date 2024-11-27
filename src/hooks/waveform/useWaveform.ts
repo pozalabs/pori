@@ -12,6 +12,7 @@ export interface UseWaveformParams<T extends WaveformType> extends HTMLAudioElem
   src: string;
   type?: T;
   variant?: 'line' | 'bar';
+  peaks?: number[];
   sampleRate?: number;
   width?: number;
   height?: number;
@@ -45,6 +46,7 @@ export interface UseWaveformReturns<T extends WaveformType> {
  *    src: string;
  *    type?: 'canvas' | 'svg';
  *    variant?: 'line' | 'bar';
+ *    peaks?: number[];
  *    sampleRate?: number;
  *    width?: number;
  *    height?: number;
@@ -78,6 +80,7 @@ const useWaveform = <T extends WaveformType = 'canvas'>({
   src,
   type = WAVEFORM_DEFAULT_VALUE['type'] as T,
   variant = WAVEFORM_DEFAULT_VALUE['variant'],
+  peaks: initPeaks,
   sampleRate = WAVEFORM_DEFAULT_VALUE['sampleRate'],
   width = WAVEFORM_DEFAULT_VALUE['width'],
   height = WAVEFORM_DEFAULT_VALUE['height'],
@@ -95,6 +98,7 @@ const useWaveform = <T extends WaveformType = 'canvas'>({
     src,
     sampleRate,
     peakLength: getPeakLength(width, gap),
+    initPeaks,
   });
   const { isPlaying, currentTime, duration, play, pause, changeCurrentTime } = useWaveformAudio({
     src: audioUrl,

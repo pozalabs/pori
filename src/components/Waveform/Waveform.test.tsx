@@ -4,7 +4,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import 'vitest-canvas-mock';
 
 import Waveform from './Waveform';
-import { FILE_SRC } from '../../mocks/constants';
+import { FILE_SRC, MOCK_PEAKS } from '../../mocks/constants';
 
 describe('Waveform 컴포넌트 렌더링 테스트', () => {
   let offlineAudioContext: typeof window.OfflineAudioContext;
@@ -39,7 +39,9 @@ describe('Waveform 컴포넌트 렌더링 테스트', () => {
   });
 
   it('Waveform 컴포넌트는 type이 canvas일 때 canvas로 그려진 waveform을 렌더링한다.', async () => {
-    const { container } = render(<Waveform type="canvas" src={FILE_SRC['30']} />);
+    const { container } = render(
+      <Waveform type="canvas" src={FILE_SRC['30']} peaks={MOCK_PEAKS} />,
+    );
 
     const waveformElement = container.querySelector('canvas');
 
@@ -48,7 +50,7 @@ describe('Waveform 컴포넌트 렌더링 테스트', () => {
   });
 
   it('Waveform 컴포넌트는 type이 svg일 때 svg로 그려진 waveform을 렌더링한다.', async () => {
-    const { container } = render(<Waveform type="svg" src={FILE_SRC['30']} />);
+    const { container } = render(<Waveform type="svg" src={FILE_SRC['30']} peaks={MOCK_PEAKS} />);
 
     const waveformElement = container.querySelector('svg');
 

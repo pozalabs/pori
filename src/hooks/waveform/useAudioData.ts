@@ -1,12 +1,14 @@
 import { useCallback, useEffect, useState } from 'react';
 
 import { OFFLINE_AUDIO_CONTEXT_LENGTH } from './_constants';
+import getNormalizedPeaks from './_utils/getNormalizedPeaks';
 import fetchAudio from '../../utils/fetchAudio';
 
 interface UseAudioDataParams {
   src: string;
   sampleRate: number;
   peakLength: number;
+  initPeaks?: number[];
 }
 
 interface UseAudioDataReturns {
@@ -15,7 +17,12 @@ interface UseAudioDataReturns {
   peaks: number[];
 }
 
-const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams): UseAudioDataReturns => {
+const useAudioData = ({
+  src,
+  sampleRate,
+  peakLength,
+  initPeaks,
+}: UseAudioDataParams): UseAudioDataReturns => {
   const [audioBuffer, setAudioBuffer] = useState<AudioBuffer | null>(null);
   const [audioUrl, setAudioUrl] = useState<string>('');
   const [peaks, setPeaks] = useState<number[]>([]);
@@ -71,21 +78,27 @@ const useAudioData = ({ src, sampleRate, peakLength }: UseAudioDataParams): UseA
   );
 
   useEffect(() => {
-    if (!src) return;
+    if (!initPeaks) {
+      const audioContext = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)({
+        sampleRate,
+        length: OFFLINE_AUDIO_CONTEXT_LENGTH,
+      });
+      getAudioData(audioContext);
 
-    const audioContext = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)({
-      sampleRate,
-      length: OFFLINE_AUDIO_CONTEXT_LENGTH,
-    });
+      return;
+    }
 
-    getAudioData(audioContext);
-  }, [getAudioData, sampleRate, src]);
+    const peaks = getNormalizedPeaks(initPeaks, peakLength);
+
+    setPeaks(peaks);
+    setAudioUrl(src);
+  }, [getAudioData, initPeaks, peakLength, sampleRate, src]);
 
   useEffect(() => {
-    if (!audioBuffer) return;
+    if (!audioBuffer || initPeaks) return;
 
     setPeaks(getPeaks());
-  }, [audioBuffer, peakLength, getPeaks]);
+  }, [audioBuffer, peakLength, getPeaks, initPeaks]);
 
   return { audioUrl, audioBuffer, peaks };
 };
