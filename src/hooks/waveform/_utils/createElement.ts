@@ -1,17 +1,17 @@
 export const createCanvasElement = (
   width: number,
   height: number,
-  dpr: number,
+  scaleFactor: number,
 ): HTMLCanvasElement => {
   const canvas = document.createElement('canvas');
   const ctx = canvas.getContext('2d');
 
-  canvas.width = width * dpr;
-  canvas.height = height * dpr;
+  canvas.width = width * scaleFactor;
+  canvas.height = height * scaleFactor;
   canvas.style.width = `${width}px`;
   canvas.style.height = `${height}px`;
 
-  ctx?.scale(dpr, dpr);
+  ctx?.scale(scaleFactor, scaleFactor);
 
   return canvas;
 };
@@ -19,12 +19,12 @@ export const createCanvasElement = (
 export const createOffscreenCanvas = (
   width: number,
   height: number,
-  dpr: number,
+  scaleFactor: number,
 ): OffscreenCanvas => {
-  const canvas = new OffscreenCanvas(width * dpr, height * dpr);
+  const canvas = new OffscreenCanvas(width * scaleFactor, height * scaleFactor);
   const ctx = canvas.getContext('2d');
 
-  ctx?.scale(dpr, dpr);
+  ctx?.scale(scaleFactor, scaleFactor);
 
   return canvas;
 };
