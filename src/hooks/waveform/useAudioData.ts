@@ -78,7 +78,6 @@ const useAudioData = ({
   );
 
   useEffect(() => {
-    console.log(initPeaks);
     if (!initPeaks) {
       const audioContext = new (window.OfflineAudioContext || window.webkitOfflineAudioContext)({
         sampleRate,
