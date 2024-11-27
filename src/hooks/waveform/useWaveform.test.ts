@@ -72,10 +72,11 @@ describe('useWaveform 테스트', () => {
         }),
       );
       const canvasElement = result.current.waveform as HTMLCanvasElement;
+      const scaleFactor = 4;
 
       expect(canvasElement).toBeDefined();
-      expect(canvasElement.width).toEqual(500);
-      expect(canvasElement.height).toEqual(200);
+      expect(canvasElement.width).toEqual(500 * scaleFactor);
+      expect(canvasElement.height).toEqual(200 * scaleFactor);
     });
 
     it('useWaveform은 svg로 그려진 waveform의 크기를 커스텀할 수 있다.', () => {
