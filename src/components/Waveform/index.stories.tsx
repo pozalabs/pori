@@ -2,12 +2,13 @@ import { useEffect, useRef } from 'react';
 
 import type { Meta, StoryObj } from '@storybook/react';
 
-import type { WaveformHandles } from './Waveform';
-import Waveform from './Waveform';
 import { WAVEFORM_DEFAULT_VALUE } from '../../hooks/waveform/_constants';
 import type { WaveformType } from '../../hooks/waveform/_types';
 import type { UseWaveformParams } from '../../hooks/waveform/useWaveform';
 import { MOCK_PEAKS } from '../../mocks/constants';
+
+import Waveform from '.';
+import type { WaveformHandles } from '.';
 
 const WaveformWithControlButton = <T extends WaveformType>(props: UseWaveformParams<T>) => {
   const ref = useRef<WaveformHandles>(null);

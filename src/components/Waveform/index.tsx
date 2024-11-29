@@ -1,18 +1,9 @@
-import type { ForwardedRef, RefObject } from 'react';
+import type { ForwardedRef } from 'react';
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
+import type { WaveformHandles } from '..';
 import type { WaveformType } from '../../hooks/waveform/_types';
 import useWaveform, { type UseWaveformParams } from '../../hooks/waveform/useWaveform';
-
-export interface WaveformHandles {
-  waveformRef: RefObject<HTMLDivElement>;
-  isPlaying: boolean;
-  currentTime: number;
-  duration: number;
-  play: () => void;
-  pause: () => void;
-  changeCurrentTime: (currentTime: number) => void;
-}
 
 /**
  * useWaveform 훅을 사용하여 렌더링하는 Waveform 컴포넌트입니다.
