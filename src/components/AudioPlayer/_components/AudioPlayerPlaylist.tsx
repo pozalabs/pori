@@ -4,7 +4,7 @@ import { useContext } from 'react';
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 
 import { AudioPlayerContext } from './AudioPlayerProvider';
-import type { Playlist } from '../../hooks';
+import type { Playlist } from '../../../hooks';
 
 export interface AudioPlayerPlaylistProps extends HTMLAttributes<HTMLUListElement> {
   renderItem: (audio: ArrayElementType<Playlist>, index?: number) => ReactNode;

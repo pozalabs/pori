@@ -4,10 +4,11 @@ import { useRef } from 'react';
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import type { AudioPlayerProviderProps } from './_components/AudioPlayerProvider';
 import type { AudioPlayerHandles } from './_types';
-import AudioPlayer from './AudioPlayer';
-import type { AudioPlayerProviderProps } from './AudioPlayerProvider';
 import type { Playlist } from '../../hooks';
+
+import AudioPlayer from '.';
 
 const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
   const ref = useRef<AudioPlayerHandles>(null);

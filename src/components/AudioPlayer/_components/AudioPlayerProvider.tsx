@@ -10,11 +10,11 @@ import {
 
 import type { WithArray } from '@pozalabs/pokit/types';
 
-import { AUDIO_PLAYER_CONTEXT_DEFAULT_VALUE } from './_constants';
-import type { AudioPlayerHandles } from './_types';
-import type { RepeatModeType } from '../../hooks';
-import { usePlaylist } from '../../hooks';
-import findArrayElementById from '../../hooks/playlist/_utils/findArrayElementById';
+import type { RepeatModeType } from '../../../hooks';
+import { usePlaylist } from '../../../hooks';
+import findArrayElementById from '../../../hooks/playlist/_utils/findArrayElementById';
+import { AUDIO_PLAYER_CONTEXT_DEFAULT_VALUE } from '../_constants';
+import type { AudioPlayerHandles } from '../_types';
 
 export const AudioPlayerContext = createContext(AUDIO_PLAYER_CONTEXT_DEFAULT_VALUE);
 
