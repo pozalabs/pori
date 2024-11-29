@@ -3,7 +3,7 @@ import { useCallback, useContext, useRef, useState } from 'react';
 import { cn } from '@pozalabs/pokit/utils';
 
 import { AudioPlayerContext } from './AudioPlayerProvider';
-import Slider from '../../Slider/Slider';
+import Slider from '../../Slider';
 import { AUDIO_PLAYER_PROGRESS_BAR_DEFAULT_VALUE } from '../_constants';
 import type { AudioPlayerProgressBarProps } from '../_types';
 

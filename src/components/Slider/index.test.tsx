@@ -2,7 +2,7 @@ import { getByTestId, render } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { describe, expect, it } from 'vitest';
 
-import Slider from './Slider';
+import Slider from '.';
 
 const value = 10;
 const max = 55;
