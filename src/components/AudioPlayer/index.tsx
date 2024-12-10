@@ -16,8 +16,8 @@ import AudioPlayerStopButton from './_components/buttons/AudioPlayerStopButton';
 import AudioPlayerVolumeButton from './_components/buttons/AudioPlayerVolumeButton';
 
 /**
- * 원하는 UI로 커스텀할 수 있는 오디오 플레이어입니다.
- * 제공하는 컴포넌트는 다음과 같습니다.
+ * This is an audio player that can be customized with the desired UI.
+ * The components provided are as follows:
  * - Provider
  * - Playlist
  * - CurrentTime
@@ -38,12 +38,12 @@ import AudioPlayerVolumeButton from './_components/buttons/AudioPlayerVolumeButt
  */
 const AudioPlayer = {
   /**
-   * 오디오 플레이어의 로직을 포함한 컴포넌트입니다.
-   * 이 컴포넌트로 다른 오디오 플레이어 컴포넌트를 감싸주지 않으면 정상적으로 동작하지 않으니, 주의해주세요.
+   * This is a component that contains the logic of the audio player.
+   * Please note that it will not work properly if you do not wrap another audio player component with this component.
    */
   Provider: AudioPlayerProvider,
   /**
-   * 오디오 플레이어의 플레이리스트 목록을 그리는 컴포넌트입니다.
+   * This is a component that draws the playlist list of the audio player.
    * @param AudioPlayerPlaylistProps
    * ```
    * interface AudioPlayerPlaylistProps {
@@ -54,8 +54,8 @@ const AudioPlayer = {
    */
   Playlist: AudioPlayerPlaylist,
   /**
-   * 오디오 플레이어의 현재 재생 시간을 그리는 컴포넌트입니다.
-   * 전달하는 포맷에 따라 시간 문자열이 바뀝니다.
+   * This is a component that draws the current playback time of the audio player.
+   * The time string changes depending on the format you pass in.
    * @param AudioPlayerCurrentTimeProps
    * ```
    * interface AudioPlayerCurrentTimeProps {
@@ -63,12 +63,12 @@ const AudioPlayer = {
    *    format?: 'SS' | 'S' | 'MM:SS' | 'M:S' | 'HH:MM:SS' | 'H:M:S';
    * }
    * ```
-   * - format : 시간 포맷입니다. (default : `'MM:SS'`)
+   * - format : Time format. (default : `'MM:SS'`)
    */
   CurrentTime: AudioPlayerCurrentTime,
   /**
-   * 현재 재생 중인 오디오의 전체 재생 시간을 그리는 컴포넌트입니다.
-   * 전달하는 포맷에 따라 시간 문자열이 바뀝니다.
+   * This component plots the total playback time of the currently playing audio.
+   * The time string changes depending on the format you pass in.
    * @param AudioPlayerDurationProps
    * ```
    * interface AudioPlayerDurationProps {
@@ -76,36 +76,36 @@ const AudioPlayer = {
    *    format?: 'SS' | 'S' | 'MM:SS' | 'M:S' | 'HH:MM:SS' | 'H:M:S';
    * }
    * ```
-   * - format : 시간 포맷입니다. (default : `'MM:SS'`)
+   * - format : Time format (default : `'MM:SS'`)
    */
   Duration: AudioPlayerDuration,
   /**
-   * 오디오 플레이어의 재생 바입니다.
-   * Slider 컴포넌트의 기능을 상속합니다.
+   * This is the playback bar of the audio player.
+   * Inherits the functionality of the Slider component.
    * @param AudioPlayerProgressBarProps
    * ```
    * interface AudioPlayerProgressBarProps extends Omit<Parameters<typeof Slider>[0], 'max' | 'min' | 'value' | 'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
    *    draggable?: boolean;
    * }
    * ```
-   * - draggable : 드래그 가능 여부입니다. (default : `true`)
+   * - draggable : Whether draggability is possible. (default : `true`)
    */
   ProgressBar: AudioPlayerProgressBar,
   /**
-   * 오디오 플레이어의 볼륨 제어 바입니다.
-   * Slider 컴포넌트의 기능을 상속합니다.
+   * This is the audio player's volume control bar.
+   * Inherits the functionality of the Slider component.
    * @param AudioPlayerVolumeProgressBarProps
    * ```
    * interface AudioPlayerVolumeProgressBarProps extends Omit<Parameters<typeof Slider>[0], 'max' | 'min' | 'value' | 'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
    *    draggable?: boolean;
    * }
    * ```
-   * - draggable : 드래그 가능 여부입니다. (default : `true`)
+   * - draggable : Whether draggability is possible. (default : `true`)
    */
   VolumeProgressBar: AudioPlayerVolumeProgressBar,
   /**
-   * 오디오 플레이어 재생 버튼입니다.
-   * 이미지 기반으로 동작합니다.
+   * Audio player play button.
+   * It operates based on images.
    * @param AudioPlayerPlayButton
    * ```
    * interface AudioPlayerPlayButton {
@@ -115,13 +115,13 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : 이미지의 너비입니다. (default : `32`)
-   * - height : 이미지의 높이입니다. (default : `32`)
+   * - width : width of image (default : `32`)
+   * - height : height of image (default : `32`)
    */
   PlayButton: AudioPlayerPlayButton,
   /**
-   * 오디오 플레이어 일시정지 버튼입니다.
-   * 이미지 기반으로 동작합니다.
+   * This is the audio player pause button.
+   * It operates based on images.
    * @param AudioPlayerPauseButton
    * ```
    * interface AudioPlayerPauseButton {
@@ -131,13 +131,13 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : 이미지의 너비입니다. (default : `32`)
-   * - height : 이미지의 높이입니다. (default : `32`)
+   * - width : width of image (default : `32`)
+   * - height : height of image (default : `32`)
    */
   PauseButton: AudioPlayerPauseButton,
   /**
-   * 현재 재생 상태에 따라 재생 또는 일시정지로 동작하는 버튼입니다.
-   * 이미지 기반으로 동작합니다.
+   * This button operates as play or pause depending on the current playback status.
+   * It operates based on images.
    * @param AudioPlayerPlayPauseButton
    * ```
    * interface AudioPlayerPlayPauseButton {
@@ -149,13 +149,13 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : 이미지의 너비입니다. (default : `32`)
-   * - height : 이미지의 높이입니다. (default : `32`)
+   * - width : width of image (default : `32`)
+   * - height : height of image (default : `32`)
    */
   PlayPauseButton: AudioPlayerPlayPauseButton,
   /**
-   * 오디오 플레이어 정지 버튼입니다.
-   * 이미지 기반으로 동작합니다.
+   * This is the audio player stop button.
+   * It operates based on images.
    * @param AudioPlayerStopButton
    * ```
    * interface AudioPlayerStopButton {
@@ -165,13 +165,13 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : 이미지의 너비입니다. (default : `32`)
-   * - height : 이미지의 높이입니다. (default : `32`)
+   * - width : width of image (default : `32`)
+   * - height : height of image (default : `32`)
    */
   StopButton: AudioPlayerStopButton,
   /**
-   * timeShift초 이전으로 재생 시간을 바꾸는 버튼입니다. (timeShift는 Provider에 전달하는 값입니다.)
-   * 이미지 기반으로 동작합니다.
+   * This button changes the playback time to the previous timeShift seconds. (timeShift is the value passed to the Provider.)
+   * It operates based on images.
    * @param AudioPlayerShiftForwardButton
    * ```
    * interface AudioPlayerShiftForwardButton {
@@ -181,13 +181,13 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : 이미지의 너비입니다. (default : `32`)
-   * - height : 이미지의 높이입니다. (default : `32`)
+   * - width : width of image (default : `32`)
+   * - height : height of image (default : `32`)
    */
   ShiftForwardButton: AudioPlayerShiftForwardButton,
   /**
-   * timeShift초 이후로 재생 시간을 바꾸는 버튼입니다. (timeShift는 Provider에 전달하는 값입니다.)
-   * 이미지 기반으로 동작합니다.
+   * This button changes the playback time by timeShift seconds. (timeShift is the value passed to the Provider.)
+   * It operates based on images.
    * @param AudioPlayerShiftBackwardButton
    * ```
    * interface AudioPlayerShiftBackwardButton {
@@ -197,14 +197,14 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : 이미지의 너비입니다. (default : `32`)
-   * - height : 이미지의 높이입니다. (default : `32`)
+   * - width : width of image (default : `32`)
+   * - height : height of image (default : `32`)
    */
   ShiftBackwardButton: AudioPlayerShiftBackwardButton,
   /**
-   * 현재 재생 시간이 shiftThreshold초 이상이면 곡의 처음으로, 미만이면 이전 곡을 재생하는 버튼입니다.
-   * (shiftThreshold는 prop으로 전달하는 값입니다.)
-   * 이미지 기반으로 동작합니다.
+   * This button plays the beginning of the song if the current play time is more than shiftThreshold seconds, and the previous song if it is less than shiftThreshold seconds.
+   * (shiftThreshold is a value passed as a prop.)
+   * It operates based on images.
    * @param AudioPlayerSkipStartButton
    * ```
    * interface AudioPlayerSkipStartButton {
@@ -215,14 +215,14 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - shiftThreshold : 곡의 처음 또는 이전 곡 재생 판단의 기준이 되는 값입니다. 초 단위입니다. (default : `2`)
-   * - width : 이미지의 너비입니다. (default : `32`)
-   * - height : 이미지의 높이입니다. (default : `32`)
+   * - shiftThreshold : This value is the standard for determining whether to play the first or previous song. It is in seconds. (default : `2`)
+   * - width : width of image (default : `32`)
+   * - height : height of image (default : `32`)
    */
   SkipStartButton: AudioPlayerSkipStartButton,
   /**
-   * 다음 곡을 재생하는 버튼입니다.
-   * 이미지 기반으로 동작합니다.
+   * This button plays the next song.
+   * It operates based on images.
    * @param AudioPlayerSkipEndButton
    * ```
    * interface AudioPlayerSkipEndButton {
@@ -232,13 +232,13 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : 이미지의 너비입니다. (default : `32`)
-   * - height : 이미지의 높이입니다. (default : `32`)
+   * - width : width of image (default : `32`)
+   * - height : height of image (default : `32`)
    */
   SkipEndButton: AudioPlayerSkipEndButton,
   /**
-   * 반복 재생 모드를 토글하는 버튼입니다. (반복 없음 -> 전체 반복 -> 한곡 반복 -> 반복 없음)
-   * 이미지 기반으로 동작합니다.
+   * This button toggles repeat playback mode. (No repeat -> Repeat all -> Repeat one song -> No repeat)
+   * It operates based on images.
    * @param AudioPlayerRepeatButton
    * ```
    * interface AudioPlayerRepeatButton {
@@ -250,13 +250,13 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : 이미지의 너비입니다. (default : `32`)
-   * - height : 이미지의 높이입니다. (default : `32`)
+   * - width : width of image (default : `32`)
+   * - height : height of image (default : `32`)
    */
   RepeatButton: AudioPlayerRepeatButton,
   /**
-   * 볼륨 버튼입니다.
-   * 이미지 기반으로 동작합니다.
+   * This is the volume button.
+   * It operates based on images.
    * @param AudioPlayerVolumeButton
    * ```
    * interface AudioPlayerVolumeButton {
@@ -267,8 +267,8 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : 이미지의 너비입니다. (default : `32`)
-   * - height : 이미지의 높이입니다. (default : `32`)
+   * - width : width of image (default : `32`)
+   * - height : height of image (default : `32`)
    */
   VolumeButton: AudioPlayerVolumeButton,
 };

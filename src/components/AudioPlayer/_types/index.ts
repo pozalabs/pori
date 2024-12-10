@@ -33,7 +33,7 @@ export interface AudioPlayerContextDefaultValue {
 export type TimeFormat = 'SS' | 'S' | 'MM:SS' | 'M:S' | 'HH:MM:SS' | 'H:M:S';
 
 /**
- * 오디오 플레이어 Provider에 전달하는 ref의 타입입니다. useAudio, usePlaylist에서 반환하는 모든 함수를 포함합니다. (src 조작 제외)
+ * This is the type of ref passed to the audio player provider. Contains all functions returned by useAudio and usePlaylist. (excluding src manipulation)
  * - addAudio
  * - changeCurrentTime
  * - changeMuted
