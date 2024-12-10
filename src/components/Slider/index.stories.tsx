@@ -4,8 +4,9 @@ import { cn } from '@pozalabs/pokit/utils';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { SLIDER_DEFAULT_VALUE } from './_constants';
-import Slider from './Slider';
 import { useAudio } from '../../hooks';
+
+import Slider from '.';
 
 const meta = {
   title: 'Slider',

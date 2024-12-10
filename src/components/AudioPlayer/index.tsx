@@ -1,19 +1,19 @@
-import AudioPlayerCurrentTime from './AudioPlayerCurrentTime';
-import AudioPlayerDuration from './AudioPlayerDuration';
-import AudioPlayerPlaylist from './AudioPlayerPlaylist';
-import AudioPlayerProgressBar from './AudioPlayerProgressBar';
-import AudioPlayerProvider from './AudioPlayerProvider';
-import AudioPlayerVolumeProgressBar from './AudioPlayerVolumeProgressBar';
-import AudioPlayerPauseButton from './buttons/AudioPlayerPauseButton';
-import AudioPlayerPlayButton from './buttons/AudioPlayerPlayButton';
-import AudioPlayerPlayPauseButton from './buttons/AudioPlayerPlayPauseButton';
-import AudioPlayerRepeatButton from './buttons/AudioPlayerRepeatButton';
-import AudioPlayerShiftBackwardButton from './buttons/AudioPlayerShiftBackwardButton';
-import AudioPlayerShiftForwardButton from './buttons/AudioPlayerShiftForwardButton';
-import AudioPlayerSkipEndButton from './buttons/AudioPlayerSkipEndButton';
-import AudioPlayerSkipStartButton from './buttons/AudioPlayerSkipStartButton';
-import AudioPlayerStopButton from './buttons/AudioPlayerStopButton';
-import AudioPlayerVolumeButton from './buttons/AudioPlayerVolumeButton';
+import AudioPlayerCurrentTime from './_components/AudioPlayerCurrentTime';
+import AudioPlayerDuration from './_components/AudioPlayerDuration';
+import AudioPlayerPlaylist from './_components/AudioPlayerPlaylist';
+import AudioPlayerProgressBar from './_components/AudioPlayerProgressBar';
+import AudioPlayerProvider from './_components/AudioPlayerProvider';
+import AudioPlayerVolumeProgressBar from './_components/AudioPlayerVolumeProgressBar';
+import AudioPlayerPauseButton from './_components/buttons/AudioPlayerPauseButton';
+import AudioPlayerPlayButton from './_components/buttons/AudioPlayerPlayButton';
+import AudioPlayerPlayPauseButton from './_components/buttons/AudioPlayerPlayPauseButton';
+import AudioPlayerRepeatButton from './_components/buttons/AudioPlayerRepeatButton';
+import AudioPlayerShiftBackwardButton from './_components/buttons/AudioPlayerShiftBackwardButton';
+import AudioPlayerShiftForwardButton from './_components/buttons/AudioPlayerShiftForwardButton';
+import AudioPlayerSkipEndButton from './_components/buttons/AudioPlayerSkipEndButton';
+import AudioPlayerSkipStartButton from './_components/buttons/AudioPlayerSkipStartButton';
+import AudioPlayerStopButton from './_components/buttons/AudioPlayerStopButton';
+import AudioPlayerVolumeButton from './_components/buttons/AudioPlayerVolumeButton';
 
 /**
  * 원하는 UI로 커스텀할 수 있는 오디오 플레이어입니다.

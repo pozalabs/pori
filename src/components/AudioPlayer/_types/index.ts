@@ -1,7 +1,7 @@
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 
 import type { Playlist, RepeatModeType } from '../../../hooks/playlist/_types';
-import type Slider from '../../Slider/Slider';
+import type Slider from '../../Slider';
 
 export interface AudioPlayerContextDefaultValue {
   currentSrc: string;

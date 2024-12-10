@@ -5,8 +5,8 @@ import {
   AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   AUDIO_PLAYER_BUTTON_DEFAULT_URL,
   AUDIO_PLAYER_SKIP_START_BUTTON_DEFAULT_VALUE,
-} from '../_constants';
-import type { AudioPlayerButtonProps } from '../_types';
+} from '../../_constants';
+import type { AudioPlayerButtonProps } from '../../_types';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
 export interface AudioPlayerSkipStartButtonProps extends AudioPlayerButtonProps {

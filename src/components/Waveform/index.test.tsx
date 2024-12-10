@@ -3,8 +3,9 @@ import { OfflineAudioContext } from 'standardized-audio-context-mock';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import 'vitest-canvas-mock';
 
-import Waveform from './Waveform';
 import { FILE_SRC, MOCK_PEAKS } from '../../mocks/constants';
+
+import Waveform from '.';
 
 describe('Waveform 컴포넌트 렌더링 테스트', () => {
   let offlineAudioContext: typeof window.OfflineAudioContext;
