@@ -7,9 +7,9 @@ import Slider from '.';
 const value = 10;
 const max = 55;
 
-describe('Slider component rendering test', () => {
-  describe('When slider is horizontal', () => {
-    it('track length is the value of value / max converted to percent.', () => {
+describe('Slider 컴포넌트 렌더링 테스트', () => {
+  describe('수평 슬라이더일 때', () => {
+    it('track의 길이는 value / max를 퍼센트 단위로 환산한 값이다.', () => {
       const { container } = render(<Slider orientation="horizontal" value={value} max={max} />);
 
       const trackElement = getByTestId(container, 'sliderTrack');
@@ -18,7 +18,7 @@ describe('Slider component rendering test', () => {
       expect(trackElement.style.width).toBe(`${(value / max) * 100}%`);
     });
 
-    it('The thumb is located at the horizontal end of the track.', () => {
+    it('thumb는 track의 수평 끝에 위치해 있다.', () => {
       const { container: horizontalSliderContainer } = render(
         <Slider orientation="horizontal" value={value} max={max} />,
       );
@@ -42,8 +42,8 @@ describe('Slider component rendering test', () => {
     });
   });
 
-  describe('When slider is vertical', () => {
-    it('The height of the track is value / max converted to percent.', () => {
+  describe('수직 슬라이더일 때', () => {
+    it('track의 높이는 value / max를 퍼센트 단위로 환산한 값이다.', () => {
       const { container } = render(<Slider orientation="vertical" value={value} max={max} />);
 
       const trackElement = getByTestId(container, 'sliderTrack');
@@ -52,7 +52,7 @@ describe('Slider component rendering test', () => {
       expect(trackElement.style.height).toBe(`${(value / max) * 100}%`);
     });
 
-    it('The thumb is located at the vertical end of the track.', () => {
+    it('thumb는 track의 수직 끝에 위치해 있다.', () => {
       const { container: verticalSliderContainer } = render(
         <Slider orientation="vertical" value={value} max={max} />,
       );
@@ -77,10 +77,10 @@ describe('Slider component rendering test', () => {
   });
 });
 
-describe('Slider component functionality test', () => {
+describe('Slider 컴포넌트 동작 테스트', () => {
   const user = userEvent.setup();
 
-  it('When clicked, the length of the track changes to the corresponding location.', async () => {
+  it('클릭 시 해당 위치로 track의 길이가 변경된다.', async () => {
     let testValue = 10;
 
     const onSliderChange = (value: number): void => {
@@ -109,7 +109,7 @@ describe('Slider component functionality test', () => {
     expect(trackElement.style.width).toBe(`${(testValue / max) * 100}%`);
   });
 
-  it('When clicking, the position of the thumb changes to the corresponding position.', async () => {
+  it('클릭 시 해당 위치로 thumb의 위치가 변경된다.', async () => {
     let testValue = 10;
 
     const onSliderChange = (value: number): void => {

@@ -3,7 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import usePlaylist from './usePlaylist';
 
-describe('usePlaylist test', () => {
+describe('usePlaylist 테스트', () => {
   beforeEach(() => {
     window.HTMLMediaElement.prototype.play = vi.fn(() => Promise.resolve());
     window.HTMLMediaElement.prototype.pause = vi.fn();
@@ -16,8 +16,8 @@ describe('usePlaylist test', () => {
     (window.HTMLMediaElement.prototype.load as ReturnType<typeof vi.fn>).mockClear();
   });
 
-  describe('Testing the return value', () => {
-    it('"usePlaylist" returns all the values returned by "useAudio".', () => {
+  describe('반환값 테스트', () => {
+    it('usePlaylist는 useAudio의 반환값을 모두 반환한다.', () => {
       const {
         result: {
           current: {
@@ -73,7 +73,7 @@ describe('usePlaylist test', () => {
       expect(togglePlayPause).toBeTypeOf('function');
     });
 
-    it('usePlaylist returns "hasNextAudio, hasPrevAudio, playingId, playlist" state', () => {
+    it('usePlaylist는 hasNextAudio, hasPrevAudio, playingId, playlist 상태를 반환한다.', () => {
       const {
         result: {
           current: { hasNextAudio, hasPrevAudio, playingId, playlist },
@@ -90,7 +90,7 @@ describe('usePlaylist test', () => {
       expect(playlist).toHaveLength(1);
     });
 
-    it('usePlaylist returns functions "addAudio, clearPlaylist, changePlayingAudio, playNextAudio, playPrevAudio, removeAudio"', () => {
+    it('usePlaylist는 addAudio, clearPlaylist, changePlayingAudio, playNextAudio, playPrevAudio, removeAudio 함수를 반환한다.', () => {
       const {
         result: {
           current: {
@@ -113,8 +113,8 @@ describe('usePlaylist test', () => {
     });
   });
 
-  describe('Testing the functionality.', () => {
-    it('usePlaylist can determine whether there is a next or previous track, regardless of the repeatMode.', () => {
+  describe('동작 테스트', () => {
+    it('usePlaylist는 repeatMode와 관계 없이 현재 재생 중인 곡의 다음 또는 이전 곡이 있는지 여부를 알 수 있다.', () => {
       const {
         result: {
           current: { hasNextAudio, hasPrevAudio, playingId },
@@ -134,7 +134,7 @@ describe('usePlaylist test', () => {
       expect(hasPrevAudio).toBeFalsy();
     });
 
-    it('Calling the clearPlaylist function of usePlaylist will reset the playlist.', () => {
+    it('usePlaylist의 clearPlaylist 함수를 호출하면 플레이리스트가 초기화된다.', () => {
       const initPlaylist = [
         { id: '0', src: 'hi.mp3' },
         { id: '1', src: 'hello.mp3' },
@@ -155,7 +155,7 @@ describe('usePlaylist test', () => {
       expect(result.current.playlist).toHaveLength(0);
     });
 
-    it('Calling the addAudio function of usePlaylist will add a track to the playlist.', () => {
+    it('usePlaylist의 addAudio 함수를 호출하면 플레이리스트에 곡이 추가된다.', () => {
       const initPlaylist = [{ id: '0', src: 'hi.mp3' }];
       const newAudio = { id: '1', src: 'hello.mp3' };
 
@@ -174,7 +174,7 @@ describe('usePlaylist test', () => {
       expect(result.current.playlist).toHaveLength(initPlaylist.length + 1);
     });
 
-    it('Calling the removeAudio function of usePlaylist will remove a track from the playlist.', () => {
+    it('usePlaylist의 removeAudio 함수를 호출하면 플레이리스트에서 곡이 제거된다.', () => {
       const initPlaylist = [{ id: '0', src: 'hi.mp3' }];
       const removedAudioId = '0';
 
@@ -193,13 +193,13 @@ describe('usePlaylist test', () => {
       expect(result.current.playlist).toHaveLength(initPlaylist.length - 1);
     });
 
-    describe('When the changePlayingAudio function of usePlaylist is called,', () => {
+    describe('usePlaylist의 changePlayingAudio 함수를 호출했을 때', () => {
       const initPlaylist = [
         { id: '0', src: 'hi.mp3' },
         { id: '1', src: 'hello.mp3' },
       ];
 
-      it('the audio playback state will toggle (i.e., play if paused, pause if playing).', () => {
+      it('현재 재생 중인 오디오를 전달하면 오디오 재생 상태가 토글된다.', () => {
         const { result } = renderHook(() =>
           usePlaylist({
             playlist: initPlaylist,
@@ -219,7 +219,7 @@ describe('usePlaylist test', () => {
         expect(result.current.isPlaying).toBeTruthy();
       });
 
-      it('the currently playing audio will be changed to the new audio.', () => {
+      it('현재 재생 중이지 않은 오디오를 전달하면 재생 중인 오디오가 변경된다.', () => {
         const { result } = renderHook(() =>
           usePlaylist({
             playlist: initPlaylist,
@@ -236,7 +236,7 @@ describe('usePlaylist test', () => {
       });
     });
 
-    it('Calling the playNextAudio function of usePlaylist will play the next track, regardless of the repeatMode.', () => {
+    it('usePlaylist의 playNextAudio 함수를 호출하면 repeatMode와 관계 없이 다음 곡이 재생된다.', () => {
       const initPlaylist = [
         { id: '0', src: 'hi.mp3' },
         { id: '1', src: 'hello.mp3' },
@@ -257,7 +257,7 @@ describe('usePlaylist test', () => {
       expect(result.current.playingId).toBe(initPlaylist[1].id);
     });
 
-    it('Calling the playPrevAudio function of usePlaylist will play the previous track, regardless of the repeatMode.', () => {
+    it('usePlaylist의 playPrevAudio 함수를 호출하면 repeatMode와 관계 없이 이전 곡이 재생된다.', () => {
       const initPlaylist = [
         { id: '0', src: 'hi.mp3' },
         { id: '1', src: 'hello.mp3' },

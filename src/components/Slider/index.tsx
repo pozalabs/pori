@@ -26,7 +26,7 @@ interface SliderProps
 }
 
 /**
- * This is a Slider component that allows for custom styling.
+ * 스타일을 커스텀할 수 있는 Slider 컴포넌트입니다.
  * @param SliderProps
  * ```
  * interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
@@ -45,10 +45,10 @@ interface SliderProps
  *    onDragEnd?: (value: number) => void;
  * }
  * ```
- * - orientation : Direction of slider  (default: `horizontal`)
- * - max : Max Value of slider (default: `100`)
- * - min : Min value of slider (default: `0`)
- * - step : The unit of slider value. The value transmitted through click or drag events is always formatted in step units. (default: `1`)
+ * - orientation : 슬라이더의 방향입니다. (default: `horizontal`)
+ * - max : 슬라이더 value의 최댓값입니다. (default: `100`)
+ * - min : 슬라이더 value의 최솟값입니다. (default: `0`)
+ * - step : 슬라이더 value의 단위입니다. 클릭 또는 드래그 이벤트를 통해 전달되는 value는 항상 step 단위로 포맷팅됩니다. (default: `1`)
  */
 const Slider = ({
   orientation = SLIDER_DEFAULT_VALUE.orientation,

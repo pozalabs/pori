@@ -38,7 +38,7 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
   });
 
   const removeAudioInPlaylist = (audio: ArrayElementType<Playlist>) => () => {
-    if (!confirm(`Do you want to remove ${audio.src} from the playlist?`)) return;
+    if (!confirm(`${audio.src}를 플레이리스트에서 삭제하시겠습니까?`)) return;
 
     removeAudio(audio.id, true);
   };
@@ -66,7 +66,7 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
   }, [changePlaybackRange, dragTime]);
 
   return (
-    <div className="flex flex-col items-center w-full gap-4 p-4">
+    <div className="flex w-full flex-col items-center gap-4 p-4">
       <div className="flex items-center gap-2">
         <span className="w-[44px]">{formatTime(currentTime)}</span>
         <input
@@ -87,73 +87,73 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
         <span className="w-[44px]">{formatTime(duration)}</span>
       </div>
       <select value={repeatMode} onChange={e => setRepeatMode(e.target.value as RepeatModeType)}>
-        <option value="all">Reverse playback</option>
-        <option value="one">One-track playback</option>
-        <option value="none">No repeat</option>
+        <option value="all">왕복 재생</option>
+        <option value="one">한곡 재생</option>
+        <option value="none">반복 없음</option>
       </select>
       <div className="flex gap-3">
         <button
-          className="px-3 py-1 border rounded-md border-slate-300 bg-slate-100"
+          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1"
           onClick={() => togglePlayPause()}
         >
-          {isPlaying ? 'pause' : 'play'}
+          {isPlaying ? '일시정지' : '재생'}
         </button>
         <button
-          className="px-3 py-1 border rounded-md border-slate-300 bg-slate-100"
+          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1"
           onClick={clearPlaylist}
         >
-          Clear the playlist
+          플레이리스트 비우기
         </button>
         <button
-          className="px-3 py-1 border rounded-md border-slate-300 bg-slate-100 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-300"
+          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-300"
           onClick={() => playPrevAudio(isPlaying)}
           disabled={!hasPrevAudio}
         >
-          Play the previous song
+          이전 곡 재생
         </button>
         <button
-          className="px-3 py-1 border rounded-md border-slate-300 bg-slate-100 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-300"
+          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-300"
           onClick={() => playNextAudio(isPlaying)}
           disabled={!hasNextAudio}
         >
-          Play the next song
+          다음 곡 재생
         </button>
       </div>
-      <ul className="flex flex-col items-center w-full gap-4">
+      <ul className="flex w-full flex-col items-center gap-4">
         {playlist.map(audio => (
           <li
-            className="flex items-center justify-between w-full p-4 text-center border rounded-lg border-slate-300 bg-slate-100"
+            className="flex w-full items-center justify-between rounded-lg border border-slate-300 bg-slate-100 p-4 text-center"
             key={audio.id}
           >
             <span>{audio.src}</span>
             <div className="flex items-center gap-2">
               {isPlaying && audio.id === playingId ? (
                 <button
-                  className="px-2 py-1 bg-blue-100 border border-blue-200 rounded-md"
+                  className="rounded-md border border-blue-200 bg-blue-100 px-2 py-1"
                   onClick={pause}
                 >
-                  pause
+                  일시정지
                 </button>
               ) : (
                 <button
-                  className="px-2 py-1 bg-blue-100 border border-blue-200 rounded-md"
+                  className="rounded-md border border-blue-200 bg-blue-100 px-2 py-1"
                   onClick={() => changePlayingAudio(audio.id)}
                 >
-                  play
+                  재생
                 </button>
               )}
               <button
-                className="px-2 py-1 bg-blue-100 border border-blue-200 rounded-md"
+                className="rounded-md border border-blue-200 bg-blue-100 px-2 py-1"
                 onClick={removeAudioInPlaylist(audio)}
               >
-                remove
+                제거
               </button>
             </div>
           </li>
         ))}
       </ul>
       <button
-        className="px-3 py-1 border rounded-md border-slate-300 bg-slate-100"
+        className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1"
         onClick={() =>
           addAudio({
             id: `${new Date().getTime()}`,
@@ -161,7 +161,7 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
           })
         }
       >
-        Add song
+        곡 추가
       </button>
     </div>
   );
@@ -195,7 +195,7 @@ const formatTime = (seconds: number): `${string}:${string}` => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = Math.floor(seconds % 60);
 
-  // format a number as a two-digit string
+  // 2자리 숫자로 포맷팅
   const formattedMinutes = minutes.toString().padStart(2, '0');
   const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
 

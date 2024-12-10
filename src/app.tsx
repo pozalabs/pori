@@ -3,7 +3,7 @@ import { StrictMode } from 'react';
 import ReactDOM from 'react-dom/client';
 
 const App = () => {
-  // NOTE: You can use it by inserting the components or code that need to be developed.
+  // NOTE: 그때그때 개발이 필요한 컴포넌트 또는 코드를 넣어서 사용하시면 됩니다.
   return <main></main>;
 };
 

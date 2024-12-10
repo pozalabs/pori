@@ -7,7 +7,7 @@ import { FILE_SRC, MOCK_PEAKS } from '../../mocks/constants';
 
 import Waveform from '.';
 
-describe('Waveform component rendering test', () => {
+describe('Waveform 컴포넌트 렌더링 테스트', () => {
   let offlineAudioContext: typeof window.OfflineAudioContext;
 
   beforeEach(() => {
@@ -39,7 +39,7 @@ describe('Waveform component rendering test', () => {
     (window.OffscreenCanvas as ReturnType<typeof vi.fn>).mockClear();
   });
 
-  it('The Waveform component renders the waveform drawn on a canvas when the type is set to "canvas"', async () => {
+  it('Waveform 컴포넌트는 type이 canvas일 때 canvas로 그려진 waveform을 렌더링한다.', async () => {
     const { container } = render(
       <Waveform type="canvas" src={FILE_SRC['30']} peaks={MOCK_PEAKS} />,
     );
@@ -50,7 +50,7 @@ describe('Waveform component rendering test', () => {
     expect(waveformElement instanceof HTMLCanvasElement).toBeTruthy();
   });
 
-  it('The Waveform component renders the waveform drawn as an SVG when the type is set to "svg".', async () => {
+  it('Waveform 컴포넌트는 type이 svg일 때 svg로 그려진 waveform을 렌더링한다.', async () => {
     const { container } = render(<Waveform type="svg" src={FILE_SRC['30']} peaks={MOCK_PEAKS} />);
 
     const waveformElement = container.querySelector('svg');
