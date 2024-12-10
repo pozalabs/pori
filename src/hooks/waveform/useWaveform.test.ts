@@ -6,7 +6,7 @@ import 'vitest-canvas-mock';
 import useWaveform from './useWaveform';
 import { FILE_SRC, MOCK_PEAKS } from '../../mocks/constants';
 
-describe('useWaveform 테스트', () => {
+describe('useWaveform test', () => {
   let offlineAudioContext: typeof window.OfflineAudioContext;
 
   beforeEach(() => {
@@ -40,8 +40,8 @@ describe('useWaveform 테스트', () => {
     (window.OffscreenCanvas as ReturnType<typeof vi.fn>).mockClear();
   });
 
-  describe('반환 값 테스트', () => {
-    it('useWaveform은 type이 canvas일 때 canvas로 그려진 waveform 엘리먼트를 반환한다.', () => {
+  describe('Testing the return value.', () => {
+    it('When the type is canvas, useWaveform returns a waveform element drawn on a canvas.', () => {
       const { result } = renderHook(() =>
         useWaveform({ type: 'canvas', src: FILE_SRC['30'], peaks: MOCK_PEAKS }),
       );
@@ -50,7 +50,7 @@ describe('useWaveform 테스트', () => {
       expect(result.current.waveform instanceof HTMLCanvasElement).toBeTruthy();
     });
 
-    it('useWaveform은 type이 svg일 때 svg로 그려진 waveform 엘리먼트를 반환한다.', () => {
+    it('When the type is svg, useWaveform returns a waveform element drawn as an SVG.', () => {
       const { result } = renderHook(() =>
         useWaveform({ type: 'svg', src: FILE_SRC['30'], peaks: MOCK_PEAKS }),
       );
@@ -60,8 +60,8 @@ describe('useWaveform 테스트', () => {
     });
   });
 
-  describe('UI 커스텀 테스트', () => {
-    it('useWaveform은 canvas로 그려진 waveform의 크기를 커스텀할 수 있다.', () => {
+  describe('UI customization test', () => {
+    it('useWaveform allows custom sizing of the waveform drawn on the canvas.', () => {
       const { result } = renderHook(() =>
         useWaveform({
           type: 'canvas',
@@ -79,7 +79,7 @@ describe('useWaveform 테스트', () => {
       expect(canvasElement.height).toEqual(200 * scaleFactor);
     });
 
-    it('useWaveform은 svg로 그려진 waveform의 크기를 커스텀할 수 있다.', () => {
+    it('useWaveform allows custom sizing of the waveform drawn as an SVG.', () => {
       const { result } = renderHook(() =>
         useWaveform({
           type: 'svg',

@@ -20,7 +20,7 @@ const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
       {
         id: new Date().toISOString(),
         src: 'https://cdn.pixabay.com/audio/2024/09/09/audio_7556bb3a41.mp3',
-        title: '추가된 노래',
+        title: 'added song',
       },
       false,
     );
@@ -53,7 +53,7 @@ const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
       <li
         key={audio.id}
         draggable
-        className="flex cursor-grab items-center justify-between gap-4 active:cursor-grabbing"
+        className="flex items-center justify-between gap-4 cursor-grab active:cursor-grabbing"
         onDragStart={onPlaylistItemDragStart(audio.id)}
       >
         <span>{audio.title as string}</span>
@@ -63,9 +63,9 @@ const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
   };
 
   return (
-    <div className="flex h-dvh w-dvw flex-col items-center justify-center gap-4">
+    <div className="flex flex-col items-center justify-center gap-4 h-dvh w-dvw">
       <AudioPlayer.Provider {...props} ref={ref}>
-        <div className="flex w-full items-center justify-center gap-4">
+        <div className="flex items-center justify-center w-full gap-4">
           <AudioPlayer.CurrentTime />
           <AudioPlayer.ProgressBar step={0.01} />
           <AudioPlayer.Duration />
@@ -91,12 +91,12 @@ const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
         <AudioPlayer.Playlist
           draggable
           renderItem={renderPlaylistItem}
-          className="flex w-4/5 flex-col gap-4"
+          className="flex flex-col w-4/5 gap-4"
           onDragOver={onPlaylistDragOver}
           onDrop={onPlaylistDrop}
         />
       </AudioPlayer.Provider>
-      <button onClick={addPlaylist}>플레이리스트에 곡 추가</button>
+      <button onClick={addPlaylist}>Add songs to playlist</button>
     </div>
   );
 };
@@ -115,12 +115,12 @@ export const Default: Story = {
       {
         id: '0',
         src: 'https://cdn.pixabay.com/audio/2023/06/12/audio_23ef6b7464.mp3',
-        title: '첫 번째 노래',
+        title: 'first song',
       },
       {
         id: '1',
         src: 'https://cdn.pixabay.com/audio/2024/09/09/audio_7556bb3a41.mp3',
-        title: '두 번째 노래',
+        title: 'second song',
       },
     ],
     repeatMode: 'all',

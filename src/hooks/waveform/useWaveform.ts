@@ -39,7 +39,7 @@ export interface UseWaveformReturns<T extends WaveformType> {
 }
 
 /**
- * type에 따라 웨이브폼을 그려 반환하는 훅입니다.
+ * This is a hook that draws and returns a waveform based on the type.
  * @param `UseWaveformParams`
  * ```ts
  * interface UseWaveformParams {
