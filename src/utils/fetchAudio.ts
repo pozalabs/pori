@@ -24,24 +24,28 @@ const fetchChunkFileToBlobWithRetries = async ({
 }): Promise<Blob> => {
   const attempts = Array.from({ length: retry });
 
+  const fetchChunk = async (): Promise<Blob> => {
+    const response = await fetch(src, {
+      method: 'GET',
+      headers: {
+        Range: `bytes=${start}-${end}`,
+      },
+    });
+
+    if (!response.ok) {
+      throw new Error('Failed to fetch chunk file');
+    }
+
+    return await response.blob();
+  };
+
   return attempts.reduce(async (prev: Promise<Blob>, _, index): Promise<Blob> => {
     try {
       const blob = await prev;
 
-      if (blob instanceof Blob && blob.size > 0) {
-        return blob;
-      }
+      if (blob instanceof Blob && blob.size > 0) return blob;
 
-      const response = await fetch(src, {
-        method: 'GET',
-        headers: {
-          Range: `bytes=${start}-${end}`,
-        },
-      });
-
-      if (!response.ok) throw new Error('Failed to fetch chunk file');
-
-      return await response.blob();
+      return await fetchChunk();
     } catch (error) {
       if (index === retry - 1) throw error;
 
@@ -150,7 +154,6 @@ const fetchAudio = async ({
   const { audioType, audioSize } = await getAudioFileInformation(src);
 
   const computedChunkSize = chunkSize ?? getChunkSize(audioSize);
-
   const totalChunks = Math.ceil(audioSize / computedChunkSize);
 
   const chunkRanges = Array.from({ length: totalChunks }, (_, i) => {
@@ -171,10 +174,13 @@ const fetchAudio = async ({
     new Blob(),
   );
 
+  const url = URL.createObjectURL(audioBlob);
+  const arrayBuffer = await audioBlob.arrayBuffer();
+
   return {
+    url,
     blob: audioBlob,
-    arrayBuffer: await audioBlob.arrayBuffer(),
-    url: URL.createObjectURL(audioBlob),
+    arrayBuffer,
   };
 };
 
