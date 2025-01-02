@@ -66,7 +66,7 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
   }, [changePlaybackRange, dragTime]);
 
   return (
-    <div className="flex flex-col items-center w-full gap-4 p-4">
+    <div className="flex w-full flex-col items-center gap-4 p-4">
       <div className="flex items-center gap-2">
         <span className="w-[44px]">{formatTime(currentTime)}</span>
         <input
@@ -93,57 +93,57 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
       </select>
       <div className="flex gap-3">
         <button
-          className="px-3 py-1 border rounded-md border-slate-300 bg-slate-100"
+          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1"
           onClick={() => togglePlayPause()}
         >
           {isPlaying ? 'pause' : 'play'}
         </button>
         <button
-          className="px-3 py-1 border rounded-md border-slate-300 bg-slate-100"
+          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1"
           onClick={clearPlaylist}
         >
           Clear the playlist
         </button>
         <button
-          className="px-3 py-1 border rounded-md border-slate-300 bg-slate-100 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-300"
+          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-300"
           onClick={() => playPrevAudio(isPlaying)}
           disabled={!hasPrevAudio}
         >
           Play the previous song
         </button>
         <button
-          className="px-3 py-1 border rounded-md border-slate-300 bg-slate-100 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-300"
+          className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-300"
           onClick={() => playNextAudio(isPlaying)}
           disabled={!hasNextAudio}
         >
           Play the next song
         </button>
       </div>
-      <ul className="flex flex-col items-center w-full gap-4">
+      <ul className="flex w-full flex-col items-center gap-4">
         {playlist.map(audio => (
           <li
-            className="flex items-center justify-between w-full p-4 text-center border rounded-lg border-slate-300 bg-slate-100"
+            className="flex w-full items-center justify-between rounded-lg border border-slate-300 bg-slate-100 p-4 text-center"
             key={audio.id}
           >
             <span>{audio.src}</span>
             <div className="flex items-center gap-2">
               {isPlaying && audio.id === playingId ? (
                 <button
-                  className="px-2 py-1 bg-blue-100 border border-blue-200 rounded-md"
+                  className="rounded-md border border-blue-200 bg-blue-100 px-2 py-1"
                   onClick={pause}
                 >
                   pause
                 </button>
               ) : (
                 <button
-                  className="px-2 py-1 bg-blue-100 border border-blue-200 rounded-md"
+                  className="rounded-md border border-blue-200 bg-blue-100 px-2 py-1"
                   onClick={() => changePlayingAudio(audio.id)}
                 >
                   play
                 </button>
               )}
               <button
-                className="px-2 py-1 bg-blue-100 border border-blue-200 rounded-md"
+                className="rounded-md border border-blue-200 bg-blue-100 px-2 py-1"
                 onClick={removeAudioInPlaylist(audio)}
               >
                 remove
@@ -153,7 +153,7 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
         ))}
       </ul>
       <button
-        className="px-3 py-1 border rounded-md border-slate-300 bg-slate-100"
+        className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1"
         onClick={() =>
           addAudio({
             id: `${new Date().getTime()}`,

@@ -79,12 +79,12 @@ const DemoComponent = (params: Parameters<typeof useAudio>[0]) => {
       </select>
       <div className="flex items-center gap-4">
         <button
-          className="px-3 py-1 border rounded-md border-slate-300 bg-slate-50"
+          className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1"
           onClick={() => togglePlayPause()}
         >
           {isPlaying ? 'pause' : 'play'}
         </button>
-        <button className="px-3 py-1 border rounded-md border-slate-300 bg-slate-50" onClick={stop}>
+        <button className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1" onClick={stop}>
           stop
         </button>
         {[0, 25, 50, 75, 100].map(progress => (
@@ -103,7 +103,7 @@ const DemoComponent = (params: Parameters<typeof useAudio>[0]) => {
           onChange={e => changeVolume(Number(e.target.value))}
         />
         <button
-          className="px-3 py-1 border rounded-md border-slate-300 bg-slate-50"
+          className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1"
           onClick={toggleMuted}
         >
           {volume <= 0 ? 'unmute' : 'mute'}
@@ -111,13 +111,13 @@ const DemoComponent = (params: Parameters<typeof useAudio>[0]) => {
       </div>
       <div className="flex items-center gap-4">
         <button
-          className="px-3 py-1 border rounded-md border-slate-300 bg-slate-50"
+          className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1"
           onClick={resetAudio}
         >
           Reset audio
         </button>
         <button
-          className="px-3 py-1 border rounded-md border-slate-300 bg-slate-50"
+          className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1"
           onClick={() => changeCurrentSrc(params.src ?? '')}
         >
           Reset src

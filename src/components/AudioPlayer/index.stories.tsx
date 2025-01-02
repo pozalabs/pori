@@ -53,7 +53,7 @@ const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
       <li
         key={audio.id}
         draggable
-        className="flex items-center justify-between gap-4 cursor-grab active:cursor-grabbing"
+        className="flex cursor-grab items-center justify-between gap-4 active:cursor-grabbing"
         onDragStart={onPlaylistItemDragStart(audio.id)}
       >
         <span>{audio.title as string}</span>
@@ -63,9 +63,9 @@ const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
   };
 
   return (
-    <div className="flex flex-col items-center justify-center gap-4 h-dvh w-dvw">
+    <div className="flex h-dvh w-dvw flex-col items-center justify-center gap-4">
       <AudioPlayer.Provider {...props} ref={ref}>
-        <div className="flex items-center justify-center w-full gap-4">
+        <div className="flex w-full items-center justify-center gap-4">
           <AudioPlayer.CurrentTime />
           <AudioPlayer.ProgressBar step={0.01} />
           <AudioPlayer.Duration />
@@ -91,7 +91,7 @@ const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
         <AudioPlayer.Playlist
           draggable
           renderItem={renderPlaylistItem}
-          className="flex flex-col w-4/5 gap-4"
+          className="flex w-4/5 flex-col gap-4"
           onDragOver={onPlaylistDragOver}
           onDrop={onPlaylistDrop}
         />

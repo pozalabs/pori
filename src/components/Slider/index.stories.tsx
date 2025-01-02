@@ -115,7 +115,7 @@ const PlayerSlider = (props: Parameters<typeof Slider>[0]) => {
   }, [changeCurrentTime, dragTime]);
 
   return (
-    <main className="flex items-center justify-center h-dvh w-dvw">
+    <main className="flex h-dvh w-dvw items-center justify-center">
       <div className="flex flex-col items-center gap-4">
         <div
           className={cn('flex items-end gap-4', props.orientation === 'vertical' && 'h-[400px]')}
