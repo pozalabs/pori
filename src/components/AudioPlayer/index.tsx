@@ -24,7 +24,7 @@ import AudioPlayerVolumeButton from './_components/buttons/AudioPlayerVolumeButt
  * - Duration
  * - ProgressBar
  * - VolumeProgressBar
- * - (이미지 기반) 버튼
+ * - Buttons based on images
  *    - PlayButton
  *    - PauseButton
  *    - PlayPauseButton
