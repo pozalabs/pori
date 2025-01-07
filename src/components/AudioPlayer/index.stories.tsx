@@ -20,7 +20,7 @@ const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
       {
         id: new Date().toISOString(),
         src: 'https://cdn.pixabay.com/audio/2024/09/09/audio_7556bb3a41.mp3',
-        title: '추가된 노래',
+        title: 'added song',
       },
       false,
     );
@@ -96,7 +96,7 @@ const DemoComponent = (props: Omit<AudioPlayerProviderProps, 'children'>) => {
           onDrop={onPlaylistDrop}
         />
       </AudioPlayer.Provider>
-      <button onClick={addPlaylist}>플레이리스트에 곡 추가</button>
+      <button onClick={addPlaylist}>Add songs to playlist</button>
     </div>
   );
 };
@@ -115,12 +115,12 @@ export const Default: Story = {
       {
         id: '0',
         src: 'https://cdn.pixabay.com/audio/2023/06/12/audio_23ef6b7464.mp3',
-        title: '첫 번째 노래',
+        title: 'first song',
       },
       {
         id: '1',
         src: 'https://cdn.pixabay.com/audio/2024/09/09/audio_7556bb3a41.mp3',
-        title: '두 번째 노래',
+        title: 'second song',
       },
     ],
     repeatMode: 'all',

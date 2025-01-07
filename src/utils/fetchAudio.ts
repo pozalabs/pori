@@ -124,8 +124,8 @@ interface FetchAudioReturns {
 }
 
 /**
- * 오디오 파일을 청크로 나누어 병렬 다운로드 후 반환하는 유틸 함수입니다.
- * url, blob, arrayBuffer 각각의 형태로 만들어 반환합니다.
+ * This is a utility function that splits an audio file into chunks, downloads them in parallel, and returns the result.
+ * It generates and returns the audio file in the form of a URL, Blob, and ArrayBuffer.
  * @param FetchAudioParams
  * ```
  * interface FetchAudioParams {

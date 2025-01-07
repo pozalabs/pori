@@ -4,7 +4,7 @@ interface IAudioInformation {
 }
 
 /**
- * 오디오 파일의 정보를 가져오는 유틸 함수입니다.
+ * This is a utility function for retrieving information from an audio file.
  * @param src
  * @returns
  * `Promise<IAudioInformation>`
