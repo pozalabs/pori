@@ -20,15 +20,20 @@ const getAudioFileInformation = async (src: string): Promise<IAudioInformation> 
     method: 'HEAD',
   });
 
-  if (!response.ok) throw new Error('Failed to fetch audio with HEAD method');
+  if (!response.ok) {
+    throw new Error('Failed to fetch audio with HEAD method');
+  }
 
-  const type = response.headers.get('Content-Type');
+  const contentType = response.headers.get('Content-Type');
+  const contentLength = response.headers.get('Content-Length');
 
-  if (!type || !type.startsWith('audio/')) throw new Error('This file is not audio type');
+  if (!contentType || !contentType.startsWith('audio/')) {
+    throw new Error('This file is not audio type');
+  }
 
   return {
-    audioType: response.headers.get('Content-Type') ?? '',
-    audioSize: Number(response.headers.get('Content-Length')),
+    audioType: contentType,
+    audioSize: Number(contentLength),
   };
 };
 
