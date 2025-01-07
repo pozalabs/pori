@@ -6,6 +6,7 @@ import useAudioState from './useAudioState';
 import type { UseControlAudioReturns } from './useControlAudio';
 import useControlAudio from './useControlAudio';
 import useKeyBinding from './useKeyboardControl';
+import Hls from 'hls.js';
 
 interface UseAudioParams {
   autoplay?: boolean;
@@ -87,6 +88,7 @@ const useAudio = ({
   timeShift = AUDIO_DEFAULT_VALUE.timeShift,
 }: UseAudioParams): UseAudioReturns => {
   const audioRef = useRef<HTMLAudioElement | null>(null);
+  const hlsRef = useRef<Hls | null>(null);
   const [isAudioInitialized, setIsAudioInitialized] = useState(false);
 
   const { currentSrc, currentTime, duration, isPlaying, playbackRate, playbackRange, volume } =
@@ -114,6 +116,7 @@ const useAudio = ({
     toggleMuted,
     togglePlayPause,
   } = useControlAudio({
+    hlsRef,
     audioRef,
     maxPlaybackRange,
     maxVolume,
@@ -141,8 +144,18 @@ const useAudio = ({
 
   useEffect(() => {
     if (!audioRef.current) return;
+    if (hlsRef.current) {
+      hlsRef.current.destroy();
+      hlsRef.current = null;
+    }
 
-    audioRef.current.src = src;
+    if (src.substring(src.lastIndexOf('.') + 1) === 'm3u8' && Hls.isSupported()) {
+      const hls = new Hls();
+      hlsRef.current = hls;
+      hls.loadSource(src);
+      hls.attachMedia(audioRef.current);
+      audioRef.current.src = src;
+    }
   }, [src]);
 
   useEffect(() => {
@@ -166,6 +179,9 @@ const useAudio = ({
       audio.pause();
       audio.src = '';
       audio.load();
+      if (hlsRef.current) {
+        hlsRef.current.destroy();
+      }
     };
   }, []);
 

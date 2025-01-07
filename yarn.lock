@@ -1218,6 +1218,7 @@ __metadata:
     eslint-plugin-react-refresh: "npm:^0.4.9"
     eslint-plugin-tailwindcss: "npm:^3.17.4"
     globals: "npm:^15.9.0"
+    hls.js: "npm:^1.5.18"
     jsdom: "npm:^24.1.0"
     msw: "npm:^2.3.1"
     postcss: "npm:^8.4.39"
@@ -6094,6 +6095,13 @@ __metadata:
   version: 4.0.3
   resolution: "headers-polyfill@npm:4.0.3"
   checksum: 10c0/53e85b2c6385f8d411945fb890c5369f1469ce8aa32a6e8d28196df38568148de640c81cf88cbc7c67767103dd9acba48f4f891982da63178fc6e34560022afe
+  languageName: node
+  linkType: hard
+
+"hls.js@npm:^1.5.18":
+  version: 1.5.18
+  resolution: "hls.js@npm:1.5.18"
+  checksum: 10c0/38c61a70596f943e7649a9a7b367b6263cffcdaae21b0338b561e69eca8888f126ed94aa5a60ddab3fdf9046fb9babb03169aad98fe9b01d9e4b1b3bad206876
   languageName: node
   linkType: hard
 
