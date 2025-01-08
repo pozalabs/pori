@@ -1,6 +1,6 @@
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 
-import type { Playlist, RepeatModeType } from '../../../hooks';
+import type { Playlist, RepeatModeType } from '../../../types';
 
 /**
  * Type for the audio player context value.

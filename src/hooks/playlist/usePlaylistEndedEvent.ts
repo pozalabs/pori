@@ -3,8 +3,8 @@ import { useEffect } from 'react';
 
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 
-import type { Playlist, RepeatModeType } from './_types';
 import findArrayElementById from './_utils/findArrayElementById';
+import type { Playlist, RepeatModeType } from '../../types';
 
 interface UsePlaylistEndedEventParams {
   audioRef: MutableRefObject<HTMLAudioElement | null>;

@@ -1,7 +1,7 @@
 import type { MutableRefObject } from 'react';
 import { useCallback } from 'react';
 
-import type { UseControlAudioReturns } from '../../types/hooks/audio';
+import type { UseControlAudioReturns } from '../../types';
 
 interface UseControlAudioParams {
   audioRef: MutableRefObject<HTMLAudioElement | null>;

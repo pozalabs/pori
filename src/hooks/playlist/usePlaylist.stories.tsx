@@ -4,8 +4,8 @@ import type { ArrayElementType } from '@pozalabs/pokit/types';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { PLAYLIST_DEFAULT_VALUE } from './_constants';
-import type { Playlist, RepeatModeType } from './_types';
 import usePlaylist from './usePlaylist';
+import type { Playlist, RepeatModeType } from '../../types';
 
 const maxPlaybackRange = 100;
 

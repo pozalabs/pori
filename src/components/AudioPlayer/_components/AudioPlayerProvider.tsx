@@ -8,11 +8,9 @@ import {
   useState,
 } from 'react';
 
-import type { AudioPlayerHandles } from '../../../../components';
-import type { RepeatModeType } from '../../../hooks';
 import { usePlaylist } from '../../../hooks';
 import findArrayElementById from '../../../hooks/playlist/_utils/findArrayElementById';
-import type { AudioPlayerProviderProps } from '../../../types';
+import type { AudioPlayerHandles, AudioPlayerProviderProps, RepeatModeType } from '../../../types';
 import { AUDIO_PLAYER_CONTEXT_DEFAULT_VALUE } from '../_constants';
 
 export const AudioPlayerContext = createContext(AUDIO_PLAYER_CONTEXT_DEFAULT_VALUE);

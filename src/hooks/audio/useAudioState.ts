@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 
 import { DEFAULT_UNMUTE_VOLUME } from './_constants';
-import type { UseAudioStateReturns } from '../../types/hooks/audio';
+import type { UseAudioStateReturns } from '../../types';
 
 interface UseAudioStateParams {
   audioRef: MutableRefObject<HTMLAudioElement | null>;

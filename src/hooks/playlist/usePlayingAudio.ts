@@ -2,8 +2,8 @@ import { useCallback, useEffect, useRef, useState } from 'react';
 
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 
-import type { Playlist } from './_types';
 import findArrayElementById from './_utils/findArrayElementById';
+import type { Playlist } from '../../types';
 
 interface UsePlayingAudioParams {
   playlist: Playlist;

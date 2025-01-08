@@ -4,7 +4,7 @@ import { AUDIO_DEFAULT_VALUE } from './_constants';
 import useAudioState from './useAudioState';
 import useControlAudio from './useControlAudio';
 import useKeyBinding from './useKeyboardControl';
-import type { UseAudioParams, UseAudioReturns } from '../../types/hooks/audio';
+import type { UseAudioParams, UseAudioReturns } from '../../types';
 
 /**
  * This is a hook that allows controlling audio. Currently, it supports audio playback and volume control.

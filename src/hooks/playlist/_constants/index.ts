@@ -1,4 +1,4 @@
-import type { Playlist, RepeatModeType } from '../_types';
+import type { Playlist, RepeatModeType } from '../../../types';
 
 interface IPlaylistDefaultValue {
   playlist: Playlist;

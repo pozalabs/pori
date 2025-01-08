@@ -3,7 +3,8 @@ import type { HTMLAttributes, ReactNode } from 'react';
 import type { ArrayElementType, WithArray } from '@pozalabs/pokit/types';
 
 import type Slider from '../../components/Slider';
-import type { Playlist, usePlaylist } from '../../hooks';
+import type { usePlaylist } from '../../hooks';
+import type { Playlist } from '../hooks';
 
 /**
  * Type of time format used to export current time and duration.
@@ -72,7 +73,7 @@ export interface AudioPlayerButtonProps {
 /**
  * Common prop type of src button provided by AudioPlayer.
  */
-export interface AudioPlayerSrcButtonProps {
+export interface AudioPlayerSrcButtonProps extends AudioPlayerButtonProps {
   src?: string;
 }
 
