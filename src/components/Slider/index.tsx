@@ -1,29 +1,10 @@
 import type { MouseEvent, TouchEvent } from 'react';
-import { useCallback, useMemo, useRef, type InputHTMLAttributes } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 
 import { cn } from '@pozalabs/pokit/utils';
 
 import { SLIDER_DEFAULT_VALUE } from './_constants';
-import type { SliderOrientationType } from './_types';
-
-interface SliderProps
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'
-  > {
-  orientation?: SliderOrientationType;
-  max?: number;
-  min?: number;
-  step?: number;
-  value?: number;
-  railClassName?: string;
-  trackClassName?: string;
-  thumbClassName?: string;
-  onChange?: (value: number) => void;
-  onDrag?: (value: number) => void;
-  onDragStart?: (value: number) => void;
-  onDragEnd?: (value: number) => void;
-}
+import type { SliderProps } from '../../types';
 
 /**
  * This is a Slider component that allows for custom styling.
@@ -45,7 +26,7 @@ interface SliderProps
  *    onDragEnd?: (value: number) => void;
  * }
  * ```
- * - orientation : Direction of slider  (default: `horizontal`)
+ * - orientation : Direction of slider (default: `horizontal`)
  * - max : Max Value of slider (default: `100`)
  * - min : Min value of slider (default: `0`)
  * - step : The unit of slider value. The value transmitted through click or drag events is always formatted in step units. (default: `1`)

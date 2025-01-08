@@ -11,7 +11,7 @@ import type { Playlist, usePlaylist } from '../../hooks';
 export type AudioPlayerTimeFormat = 'SS' | 'S' | 'MM:SS' | 'M:S' | 'HH:MM:SS' | 'H:M:S';
 
 /**
- * This is the type of ref passed to the audio player provider. Contains all functions returned by useAudio and usePlaylist. (excluding src manipulation)
+ * This is the type of ref passed to `AudioPlayer.Provider`. Contains all functions returned by useAudio and usePlaylist. (excluding src manipulation)
  */
 export interface AudioPlayerHandles {
   addAudio: (audio: ArrayElementType<Playlist>, autoplay?: boolean) => void;

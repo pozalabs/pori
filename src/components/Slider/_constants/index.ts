@@ -1,4 +1,4 @@
-import type { SliderOrientationType } from '../_types';
+import type { SliderOrientationType } from '../../../types';
 
 interface ISliderDefaultValue {
   orientation: SliderOrientationType;
