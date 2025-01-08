@@ -1,9 +1,9 @@
 import { useCallback, useContext, useRef } from 'react';
 
 import { AudioPlayerContext } from './AudioPlayerProvider';
+import type { AudioPlayerVolumeProgressBarProps } from '../../../types';
 import Slider from '../../Slider';
 import { AUDIO_PLAYER_PROGRESS_BAR_DEFAULT_VALUE } from '../_constants';
-import type { AudioPlayerProgressBarProps as AudioPlayerVolumeProgressBarProps } from '../_types';
 
 const AudioPlayerVolumeProgressBar = ({
   draggable = AUDIO_PLAYER_PROGRESS_BAR_DEFAULT_VALUE.draggable,

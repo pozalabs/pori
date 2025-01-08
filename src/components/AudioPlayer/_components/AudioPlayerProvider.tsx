@@ -1,4 +1,4 @@
-import type { ForwardedRef, ReactNode } from 'react';
+import type { ForwardedRef } from 'react';
 import {
   createContext,
   forwardRef,
@@ -8,19 +8,14 @@ import {
   useState,
 } from 'react';
 
-import type { WithArray } from '@pozalabs/pokit/types';
-
+import type { AudioPlayerHandles } from '../../../../components';
 import type { RepeatModeType } from '../../../hooks';
 import { usePlaylist } from '../../../hooks';
 import findArrayElementById from '../../../hooks/playlist/_utils/findArrayElementById';
+import type { AudioPlayerProviderProps } from '../../../types';
 import { AUDIO_PLAYER_CONTEXT_DEFAULT_VALUE } from '../_constants';
-import type { AudioPlayerHandles } from '../_types';
 
 export const AudioPlayerContext = createContext(AUDIO_PLAYER_CONTEXT_DEFAULT_VALUE);
-
-export interface AudioPlayerProviderProps extends Omit<Parameters<typeof usePlaylist>[0], ''> {
-  children?: WithArray<ReactNode>;
-}
 
 const AudioPlayerProvider = forwardRef(
   (

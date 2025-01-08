@@ -1,6 +1,7 @@
-import type { AudioPlayerContextDefaultValue, TimeFormat } from '../_types';
+import type { AudioPlayerTimeFormat } from '../../../types';
+import type { AudioPlayerContextType } from '../_types';
 
-export const AUDIO_PLAYER_CONTEXT_DEFAULT_VALUE: AudioPlayerContextDefaultValue = {
+export const AUDIO_PLAYER_CONTEXT_DEFAULT_VALUE: AudioPlayerContextType = {
   currentSrc: '',
   currentTime: 0,
   duration: 0,
@@ -32,7 +33,7 @@ export const AUDIO_PLAYER_PROGRESS_BAR_DEFAULT_VALUE = {
   step: 0.01,
 };
 
-export const AUDIO_PLAYER_CURRENT_TIME_DURATION_DEFAULT_VALUE: { format: TimeFormat } = {
+export const AUDIO_PLAYER_CURRENT_TIME_DURATION_DEFAULT_VALUE: { format: AudioPlayerTimeFormat } = {
   format: 'MM:SS',
 };
 

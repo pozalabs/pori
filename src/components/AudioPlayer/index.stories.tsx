@@ -4,9 +4,9 @@ import { useRef } from 'react';
 import type { ArrayElementType } from '@pozalabs/pokit/types';
 import type { Meta, StoryObj } from '@storybook/react';
 
-import type { AudioPlayerProviderProps } from './_components/AudioPlayerProvider';
-import type { AudioPlayerHandles } from './_types';
+import type { AudioPlayerHandles } from '../../../components';
 import type { Playlist } from '../../hooks';
+import type { AudioPlayerProviderProps } from '../../types';
 
 import AudioPlayer from '.';
 

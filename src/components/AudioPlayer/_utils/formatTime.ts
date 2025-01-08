@@ -1,6 +1,6 @@
-import type { TimeFormat } from '../_types';
+import type { AudioPlayerTimeFormat } from '../../../types';
 
-const formatTime = (time: number, format: TimeFormat) => {
+const formatTime = (time: number, format: AudioPlayerTimeFormat) => {
   const hours = Math.floor(time / 3600);
   const minutes = Math.floor((time % 3600) / 60);
   const seconds = time % 60;
