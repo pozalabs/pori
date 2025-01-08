@@ -1,22 +1,13 @@
 import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 
 import { DEFAULT_UNMUTE_VOLUME } from './_constants';
+import type { UseAudioStateReturns } from '../../types/hooks/audio';
 
 interface UseAudioStateParams {
   audioRef: MutableRefObject<HTMLAudioElement | null>;
   isAudioInitialized: boolean;
   maxPlaybackRange: number;
   maxVolume: number;
-}
-
-export interface UseAudioStateReturns {
-  currentSrc: string;
-  currentTime: number;
-  duration: number;
-  isPlaying: boolean;
-  playbackRate: number;
-  playbackRange: number;
-  volume: number;
 }
 
 const useAudioState = ({

@@ -1,6 +1,8 @@
 import type { MutableRefObject } from 'react';
 import { useCallback } from 'react';
 
+import type { UseControlAudioReturns } from '../../types/hooks/audio';
+
 interface UseControlAudioParams {
   audioRef: MutableRefObject<HTMLAudioElement | null>;
   maxPlaybackRange: number;
@@ -8,24 +10,6 @@ interface UseControlAudioParams {
   duration: number;
   isPlaying: boolean;
   timeShift: number;
-}
-
-export interface UseControlAudioReturns {
-  changeCurrentSrc: (currentSrc: string) => void;
-  changeCurrentTime: (currentTime: number) => void;
-  changeMuted: (muted: boolean) => void;
-  changePlaybackRate: (playbackRate: number) => void;
-  changePlaybackRange: (progress: number) => void;
-  changeVolume: (volume: number) => void;
-  play: () => void;
-  pause: () => void;
-  resetAudio: () => void;
-  resetAudioTime: () => void;
-  shiftTimeBackward: () => void;
-  shiftTimeForward: () => void;
-  stop: () => void;
-  toggleMuted: () => void;
-  togglePlayPause: (src?: string) => void;
 }
 
 const useControlAudio = ({

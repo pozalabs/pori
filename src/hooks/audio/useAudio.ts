@@ -1,26 +1,10 @@
-import { useEffect, useRef, useState, type MutableRefObject } from 'react';
+import { useEffect, useRef, useState } from 'react';
 
 import { AUDIO_DEFAULT_VALUE } from './_constants';
-import type { UseAudioStateReturns } from './useAudioState';
 import useAudioState from './useAudioState';
-import type { UseControlAudioReturns } from './useControlAudio';
 import useControlAudio from './useControlAudio';
 import useKeyBinding from './useKeyboardControl';
-
-interface UseAudioParams {
-  autoplay?: boolean;
-  enabledKeyboardControl?: boolean;
-  loop?: boolean;
-  maxPlaybackRange?: number;
-  maxVolume?: number;
-  preventDefaultKeyboardEvent?: boolean;
-  src?: string;
-  timeShift?: number;
-}
-
-interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
-  audioRef: MutableRefObject<HTMLAudioElement | null>;
-}
+import type { UseAudioParams, UseAudioReturns } from '../../types/hooks/audio';
 
 /**
  * This is a hook that allows controlling audio. Currently, it supports audio playback and volume control.
