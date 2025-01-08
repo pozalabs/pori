@@ -1,42 +1,12 @@
 import { useCallback, useState } from 'react';
 
 import { WAVEFORM_DEFAULT_VALUE } from './_constants';
-import type { HTMLAudioElementEventType, WaveformType } from './_types';
 import getPeakLength from './_utils/getPeakLength';
 import useAudioData from './useAudioData';
 import useCanvasWaveform from './useCanvasWaveform';
 import useSvgWaveform from './useSvgWaveform';
 import useWaveformAudio from './useWaveformAudio';
-
-export interface UseWaveformParams<T extends WaveformType> extends HTMLAudioElementEventType {
-  src: string;
-  type?: T;
-  variant?: 'line' | 'bar';
-  peaks?: number[];
-  sampleRate?: number;
-  width?: number;
-  height?: number;
-  gap?: number;
-  waveColor?: string;
-  progressColor?: string;
-  hoveredColor?: string;
-  bgColor?: string;
-  className?: string;
-  controls?: boolean;
-  autoplay?: boolean;
-}
-
-export interface UseWaveformReturns<T extends WaveformType> {
-  isPlaying: boolean;
-  currentTime: number;
-  duration: number;
-  play: () => void;
-  pause: () => void;
-  changeCurrentTime: (currentTime: number) => void;
-  showHoveredWaveform: (e: Event, positionX?: number) => void;
-  hideHoveredWaveform: () => void;
-  waveform?: T extends 'svg' ? SVGSVGElement : HTMLCanvasElement;
-}
+import type { UseWaveformParams, UseWaveformReturns, WaveformType } from '../../types';
 
 /**
  * This is a hook that draws and returns a waveform based on the type.

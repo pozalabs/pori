@@ -1,4 +1,4 @@
-import type { UseWaveformParams } from '../useWaveform';
+import type { UseWaveformParams } from '../../../types';
 
 export const WAVEFORM_DEFAULT_VALUE: Required<
   Pick<

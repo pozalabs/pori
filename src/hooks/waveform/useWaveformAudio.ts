@@ -1,6 +1,7 @@
 import { useEffect } from 'react';
 
-import type { HTMLAudioElementEventType, UnionToIntersection } from './_types';
+import type { UnionToIntersection } from './_types';
+import type { HTMLAudioElementEventType } from '../../types';
 import useAudio from '../audio/useAudio';
 
 interface UseWaveformAudioParams extends HTMLAudioElementEventType {
