@@ -125,3 +125,22 @@ export const Default: Story = {
     enabledKeyboardControl: true,
   },
 };
+
+export const SupportHls: Story = {
+  args: {
+    playlist: [
+      {
+        id: '0',
+        src: 'https://dev.cdn.eapy.io/audio/output.m3u8',
+        title: '첫 번째 노래',
+      },
+      {
+        id: '1',
+        src: 'https://dev.cdn.eapy.io/audio/output3.m3u8',
+        title: '두 번째 노래',
+      },
+    ],
+    repeatMode: 'all',
+    enabledKeyboardControl: true,
+  },
+};

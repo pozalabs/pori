@@ -1,9 +1,12 @@
 import type { MutableRefObject } from 'react';
 import { useCallback } from 'react';
 
+import Hls from 'hls.js';
+
 import type { UseControlAudioReturns } from '../../types';
 
 interface UseControlAudioParams {
+  hlsRef: MutableRefObject<Hls | null>;
   audioRef: MutableRefObject<HTMLAudioElement | null>;
   maxPlaybackRange: number;
   maxVolume: number;
@@ -13,6 +16,7 @@ interface UseControlAudioParams {
 }
 
 const useControlAudio = ({
+  hlsRef,
   audioRef,
   maxPlaybackRange,
   maxVolume,
@@ -23,19 +27,28 @@ const useControlAudio = ({
   const changeCurrentSrc = useCallback(
     (currentSrc: string): void => {
       const audio = audioRef.current;
-
       if (!audio) return;
 
+      if (hlsRef.current) {
+        hlsRef.current.destroy();
+        hlsRef.current = null;
+      }
+
       const absoluteCurrentSrc = new URL(currentSrc, window.location.href).href;
-
       if (absoluteCurrentSrc === audio.currentSrc) return;
-
       const playbackRate = audio.playbackRate;
-
-      audio.src = currentSrc;
       audio.playbackRate = playbackRate;
+
+      if (currentSrc.substring(currentSrc.lastIndexOf('.') + 1) === 'm3u8' && Hls.isSupported()) {
+        const hls = new Hls();
+        hls.loadSource(currentSrc);
+        hls.attachMedia(audio);
+        hlsRef.current = hls;
+      } else {
+        audio.src = currentSrc;
+      }
     },
-    [audioRef],
+    [audioRef, hlsRef],
   );
 
   const changeCurrentTime = useCallback(
@@ -150,7 +163,20 @@ const useControlAudio = ({
       if (!audioRef.current) return;
 
       if (src) {
-        audioRef.current.src = src;
+        if (hlsRef.current) {
+          hlsRef.current.destroy();
+          hlsRef.current = null;
+        }
+
+        if (src.substring(src.lastIndexOf('.') + 1) === 'm3u8' && Hls.isSupported()) {
+          const hls = new Hls();
+          hls.loadSource(src);
+          hls.attachMedia(audioRef.current);
+          hlsRef.current = hls;
+        } else {
+          audioRef.current.src = src;
+        }
+
         play();
         return;
       }
@@ -161,7 +187,7 @@ const useControlAudio = ({
       }
       play();
     },
-    [audioRef, isPlaying, pause, play],
+    [audioRef, isPlaying, pause, play, hlsRef],
   );
 
   return {

@@ -71,6 +71,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-react-refresh", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:0.4.9"],\
           ["eslint-plugin-tailwindcss", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:3.17.4"],\
           ["globals", "npm:15.9.0"],\
+          ["hls.js", "npm:1.5.18"],\
           ["jsdom", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:24.1.0"],\
           ["msw", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:2.3.1"],\
           ["postcss", "npm:8.4.39"],\
@@ -1538,6 +1539,7 @@ const RAW_RUNTIME_STATE =
           ["eslint-plugin-react-refresh", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:0.4.9"],\
           ["eslint-plugin-tailwindcss", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:3.17.4"],\
           ["globals", "npm:15.9.0"],\
+          ["hls.js", "npm:1.5.18"],\
           ["jsdom", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:24.1.0"],\
           ["msw", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:2.3.1"],\
           ["postcss", "npm:8.4.39"],\
@@ -7742,6 +7744,15 @@ const RAW_RUNTIME_STATE =
         "packageLocation": "./.yarn/cache/headers-polyfill-npm-4.0.3-65ca63b329-53e85b2c63.zip/node_modules/headers-polyfill/",\
         "packageDependencies": [\
           ["headers-polyfill", "npm:4.0.3"]\
+        ],\
+        "linkType": "HARD"\
+      }]\
+    ]],\
+    ["hls.js", [\
+      ["npm:1.5.18", {\
+        "packageLocation": "./.yarn/cache/hls.js-npm-1.5.18-e4610fa6f6-38c61a7059.zip/node_modules/hls.js/",\
+        "packageDependencies": [\
+          ["hls.js", "npm:1.5.18"]\
         ],\
         "linkType": "HARD"\
       }]\
