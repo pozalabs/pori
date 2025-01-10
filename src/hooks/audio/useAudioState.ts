@@ -1,10 +1,13 @@
 import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 
+import Hls from 'hls.js';
+
 import { DEFAULT_UNMUTE_VOLUME } from './_constants';
 import type { UseAudioStateReturns } from '../../types';
 
 interface UseAudioStateParams {
   audioRef: MutableRefObject<HTMLAudioElement | null>;
+  hlsRef: MutableRefObject<Hls | null>;
   isAudioInitialized: boolean;
   maxPlaybackRange: number;
   maxVolume: number;
@@ -12,6 +15,7 @@ interface UseAudioStateParams {
 
 const useAudioState = ({
   audioRef,
+  hlsRef,
   isAudioInitialized,
   maxPlaybackRange,
   maxVolume,
@@ -32,6 +36,31 @@ const useAudioState = ({
     const audio = audioRef.current;
 
     if (!audio || !isAudioInitialized) return;
+
+    const onAudioLoadStart = (): void => {
+      if (
+        audio.currentSrc.substring(audio.currentSrc.lastIndexOf('.') + 1) !== 'm3u8' ||
+        !Hls.isSupported()
+      )
+        return;
+
+      if (hlsRef.current) {
+        hlsRef.current.destroy();
+        hlsRef.current = null;
+      }
+
+      const hls = new Hls();
+      hlsRef.current = hls;
+      hls.loadSource(audio.currentSrc);
+      hls.attachMedia(audio);
+
+      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+        if (!audioRef.current?.dataset.shouldPlay) return;
+
+        audioRef.current?.play();
+        audioRef.current.dataset.shouldPlay = '';
+      });
+    };
 
     const onAudioMetadataLoaded = (): void => {
       setCurrentSrc(audio.currentSrc);
@@ -73,6 +102,7 @@ const useAudioState = ({
       setPlaybackRange(isNaN(progress) ? 0 : progress);
     };
 
+    audio.addEventListener('loadstart', onAudioLoadStart);
     audio.addEventListener('loadedmetadata', onAudioMetadataLoaded);
     audio.addEventListener('play', onAudioPlay);
     audio.addEventListener('pause', onAudioPause);
@@ -80,13 +110,14 @@ const useAudioState = ({
     audio.addEventListener('seeked', onAudioSeeked);
 
     return () => {
+      audio.removeEventListener('loadstart', onAudioLoadStart);
       audio.removeEventListener('loadedmetadata', onAudioMetadataLoaded);
       audio.removeEventListener('play', onAudioPlay);
       audio.removeEventListener('pause', onAudioPause);
       audio.removeEventListener('ended', onAudioEnded);
       audio.removeEventListener('seeked', onAudioSeeked);
     };
-  }, [audioRef, isAudioInitialized, maxPlaybackRange]);
+  }, [audioRef, currentSrc, hlsRef, isAudioInitialized, maxPlaybackRange]);
 
   useEffect(() => {
     const audio = audioRef.current;
