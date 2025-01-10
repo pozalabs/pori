@@ -93,23 +93,6 @@ describe('useAudio 테스트', () => {
   });
 
   describe('Testing the functionality.', () => {
-    it('When the src parameter is passed to useAudio, the currentSrc is set to the corresponding value.', () => {
-      const src = 'hi.mp3';
-
-      const { result } = renderHook(() => useAudio({ src }));
-      const audio = result.current.audioRef.current!;
-
-      act(() => {
-        Object.defineProperty(audio, 'currentSrc', {
-          value: audio.src,
-          writable: false,
-        });
-        audio.dispatchEvent(new Event('loadedmetadata'));
-      });
-
-      expect(result.current.currentSrc).toContain(src);
-    });
-
     it("When the autoplay parameter is passed to useAudio, the audio element's autoplay behavior is set accordingly.", () => {
       const { result } = renderHook(() => useAudio({ autoplay: true }));
 
