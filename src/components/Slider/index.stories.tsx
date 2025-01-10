@@ -139,7 +139,7 @@ const PlayerSlider = (props: Parameters<typeof Slider>[0]) => {
           </div>
           <div className="relative flex items-center justify-center gap-2">
             <span className="cursor-pointer text-[12px]" onClick={toggleIsVolumeSliderShowing}>
-              볼륨
+              volume
             </span>
             {isVolumeShowing && (
               <Slider
@@ -162,19 +162,19 @@ const PlayerSlider = (props: Parameters<typeof Slider>[0]) => {
             className="rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-[14px]"
             onClick={shiftTimeForward}
           >
-            앞으로 10초 이동
+            Move forward 10 seconds
           </button>
           <button
             className="rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-[14px]"
             onClick={() => togglePlayPause()}
           >
-            {isPlaying ? '일시정지' : '재생'}
+            {isPlaying ? 'paused' : 'play'}
           </button>
           <button
             className="rounded-md border border-violet-100 bg-violet-50 px-3 py-1 text-[14px]"
             onClick={shiftTimeBackward}
           >
-            뒤로 10초 이동
+            Move backward 10 seconds
           </button>
         </div>
       </div>

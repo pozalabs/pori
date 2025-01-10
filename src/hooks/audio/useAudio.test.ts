@@ -16,8 +16,8 @@ describe('useAudio 테스트', () => {
     (window.HTMLMediaElement.prototype.load as ReturnType<typeof vi.fn>).mockClear();
   });
 
-  describe('반환값 테스트', () => {
-    it('useAudio는 audio element 타입의 ref를 반환한다.', () => {
+  describe('The testing return value', () => {
+    it('useAudio returns a ref of the audio element type.', () => {
       const {
         result: {
           current: { audioRef },
@@ -27,7 +27,7 @@ describe('useAudio 테스트', () => {
       expect(audioRef.current instanceof HTMLAudioElement).toBeTruthy();
     });
 
-    it('useAudio는 currentSrc, currentTime, duration, isPlaying, playbackRate, progressTime, volume 상태를 반환한다.', () => {
+    it('useAudio returns the states of currentSrc, currentTime, duration, isPlaying, playbackRate, progressTime, and volume.', () => {
       const {
         result: {
           current: {
@@ -51,7 +51,7 @@ describe('useAudio 테스트', () => {
       expect(volume).toBeTypeOf('number');
     });
 
-    it('useAudio는 changeCurrentSrc, changeCurrentTime, changeMuted, changePlaybackRate, changePlaybackRange, changeVolume, play, pause, resetAudio, resetAudioTime, shiftTimeBackward, shiftTimeForward, stop, toggleMuted, togglePlayPause 함수를 반환한다.', () => {
+    it('useAudio returns the functions changeCurrentSrc, changeCurrentTime, changeMuted, changePlaybackRate, changePlaybackRange, changeVolume, play, pause, resetAudio, resetAudioTime, shiftTimeBackward, shiftTimeForward, stop, toggleMuted, and togglePlayPause.', () => {
       const {
         result: {
           current: {
@@ -92,8 +92,8 @@ describe('useAudio 테스트', () => {
     });
   });
 
-  describe('동작 테스트', () => {
-    it('useAudio에 src 파라미터를 전달하면 그에 대응하는 값으로 currentSrc가 설정된다.', () => {
+  describe('Testing the functionality.', () => {
+    it('When the src parameter is passed to useAudio, the currentSrc is set to the corresponding value.', () => {
       const src = 'hi.mp3';
 
       const { result } = renderHook(() => useAudio({ src }));
@@ -110,13 +110,13 @@ describe('useAudio 테스트', () => {
       expect(result.current.currentSrc).toContain(src);
     });
 
-    it('useAudio에 autoplay 파라미터를 전달하면 그와 동일하게 오디오 엘리먼트의 자동재생 여부가 설정된다.', () => {
+    it("When the autoplay parameter is passed to useAudio, the audio element's autoplay behavior is set accordingly.", () => {
       const { result } = renderHook(() => useAudio({ autoplay: true }));
 
       expect(result.current.audioRef.current!.autoplay).toBeTruthy();
     });
 
-    it('useAudio의 changeCurrentSrc 함수를 호출하면 currentSrc가 변경된다.', () => {
+    it('Calling the changeCurrentSrc function of useAudio will change the currentSrc.', () => {
       const newSrc = 'hello.mp3';
 
       const { result } = renderHook(() => useAudio({ src: 'hi.mp3' }));
@@ -134,7 +134,7 @@ describe('useAudio 테스트', () => {
       expect(result.current.currentSrc).toContain(newSrc);
     });
 
-    it('useAudio의 changeCurrentTime 함수를 호출하면 currentTime이 변경된다.', () => {
+    it('Calling the changeCurrentTime function of useAudio will change the currentTime.', () => {
       const newCurrentTime = 12;
 
       const { result } = renderHook(() => useAudio({ src: 'hi.mp3' }));
@@ -148,7 +148,7 @@ describe('useAudio 테스트', () => {
       expect(result.current.currentTime).toEqual(newCurrentTime);
     });
 
-    it('useAudio의 changeMuted 함수를 호출하면 볼륨이 변경된다.', () => {
+    it('Calling the changeMuted function of useAudio will change the volume by muting or unmuting the audio.', () => {
       const { result } = renderHook(() => useAudio({ src: 'hi.mp3' }));
       const audio = result.current.audioRef.current!;
 
@@ -169,7 +169,7 @@ describe('useAudio 테스트', () => {
       expect(result.current.volume).toEqual(prevVolume);
     });
 
-    it('useAudio의 changePlaybackRate 함수를 호출하면 오디오 재생 속도가 변경된다.', () => {
+    it('Calling the changePlaybackRate function of useAudio will change the audio playback speed.', () => {
       const { result } = renderHook(() => useAudio({ src: 'hi.mp3' }));
 
       const newPlaybackRate = 2;
@@ -182,7 +182,7 @@ describe('useAudio 테스트', () => {
       expect(result.current.playbackRate).toEqual(newPlaybackRate);
     });
 
-    it('useAudio의 changeVolume 함수를 호출하면 볼륨이 변경된다.', () => {
+    it('Calling the changeVolume function of useAudio will change the volume.', () => {
       const maxVolume = 1;
       const newVolume = 0.5;
 
@@ -195,7 +195,7 @@ describe('useAudio 테스트', () => {
       expect(result.current.volume).toEqual(newVolume);
     });
 
-    it('useAudio의 play 함수를 호출하면 오디오가 재생되며 isPlaying이 true로 변경된다.', () => {
+    it('Calling the play function of useAudio will start the audio playback and set isPlaying to true.', () => {
       const { result } = renderHook(() => useAudio({ src: 'hi.mp3' }));
 
       act(() => {
@@ -207,7 +207,7 @@ describe('useAudio 테스트', () => {
       expect(result.current.isPlaying).toBeTruthy();
     });
 
-    it('useAudio의 pause 함수를 호출하면 오디오가 일시정지되며 isPlaying이 false로 변경된다.', () => {
+    it('Calling the pause function of useAudio will pause the audio playback and set isPlaying to false.', () => {
       const { result } = renderHook(() => useAudio({ src: 'hi.mp3' }));
 
       act(() => {
@@ -221,7 +221,7 @@ describe('useAudio 테스트', () => {
       expect(result.current.isPlaying).toBeFalsy();
     });
 
-    it('useAudio의 resetAudio 함수를 호출하면 오디오의 상태가 모두 초기화된다.', () => {
+    it('Calling the resetAudio function of useAudio will reset all the audio states to their initial values.', () => {
       const maxVolume = 100;
 
       const { result } = renderHook(() => useAudio({ src: 'hi.mp3', maxVolume }));
@@ -240,7 +240,7 @@ describe('useAudio 테스트', () => {
       expect(result.current.playbackRate).toEqual(1);
     });
 
-    it('useAudio의 resetAudioTime 함수를 호출하면 currentTime이 0으로 초기화된다.', () => {
+    it('Calling the resetAudioTime function of useAudio will reset the currentTime to 0.', () => {
       const currentTime = 12;
 
       const { result } = renderHook(() => useAudio({ src: 'hi.mp3' }));
@@ -261,7 +261,7 @@ describe('useAudio 테스트', () => {
       expect(result.current.currentTime).toEqual(0);
     });
 
-    it('useAudio의 stop 함수를 호출하면 음원이 일시정지되며 currentTime이 초기화된다.', () => {
+    it('Calling the stop function of useAudio will pause the audio playback and reset the currentTime to 0.', () => {
       const { result } = renderHook(() => useAudio({ src: 'hi.mp3' }));
       const audio = result.current.audioRef.current!;
 
@@ -285,7 +285,7 @@ describe('useAudio 테스트', () => {
       expect(result.current.currentTime).toEqual(0);
     });
 
-    it('useAudio의 toggleMuted 함수를 호출하면 음소거 상태에 따라 볼륨이 변경된다.', () => {
+    it('Calling the toggleMuted function of useAudio will toggle the mute state, changing the volume based on whether the audio is muted or not.', () => {
       const { result } = renderHook(() => useAudio({ src: 'hi.mp3' }));
       const audio = result.current.audioRef.current!;
 
@@ -306,7 +306,7 @@ describe('useAudio 테스트', () => {
       expect(result.current.volume).toEqual(prevVolume);
     });
 
-    it('useAudio의 togglePlayPause 함수를 호출하면 현재 재생 여부에 따라 음원이 재생 또는 일시정지된다.', () => {
+    it('Calling the togglePlayPause function of useAudio will toggle the audio playback based on its current state, either playing or pausing the audio.', () => {
       const { result } = renderHook(() => useAudio({ src: 'hi.mp3' }));
 
       act(() => {
@@ -328,7 +328,7 @@ describe('useAudio 테스트', () => {
       expect(result.current.isPlaying).toBeFalsy();
     });
 
-    it('useAudio의 togglePlayPause 함수를 호출할 때 파라미터로 src를 전달하면 현재 재생 중인 음원을 바꿀 수 있다.', () => {
+    it('When the togglePlayPause function of useAudio is called with the src parameter, it will change the currently playing audio to the new src.', () => {
       const src = 'hi.mp3';
       const newSrc = 'hello.mp3';
 

@@ -38,7 +38,7 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
   });
 
   const removeAudioInPlaylist = (audio: ArrayElementType<Playlist>) => () => {
-    if (!confirm(`${audio.src}를 플레이리스트에서 삭제하시겠습니까?`)) return;
+    if (!confirm(`Do you want to remove ${audio.src} from the playlist?`)) return;
 
     removeAudio(audio.id, true);
   };
@@ -87,36 +87,36 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
         <span className="w-[44px]">{formatTime(duration)}</span>
       </div>
       <select value={repeatMode} onChange={e => setRepeatMode(e.target.value as RepeatModeType)}>
-        <option value="all">왕복 재생</option>
-        <option value="one">한곡 재생</option>
-        <option value="none">반복 없음</option>
+        <option value="all">Reverse playback</option>
+        <option value="one">One-track playback</option>
+        <option value="none">No repeat</option>
       </select>
       <div className="flex gap-3">
         <button
           className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1"
           onClick={() => togglePlayPause()}
         >
-          {isPlaying ? '일시정지' : '재생'}
+          {isPlaying ? 'pause' : 'play'}
         </button>
         <button
           className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1"
           onClick={clearPlaylist}
         >
-          플레이리스트 비우기
+          Clear the playlist
         </button>
         <button
           className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-300"
           onClick={() => playPrevAudio(isPlaying)}
           disabled={!hasPrevAudio}
         >
-          이전 곡 재생
+          Play the previous song
         </button>
         <button
           className="rounded-md border border-slate-300 bg-slate-100 px-3 py-1 disabled:border-gray-300 disabled:bg-gray-100 disabled:text-gray-300"
           onClick={() => playNextAudio(isPlaying)}
           disabled={!hasNextAudio}
         >
-          다음 곡 재생
+          Play the next song
         </button>
       </div>
       <ul className="flex w-full flex-col items-center gap-4">
@@ -132,21 +132,21 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
                   className="rounded-md border border-blue-200 bg-blue-100 px-2 py-1"
                   onClick={pause}
                 >
-                  일시정지
+                  pause
                 </button>
               ) : (
                 <button
                   className="rounded-md border border-blue-200 bg-blue-100 px-2 py-1"
                   onClick={() => changePlayingAudio(audio.id)}
                 >
-                  재생
+                  play
                 </button>
               )}
               <button
                 className="rounded-md border border-blue-200 bg-blue-100 px-2 py-1"
                 onClick={removeAudioInPlaylist(audio)}
               >
-                제거
+                remove
               </button>
             </div>
           </li>
@@ -161,7 +161,7 @@ const DemoComponent = (params: Parameters<typeof usePlaylist>[0]) => {
           })
         }
       >
-        곡 추가
+        Add song
       </button>
     </div>
   );
@@ -195,7 +195,7 @@ const formatTime = (seconds: number): `${string}:${string}` => {
   const minutes = Math.floor(seconds / 60);
   const remainingSeconds = Math.floor(seconds % 60);
 
-  // 2자리 숫자로 포맷팅
+  // format a number as a two-digit string
   const formattedMinutes = minutes.toString().padStart(2, '0');
   const formattedSeconds = remainingSeconds.toString().padStart(2, '0');
 

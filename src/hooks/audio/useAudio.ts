@@ -25,7 +25,7 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
 }
 
 /**
- * 오디오를 제어할 수 있는 훅입니다. 현재는 오디오 재생 및 볼륨 관련하여 조작과 사용이 가능합니다.
+ * This is a hook that allows controlling audio. Currently, it supports audio playback and volume control.
  * @param UseAudioParams
  * ```
  * interface UseAudioParams {
@@ -39,14 +39,14 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  *    timeShift?: number;
  * }
  * ```
- * - `autoplay` : 오디오 자동 재생 여부 (default : false)
- * - `enabledKeyboardControl` : 키보드로 오디오 컨트롤 가능 여부 (default : false)
- * - `loop` : 오디오 반복 재생 여부 (default : false)
- * - `maxPlaybackRange` : 현재 재생 시간을 progress로 환산했을 때의 max 값 (default : 100)
- * - `maxVolume` : 현재 볼륨의 max 값 (default : 1)
- * - `preventDefaultKeyboardEvent` : 키보드 컨트롤 이벤트에서 preventDefault를 실행할지 여부 (default : true)
- * - `src` : 오디오 source url
- * - `timeShift` : 건너뛰기의 기준이 되는 시간(초) (default : 10)
+ * - `autoplay` : auto-play feature (default : false)
+ * - `enabledKeyboardControl` : controls via keyboard (default : false)
+ * - `loop` : audio repeat (default : false)
+ * - `maxPlaybackRange` : The maximum value for progress, when converting the current playback time (default : 100)
+ * - `maxVolume` : current max volume value (default : 1)
+ * - `preventDefaultKeyboardEvent` : execute preventDefault in a keyboard control event (default : true)
+ * - `src` : audio source url
+ * - `timeShift` : skipping audio time(seconds) (default : 10)
  * @returns
  * `UseAudioReturns`
  * ```
@@ -76,7 +76,7 @@ interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
  *    togglePlayPause: (src?: string) => void;
  * }
  * ```
- * - `playbackRange` : currentTime을 param으로 주어지는 maxPlaybackRange 단위로 환산한 값이며, maxPlaybackRange를 커스텀하지 않았을 경우 기본적으로 playbackRange는 퍼센트 단위로 환산됩니다.
+ * - `playbackRange` : The currentTime is converted to a value based on the maxPlaybackRange parameter. If the maxPlaybackRange is not customized, the default playback range is converted to a percentage.
  */
 const useAudio = ({
   autoplay = AUDIO_DEFAULT_VALUE.autoplay,

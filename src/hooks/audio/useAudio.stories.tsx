@@ -72,20 +72,20 @@ const DemoComponent = (params: Parameters<typeof useAudio>[0]) => {
         <span>{Math.round(duration)}s</span>
       </div>
       <select value={playbackRate} onChange={e => changePlaybackRate(Number(e.target.value))}>
-        <option value={0.5}>0.5배</option>
-        <option value={1}>1배</option>
-        <option value={1.5}>1.5배</option>
-        <option value={2}>2배</option>
+        <option value={0.5}>0.5</option>
+        <option value={1}>1</option>
+        <option value={1.5}>1.5</option>
+        <option value={2}>2</option>
       </select>
       <div className="flex items-center gap-4">
         <button
           className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1"
           onClick={() => togglePlayPause()}
         >
-          {isPlaying ? '일시정지' : '재생'}
+          {isPlaying ? 'pause' : 'play'}
         </button>
         <button className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1" onClick={stop}>
-          정지
+          stop
         </button>
         {[0, 25, 50, 75, 100].map(progress => (
           <button onClick={() => changePlaybackRange(progress)} key={progress}>
@@ -106,7 +106,7 @@ const DemoComponent = (params: Parameters<typeof useAudio>[0]) => {
           className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1"
           onClick={toggleMuted}
         >
-          {volume <= 0 ? '음소거 해제' : '음소거'}
+          {volume <= 0 ? 'unmute' : 'mute'}
         </button>
       </div>
       <div className="flex items-center gap-4">
@@ -114,13 +114,13 @@ const DemoComponent = (params: Parameters<typeof useAudio>[0]) => {
           className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1"
           onClick={resetAudio}
         >
-          오디오 리셋
+          Reset audio
         </button>
         <button
           className="rounded-md border border-slate-300 bg-slate-50 px-3 py-1"
           onClick={() => changeCurrentSrc(params.src ?? '')}
         >
-          src 다시 설정
+          Reset src
         </button>
       </div>
     </div>
