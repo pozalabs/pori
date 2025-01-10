@@ -156,7 +156,10 @@ const useAudio = ({
       hls.loadSource(src);
       hls.attachMedia(audioRef.current);
       audioRef.current.src = src;
+      return;
     }
+
+    audioRef.current.src = src;
   }, [src]);
 
   useEffect(() => {
