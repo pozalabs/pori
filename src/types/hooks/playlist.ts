@@ -1,9 +1,7 @@
 export type RepeatModeType = 'all' | 'one' | 'none';
 
-interface Audio {
+export type Playlist = Array<{
   id: string;
   src: string;
   [key: string]: unknown;
-}
-
-export type Playlist = Audio[];
+}>;

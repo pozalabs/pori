@@ -2,6 +2,7 @@ import type { MutableRefObject } from 'react';
 import { useCallback } from 'react';
 
 import Hls from 'hls.js';
+import type { UseControlAudioReturns } from '../../types';
 
 interface UseControlAudioParams {
   hlsRef: MutableRefObject<Hls | null>;
@@ -11,24 +12,6 @@ interface UseControlAudioParams {
   duration: number;
   isPlaying: boolean;
   timeShift: number;
-}
-
-export interface UseControlAudioReturns {
-  changeCurrentSrc: (currentSrc: string) => void;
-  changeCurrentTime: (currentTime: number) => void;
-  changeMuted: (muted: boolean) => void;
-  changePlaybackRate: (playbackRate: number) => void;
-  changePlaybackRange: (progress: number) => void;
-  changeVolume: (volume: number) => void;
-  play: () => void;
-  pause: () => void;
-  resetAudio: () => void;
-  resetAudioTime: () => void;
-  shiftTimeBackward: () => void;
-  shiftTimeForward: () => void;
-  stop: () => void;
-  toggleMuted: () => void;
-  togglePlayPause: (src?: string) => void;
 }
 
 const useControlAudio = ({

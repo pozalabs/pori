@@ -6,6 +6,7 @@ export default defineConfig({
     components: 'src/components/index.ts',
     hooks: 'src/hooks/index.ts',
     utils: 'src/utils/index.ts',
+    types: 'src/types/index.ts',
   },
   treeshake: true,
   sourcemap: 'inline',

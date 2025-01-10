@@ -3,14 +3,9 @@ import { useContext } from 'react';
 import { cn } from '@pozalabs/pokit/utils';
 
 import { AudioPlayerContext } from './AudioPlayerProvider';
+import type { AudioPlayerDurationProps } from '../../../types';
 import { AUDIO_PLAYER_CURRENT_TIME_DURATION_DEFAULT_VALUE } from '../_constants';
-import type { TimeFormat } from '../_types';
 import formatTime from '../_utils/formatTime';
-
-export interface AudioPlayerDurationProps {
-  className?: string;
-  format?: TimeFormat;
-}
 
 const AudioPlayerDuration = ({
   className,

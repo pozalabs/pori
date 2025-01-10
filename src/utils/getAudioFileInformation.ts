@@ -1,7 +1,4 @@
-interface IAudioInformation {
-  audioType: string;
-  audioSize: number;
-}
+import type { GetAudioFileInformationReturns } from '../types';
 
 /**
  * This is a utility function for retrieving information from an audio file.
@@ -15,7 +12,7 @@ interface IAudioInformation {
  * }
  * ```
  */
-const getAudioFileInformation = async (src: string): Promise<IAudioInformation> => {
+const getAudioFileInformation = async (src: string): GetAudioFileInformationReturns => {
   const response = await fetch(src, {
     method: 'HEAD',
   });

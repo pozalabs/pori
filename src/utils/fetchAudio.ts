@@ -1,5 +1,6 @@
 import { FETCH_CONCURRENT_LIMIT_DEFAULT, FETCH_RETRY_DEFAULT } from './_constants';
 import getAudioFileInformation from './getAudioFileInformation';
+import type { FetchAudioParams, FetchAudioReturns } from '../types';
 
 const getChunkSize = (fileSize: number): number => {
   if (fileSize >= 100 * 1024 * 1024) {
@@ -109,19 +110,6 @@ const fetchChunksWithConcurrentLimit = async ({
 
   return results;
 };
-
-interface FetchAudioParams {
-  src: string;
-  chunkSize?: number;
-  limit?: number;
-  retry?: number;
-}
-
-interface FetchAudioReturns {
-  url: string;
-  blob: Blob;
-  arrayBuffer: ArrayBuffer;
-}
 
 /**
  * This is a utility function that splits an audio file into chunks, downloads them in parallel, and returns the result.
