@@ -1,18 +1,13 @@
 import { useCallback, useContext } from 'react';
 
 import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
+import type { AudioPlayerSkipStartButtonProps } from '../../../../types';
 import {
   AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   AUDIO_PLAYER_BUTTON_DEFAULT_URL,
   AUDIO_PLAYER_SKIP_START_BUTTON_DEFAULT_VALUE,
 } from '../../_constants';
-import type { AudioPlayerButtonProps } from '../../_types';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
-
-export interface AudioPlayerSkipStartButtonProps extends AudioPlayerButtonProps {
-  src?: string;
-  shiftThreshold?: number;
-}
 
 const AudioPlayerSkipStartButton = ({
   src = AUDIO_PLAYER_BUTTON_DEFAULT_URL.skipToStart,

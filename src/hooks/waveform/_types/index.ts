@@ -1,8 +1,4 @@
-import type { DOMAttributes } from 'react';
-
-import type { UseWaveformParams } from '../useWaveform';
-
-export type WaveformType = 'canvas' | 'svg';
+import type { UseWaveformParams, WaveformType } from '../../../types';
 
 export interface UseTypeWaveformParams<T extends WaveformType>
   extends Required<
@@ -37,8 +33,3 @@ export type UnionToIntersection<U> = (U extends any ? (x: U) => void : never) ex
 ) => void
   ? I
   : never;
-
-export type HTMLAudioElementEventType = Omit<
-  DOMAttributes<HTMLAudioElement>,
-  'children' | 'dangerouslySetInnerHTML'
->;

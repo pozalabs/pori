@@ -1,9 +1,8 @@
 import type { ForwardedRef } from 'react';
 import { forwardRef, useEffect, useImperativeHandle, useRef } from 'react';
 
-import type { WaveformHandles } from '..';
-import type { WaveformType } from '../../hooks/waveform/_types';
-import useWaveform, { type UseWaveformParams } from '../../hooks/waveform/useWaveform';
+import useWaveform from '../../hooks/waveform/useWaveform';
+import type { UseWaveformParams, WaveformHandles, WaveformType } from '../../types';
 
 /**
  * This is the Waveform component rendered using the useWaveform hook.

@@ -1,17 +1,12 @@
 import { useContext } from 'react';
 
 import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
+import type { AudioPlayerVolumeButtonProps } from '../../../../types';
 import {
   AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   AUDIO_PLAYER_BUTTON_DEFAULT_URL,
 } from '../../_constants';
-import type { AudioPlayerButtonProps } from '../../_types';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
-
-export interface AudioPlayerVolumeButtonProps extends AudioPlayerButtonProps {
-  volumeSrc?: string;
-  mutedSrc?: string;
-}
 
 const AudioPlayerVolumeButton = ({
   volumeSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.volume,
