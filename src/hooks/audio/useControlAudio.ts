@@ -64,7 +64,7 @@ const useControlAudio = ({
         audio.src = currentSrc;
       }
     },
-    [audioRef],
+    [audioRef, hlsRef],
   );
 
   const changeCurrentTime = useCallback(
@@ -203,7 +203,7 @@ const useControlAudio = ({
       }
       play();
     },
-    [audioRef, isPlaying, pause, play],
+    [audioRef, isPlaying, pause, play, hlsRef],
   );
 
   return {
