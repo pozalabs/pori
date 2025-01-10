@@ -1,6 +1,7 @@
-import Hls from 'hls.js';
 import type { MutableRefObject } from 'react';
 import { useCallback } from 'react';
+
+import Hls from 'hls.js';
 
 interface UseControlAudioParams {
   hlsRef: MutableRefObject<Hls | null>;

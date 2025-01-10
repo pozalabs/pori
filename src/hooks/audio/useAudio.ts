@@ -1,12 +1,13 @@
 import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 
+import Hls from 'hls.js';
+
 import { AUDIO_DEFAULT_VALUE } from './_constants';
 import type { UseAudioStateReturns } from './useAudioState';
 import useAudioState from './useAudioState';
 import type { UseControlAudioReturns } from './useControlAudio';
 import useControlAudio from './useControlAudio';
 import useKeyBinding from './useKeyboardControl';
-import Hls from 'hls.js';
 
 interface UseAudioParams {
   autoplay?: boolean;
