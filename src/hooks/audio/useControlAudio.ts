@@ -2,6 +2,7 @@ import type { MutableRefObject } from 'react';
 import { useCallback } from 'react';
 
 import Hls from 'hls.js';
+
 import type { UseControlAudioReturns } from '../../types';
 
 interface UseControlAudioParams {
