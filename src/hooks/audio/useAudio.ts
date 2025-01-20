@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import Hls from 'hls.js';
+import type Hls from 'hls.js';
 
 import { AUDIO_DEFAULT_VALUE } from './_constants';
 import useAudioState from './useAudioState';
@@ -79,6 +79,7 @@ const useAudio = ({
   const { currentSrc, currentTime, duration, isPlaying, playbackRate, playbackRange, volume } =
     useAudioState({
       audioRef,
+      hlsRef,
       isAudioInitialized,
       maxPlaybackRange,
       maxVolume,
@@ -101,7 +102,6 @@ const useAudio = ({
     toggleMuted,
     togglePlayPause,
   } = useControlAudio({
-    hlsRef,
     audioRef,
     maxPlaybackRange,
     maxVolume,
@@ -129,19 +129,6 @@ const useAudio = ({
 
   useEffect(() => {
     if (!audioRef.current) return;
-    if (hlsRef.current) {
-      hlsRef.current.destroy();
-      hlsRef.current = null;
-    }
-
-    if (src.substring(src.lastIndexOf('.') + 1) === 'm3u8' && Hls.isSupported()) {
-      const hls = new Hls();
-      hlsRef.current = hls;
-      hls.loadSource(src);
-      hls.attachMedia(audioRef.current);
-      audioRef.current.src = src;
-      return;
-    }
 
     audioRef.current.src = src;
   }, [src]);
@@ -160,6 +147,7 @@ const useAudio = ({
 
   useEffect(() => {
     const audio = audioRef.current;
+    const hls = hlsRef.current;
 
     return () => {
       if (!audio) return;
@@ -167,8 +155,9 @@ const useAudio = ({
       audio.pause();
       audio.src = '';
       audio.load();
-      if (hlsRef.current) {
-        hlsRef.current.destroy();
+
+      if (hls) {
+        hls.destroy();
       }
     };
   }, []);
