@@ -5,9 +5,6 @@
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
-  "workspaces": [
-    "docs"
-  ],
   "exports": {
     "./package.json": "./package.json",
     ".": {
@@ -67,7 +64,7 @@
       }
     }
   },
-  "packageManager": "yarn@4.3.1",
+  "packageManager": "pnpm@8.6.0",
   "scripts": {
     "build": "tsup",
     "dev": "vite",
@@ -78,7 +75,7 @@
     "format": "prettier --write --cache .",
     "storybook": "storybook dev -p 6006",
     "build-storybook": "storybook build",
-    "prepack": "yarn build"
+    "prepack": "pnpm build"
   },
   "files": [
     "dist",
@@ -101,7 +98,7 @@
     "@storybook/addon-webpack5-compiler-swc": "^1.0.5",
     "@storybook/blocks": "^8.3.5",
     "@storybook/manager-api": "^8.3.5",
-    "@storybook/react": "^8.3.5",
+    "@storybook/react": "^8.5.3",
     "@storybook/react-webpack5": "^8.3.5",
     "@storybook/test": "^8.3.5",
     "@storybook/theming": "^8.3.5",

@@ -19,19 +19,6 @@ jobs:
         with:
           node-version: '20.x'
 
-      - name: Create .yarnrc.yml file
-        run: |
-          cat << EOF > .yarnrc.yml
-          yarnPath: .yarn/releases/yarn-4.3.1.cjs
-          nodeLinker: pnp
-          enableGlobalCache: false
-          npmScopes:
-            pozalabs:
-              npmRegistryServer: "https://npm.pkg.github.com"
-              npmAlwaysAuth: true
-              npmAuthToken: "${{ secrets.NPM_AUTH_TOKEN }}"
-          EOF
-
       - name: Setup .npmrc file
         uses: actions/setup-node@v4
         with:
@@ -40,10 +27,10 @@ jobs:
           scope: '@POZAlabs'
 
       - name: Install packages
-        run: yarn install
+        run: pnpm install
 
       - name: Build packages
-        run: yarn run build
+        run: pnpm run build
 
       - name: Publish library
         run: npm publish
