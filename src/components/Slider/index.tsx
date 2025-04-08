@@ -1,5 +1,5 @@
 import type { MouseEvent, TouchEvent } from 'react';
-import { useCallback, useMemo, useRef } from 'react';
+import { useCallback, useEffect, useMemo, useRef } from 'react';
 
 import { cn } from '@pozalabs/pokit/utils';
 
@@ -45,6 +45,7 @@ const Slider = ({
 }: SliderProps) => {
   const isDraggingRef = useRef(false);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const trackRef = useRef<HTMLSpanElement | null>(null);
 
   const progressPercentage = useMemo(() => {
     const max = Number(inputProps.max ?? '0');
@@ -149,6 +150,18 @@ const Slider = ({
     [getValue, onDragEnd],
   );
 
+  useEffect(() => {
+    if (!trackRef.current) return;
+
+    trackRef.current.style.setProperty('width', '');
+    trackRef.current.style.setProperty('height', '');
+    trackRef.current.style.setProperty(
+      orientation.startsWith('horizontal') ? 'width' : 'height',
+      `${progressPercentage}%`,
+      'important',
+    );
+  }, [orientation, progressPercentage]);
+
   return (
     <div
       className={cn(
@@ -176,9 +189,7 @@ const Slider = ({
         data-testid="sliderRail"
       />
       <span
-        style={{
-          [orientation.startsWith('horizontal') ? 'width' : 'height']: `${progressPercentage}%`,
-        }}
+        ref={trackRef}
         className={cn(
           'absolute size-full rounded-inherit bg-[#0873FF]',
           orientation === 'horizontal' || orientation === 'vertical-reverse' ? 'top-0' : 'bottom-0',
