@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import type { ArrayElementType } from '@pozalabs/pokit/types';
+import type { ArrayElementType } from '../../types';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { PLAYLIST_DEFAULT_VALUE } from './_constants';
