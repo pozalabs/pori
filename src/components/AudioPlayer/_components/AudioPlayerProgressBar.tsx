@@ -1,6 +1,6 @@
 import { useCallback, useContext, useRef, useState } from 'react';
 
-import { cn } from '@pozalabs/pokit/utils';
+import cn from '../../../utils/cn';
 
 import { AudioPlayerContext } from './AudioPlayerProvider';
 import type { AudioPlayerProgressBarProps } from '../../../types';

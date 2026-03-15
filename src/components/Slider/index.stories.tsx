@@ -1,6 +1,6 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { cn } from '@pozalabs/pokit/utils';
+import cn from '../../utils/cn';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { SLIDER_DEFAULT_VALUE } from './_constants';
