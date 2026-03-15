@@ -24,3 +24,6 @@ export type GetAudioFileInformationReturns = Promise<{
   audioType: string;
   audioSize: number;
 }>;
+
+export type ArrayElementType<T extends readonly unknown[]> = T[number];
+export type WithArray<T> = T | T[];

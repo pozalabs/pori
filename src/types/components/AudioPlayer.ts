@@ -1,6 +1,6 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 
-import type { ArrayElementType, WithArray } from '@pozalabs/pokit/types';
+import type { ArrayElementType, WithArray } from '../utils';
 
 import type Slider from '../../components/Slider';
 import type { usePlaylist } from '../../hooks';

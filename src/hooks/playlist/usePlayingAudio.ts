@@ -1,6 +1,6 @@
 import { useCallback, useEffect, useRef, useState } from 'react';
 
-import type { ArrayElementType } from '@pozalabs/pokit/types';
+import type { ArrayElementType } from '../../types';
 
 import findArrayElementById from './_utils/findArrayElementById';
 import type { Playlist } from '../../types';
