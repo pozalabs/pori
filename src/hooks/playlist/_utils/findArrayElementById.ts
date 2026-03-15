@@ -1,4 +1,4 @@
-import type { ArrayElementType } from '@pozalabs/pokit/types';
+import type { ArrayElementType } from '../../../types';
 
 type ArrayWithId = { id: string; [key: string]: unknown }[];
 

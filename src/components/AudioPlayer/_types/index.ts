@@ -1,5 +1,4 @@
-import type { ArrayElementType } from '@pozalabs/pokit/types';
-
+import type { ArrayElementType } from '../../../types';
 import type { Playlist, RepeatModeType } from '../../../types';
 
 /**

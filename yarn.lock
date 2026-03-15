@@ -1159,17 +1159,6 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@pozalabs/pokit@npm:^0.3.0":
-  version: 0.3.0
-  resolution: "@pozalabs/pokit@npm:0.3.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40pozalabs%2Fpokit%2F0.3.0%2F198df576fb1aa25b1218092c403544bdf7a67a33"
-  dependencies:
-    clsx: "npm:^2.1.1"
-    react: "npm:^18.3.1"
-    tailwind-merge: "npm:^2.3.0"
-  checksum: 10c0/8f35edfc29e371dc760da0078a3e261ddcce9fcbfbab89a993fabdd65bdb67af5791ac423eef97bc6784fe9b08dddf6387e955505b35bdbb9f01e7a7b53573b1
-  languageName: node
-  linkType: hard
-
 "@pozalabs/pori@workspace:.":
   version: 0.0.0-use.local
   resolution: "@pozalabs/pori@workspace:."
@@ -1178,7 +1167,6 @@ __metadata:
     "@eslint/compat": "npm:^1.1.1"
     "@eslint/eslintrc": "npm:^3.1.0"
     "@eslint/js": "npm:^9.9.0"
-    "@pozalabs/pokit": "npm:^0.3.0"
     "@storybook/addon-essentials": "npm:^8.3.5"
     "@storybook/addon-interactions": "npm:^8.3.5"
     "@storybook/addon-links": "npm:^8.3.5"
@@ -1207,6 +1195,7 @@ __metadata:
     autoprefixer: "npm:^10.4.19"
     blob-polyfill: "npm:^9.0.20240710"
     chromatic: "npm:^11.12.6"
+    clsx: "npm:^2.1.1"
     css-loader: "npm:^7.1.2"
     eslint: "npm:^9.9.0"
     eslint-config-prettier: "npm:^9.1.0"
@@ -1229,6 +1218,7 @@ __metadata:
     standardized-audio-context-mock: "npm:^9.7.7"
     storybook: "npm:^8.3.5"
     style-loader: "npm:^4.0.0"
+    tailwind-merge: "npm:^3.5.0"
     tailwindcss: "npm:^3.4.6"
     tsup: "npm:^8.1.0"
     typescript: "npm:~5.4.5"
@@ -9507,10 +9497,10 @@ __metadata:
   languageName: node
   linkType: hard
 
-"tailwind-merge@npm:^2.3.0":
-  version: 2.4.0
-  resolution: "tailwind-merge@npm:2.4.0"
-  checksum: 10c0/77bd20647d08db78a0bdf7b57d4b904479aee7727f44570f8834d62a1aa56f42d7ae68ac959e3d610c9f188aa164eeefb6c43df4f0c8bb7cfc3418e1575bfecb
+"tailwind-merge@npm:^3.5.0":
+  version: 3.5.0
+  resolution: "tailwind-merge@npm:3.5.0"
+  checksum: 10c0/4dc588f5b5296ba3f38e1ebb41f02b6d24a8c5bb45e44b33748c118fb4b5767dd0efc464431ca3e75404056b618b5f67bec3708158baa65fed8a2fc9201e0c53
   languageName: node
   linkType: hard
 

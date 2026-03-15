@@ -1,9 +1,9 @@
 import type { DragEvent, ReactNode } from 'react';
 import { useRef } from 'react';
 
-import type { ArrayElementType } from '@pozalabs/pokit/types';
 import type { Meta, StoryObj } from '@storybook/react';
 
+import type { ArrayElementType } from '../../types';
 import type { AudioPlayerHandles, AudioPlayerProviderProps, Playlist } from '../../types';
 
 import AudioPlayer from '.';

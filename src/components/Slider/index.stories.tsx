@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
-import { cn } from '@pozalabs/pokit/utils';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { SLIDER_DEFAULT_VALUE } from './_constants';
 import { useAudio } from '../../hooks';
+import cn from '../../utils/cn';
 
 import Slider from '.';
 
