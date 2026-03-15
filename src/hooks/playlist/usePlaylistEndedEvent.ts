@@ -1,9 +1,8 @@
 import type { MutableRefObject } from 'react';
 import { useEffect } from 'react';
 
-import type { ArrayElementType } from '../../types';
-
 import findArrayElementById from './_utils/findArrayElementById';
+import type { ArrayElementType } from '../../types';
 import type { Playlist, RepeatModeType } from '../../types';
 
 interface UsePlaylistEndedEventParams {

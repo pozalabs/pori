@@ -1,9 +1,8 @@
 import { useCallback, useContext, useRef, useState } from 'react';
 
-import cn from '../../../utils/cn';
-
 import { AudioPlayerContext } from './AudioPlayerProvider';
 import type { AudioPlayerProgressBarProps } from '../../../types';
+import cn from '../../../utils/cn';
 import Slider from '../../Slider';
 import { AUDIO_PLAYER_PROGRESS_BAR_DEFAULT_VALUE } from '../_constants';
 

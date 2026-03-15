@@ -1,9 +1,8 @@
 import { useContext } from 'react';
 
-import cn from '../../../utils/cn';
-
 import { AudioPlayerContext } from './AudioPlayerProvider';
 import type { AudioPlayerDurationProps } from '../../../types';
+import cn from '../../../utils/cn';
 import { AUDIO_PLAYER_CURRENT_TIME_DURATION_DEFAULT_VALUE } from '../_constants';
 import formatTime from '../_utils/formatTime';
 

@@ -1,10 +1,9 @@
 import type { HTMLAttributes, ReactNode } from 'react';
 
-import type { ArrayElementType, WithArray } from '../utils';
-
 import type Slider from '../../components/Slider';
 import type { usePlaylist } from '../../hooks';
 import type { Playlist } from '../hooks';
+import type { ArrayElementType, WithArray } from '../utils';
 
 /**
  * Type of time format used to export current time and duration.

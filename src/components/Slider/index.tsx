@@ -1,10 +1,9 @@
 import type { MouseEvent, TouchEvent } from 'react';
 import { useCallback, useEffect, useMemo, useRef } from 'react';
 
-import cn from '../../utils/cn';
-
 import { SLIDER_DEFAULT_VALUE } from './_constants';
 import type { SliderProps } from '../../types';
+import cn from '../../utils/cn';
 
 /**
  * This is a Slider component that allows for custom styling.

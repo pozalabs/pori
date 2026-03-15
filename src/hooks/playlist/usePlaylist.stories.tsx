@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState } from 'react';
 
-import type { ArrayElementType } from '../../types';
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { PLAYLIST_DEFAULT_VALUE } from './_constants';
 import usePlaylist from './usePlaylist';
+import type { ArrayElementType } from '../../types';
 import type { Playlist, RepeatModeType } from '../../types';
 
 const maxPlaybackRange = 100;
