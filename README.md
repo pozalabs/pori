@@ -73,20 +73,108 @@ function CustomPlayer({ src }: { src: string }) {
 
 ### Hooks
 
-- `useAudio` - Core audio playback, volume, playback rate, keyboard shortcuts
-- `usePlaylist` - Extends `useAudio` with playlist management and repeat modes (`none`, `one`, `all`)
-- `useWaveform` - Audio visualization with Canvas/SVG rendering and interactive controls
+#### `useAudio`
+
+Core audio playback, volume, playback rate, keyboard shortcuts. See [Quick Start](#go-headless) for usage.
+
+#### `usePlaylist`
+
+Extends `useAudio` with playlist management and repeat modes (`none`, `one`, `all`).
+
+```tsx
+import { usePlaylist } from '@pozalabs/pori';
+
+const playlist = [
+  { id: '1', src: '/audio/track-01.mp3' },
+  { id: '2', src: '/audio/track-02.mp3' },
+];
+
+function Player() {
+  const { isPlaying, togglePlayPause, playNextAudio } = usePlaylist({ playlist });
+  return <button onClick={() => playNextAudio()}>Next</button>;
+}
+```
+
+#### `useWaveform`
+
+Audio visualization with Canvas/SVG rendering and interactive controls.
+
+```tsx
+import { useWaveform } from '@pozalabs/pori';
+
+function WaveformPlayer() {
+  const { waveform, isPlaying, play, pause } = useWaveform({ src: '/audio.mp3' });
+  return <div ref={(el) => el && waveform && el.appendChild(waveform)} />;
+}
+```
 
 ### Components
 
-- `AudioPlayer` - Compound component with Provider and composable sub-components
-- `Waveform` - Standalone waveform visualization component
-- `Slider` - General-purpose slider for building custom progress/volume bars
+#### `AudioPlayer`
+
+Compound component with Provider and composable sub-components. See [Quick Start](#compose-an-audio-player) for usage.
+
+- `AudioPlayer.Provider` - Provides audio player state and controls
+- `AudioPlayer.Playlist` - Renders playlist items
+- `AudioPlayer.CurrentTime` - Displays current playback time
+- `AudioPlayer.Duration` - Displays total duration
+- `AudioPlayer.ProgressBar` - Playback position slider
+- `AudioPlayer.VolumeProgressBar` - Volume level slider
+- `AudioPlayer.PlayButton` - Starts playback
+- `AudioPlayer.PauseButton` - Pauses playback
+- `AudioPlayer.PlayPauseButton` - Toggles play/pause
+- `AudioPlayer.StopButton` - Stops and resets playback
+- `AudioPlayer.ShiftForwardButton` - Advances playback by time shift
+- `AudioPlayer.ShiftBackwardButton` - Rewinds playback by time shift
+- `AudioPlayer.SkipStartButton` - Restarts or skips to previous
+- `AudioPlayer.SkipEndButton` - Skips to next
+- `AudioPlayer.RepeatButton` - Cycles repeat mode
+- `AudioPlayer.VolumeButton` - Toggles mute
+
+#### `Waveform`
+
+Standalone waveform visualization component.
+
+```tsx
+import { useRef } from 'react';
+import { Waveform } from '@pozalabs/pori';
+import type { WaveformHandles } from '@pozalabs/pori';
+
+function Player() {
+  const ref = useRef<WaveformHandles>(null);
+  return <Waveform ref={ref} src="/audio.mp3" />;
+}
+```
+
+#### `Slider`
+
+General-purpose slider for building custom progress/volume bars.
+
+```tsx
+import { useState } from 'react';
+import { Slider } from '@pozalabs/pori';
+
+function VolumeControl() {
+  const [volume, setVolume] = useState(50);
+  return <Slider value={volume} onChange={setVolume} />;
+}
+```
 
 ### Utilities
 
-- `fetchAudio` - Chunked parallel download with retry
-- `getAudioFileInformation` - Retrieve audio file metadata (type, size)
+#### `fetchAudio`
+
+Chunked parallel download with retry.
+
+```ts
+import { fetchAudio } from '@pozalabs/pori';
+
+const audioBuffer = await fetchAudio({ src: '/audio.mp3' });
+```
+
+#### `getAudioFileInformation`
+
+Retrieves audio file metadata (type, size) via a HEAD request.
 
 ## Development
 
