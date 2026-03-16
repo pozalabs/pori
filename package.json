@@ -144,10 +144,13 @@
     "vitest-canvas-mock": "^0.3.3"
   },
   "peerDependencies": {
+    "hls.js": "^1.5.18",
     "react": ">=18",
     "react-dom": ">=18"
   },
-  "dependencies": {
-    "hls.js": "^1.5.18"
+  "peerDependenciesMeta": {
+    "hls.js": {
+      "optional": true
+    }
   }
 }

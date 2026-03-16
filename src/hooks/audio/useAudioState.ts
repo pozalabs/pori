@@ -1,9 +1,26 @@
 import { useEffect, useRef, useState, type MutableRefObject } from 'react';
 
-import Hls from 'hls.js';
+import type Hls from 'hls.js';
 
 import { DEFAULT_UNMUTE_VOLUME } from './_constants';
 import type { UseAudioStateReturns } from '../../types';
+
+type HlsConstructor = typeof Hls;
+
+let hlsModuleCache: HlsConstructor | null | undefined;
+
+const loadHls = async (): Promise<HlsConstructor | null> => {
+  if (hlsModuleCache !== undefined) return hlsModuleCache;
+
+  try {
+    const mod = await import('hls.js');
+    hlsModuleCache = mod.default;
+    return hlsModuleCache;
+  } catch {
+    hlsModuleCache = null;
+    return null;
+  }
+};
 
 interface UseAudioStateParams {
   audioRef: MutableRefObject<HTMLAudioElement | null>;
@@ -37,24 +54,31 @@ const useAudioState = ({
 
     if (!audio || !isAudioInitialized) return;
 
-    const onAudioLoadStart = (): void => {
-      if (
-        audio.currentSrc.substring(audio.currentSrc.lastIndexOf('.') + 1) !== 'm3u8' ||
-        !Hls.isSupported()
-      )
+    const onAudioLoadStart = async (): Promise<void> => {
+      if (audio.currentSrc.substring(audio.currentSrc.lastIndexOf('.') + 1) !== 'm3u8') return;
+
+      const HlsModule = await loadHls();
+
+      if (!HlsModule) {
+        console.warn(
+          '[@pozalabs/pori] hls.js is required for HLS streaming (.m3u8). Install it with: npm install hls.js',
+        );
         return;
+      }
+
+      if (!HlsModule.isSupported()) return;
 
       if (hlsRef.current) {
         hlsRef.current.destroy();
         hlsRef.current = null;
       }
 
-      const hls = new Hls();
+      const hls = new HlsModule();
       hlsRef.current = hls;
       hls.loadSource(audio.currentSrc);
       hls.attachMedia(audio);
 
-      hls.on(Hls.Events.MANIFEST_PARSED, () => {
+      hls.on(HlsModule.Events.MANIFEST_PARSED, () => {
         if (!audioRef.current?.dataset.shouldPlay) return;
 
         audioRef.current?.play();
