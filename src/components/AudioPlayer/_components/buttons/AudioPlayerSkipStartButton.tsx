@@ -1,16 +1,17 @@
 import { useCallback, useContext } from 'react';
 
+import AudioPlayerButtonIcon from './AudioPlayerButtonIcon';
 import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import type { AudioPlayerSkipStartButtonProps } from '../../../../types';
 import {
+  AUDIO_PLAYER_BUTTON_DEFAULT_ICON,
   AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
-  AUDIO_PLAYER_BUTTON_DEFAULT_URL,
   AUDIO_PLAYER_SKIP_START_BUTTON_DEFAULT_VALUE,
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
 const AudioPlayerSkipStartButton = ({
-  src = AUDIO_PLAYER_BUTTON_DEFAULT_URL.skipToStart,
+  src = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.skipToStart,
   shiftThreshold = AUDIO_PLAYER_SKIP_START_BUTTON_DEFAULT_VALUE.shiftThreshold,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   height = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
@@ -30,7 +31,7 @@ const AudioPlayerSkipStartButton = ({
 
   return (
     <AudioPlayerButtonWrapper onClick={onButtonClick}>
-      <img
+      <AudioPlayerButtonIcon
         src={src}
         alt="skip to start button"
         width={width}

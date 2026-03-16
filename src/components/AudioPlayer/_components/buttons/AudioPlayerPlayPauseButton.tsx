@@ -1,17 +1,19 @@
+import type { ReactNode } from 'react';
 import { useCallback, useContext, useMemo } from 'react';
 
+import AudioPlayerButtonIcon from './AudioPlayerButtonIcon';
 import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import type { AudioPlayerPlayPauseButtonProps } from '../../../../types';
 import {
+  AUDIO_PLAYER_BUTTON_DEFAULT_ICON,
   AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
-  AUDIO_PLAYER_BUTTON_DEFAULT_URL,
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
-const AudioPlayerPauseButton = ({
+const AudioPlayerPlayPauseButton = ({
   audioId,
-  playSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.play,
-  pauseSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.pause,
+  playSrc = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.play,
+  pauseSrc = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.pause,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   height = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   className,
@@ -34,7 +36,7 @@ const AudioPlayerPauseButton = ({
 
   return (
     <AudioPlayerButtonWrapper onClick={onButtonClick}>
-      <img
+      <AudioPlayerButtonIcon
         src={isAudioPlaying ? pauseSrc : playSrc}
         alt={isAudioPlaying ? 'pause button' : 'play button'}
         width={width}
@@ -45,4 +47,4 @@ const AudioPlayerPauseButton = ({
   );
 };
 
-export default AudioPlayerPauseButton;
+export default AudioPlayerPlayPauseButton;

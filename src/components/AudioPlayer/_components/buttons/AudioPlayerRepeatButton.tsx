@@ -1,24 +1,26 @@
+import type { ReactNode } from 'react';
 import { useCallback, useContext, useMemo } from 'react';
 
+import AudioPlayerButtonIcon from './AudioPlayerButtonIcon';
 import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import type { AudioPlayerRepeatButtonProps } from '../../../../types';
 import {
+  AUDIO_PLAYER_BUTTON_DEFAULT_ICON,
   AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
-  AUDIO_PLAYER_BUTTON_DEFAULT_URL,
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
 const AudioPlayerRepeatButton = ({
-  repeatAllSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.repeatAll,
-  repeatOneSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.repeatOne,
-  repeatNoneSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.repeatNone,
+  repeatAllSrc = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.repeatAll,
+  repeatOneSrc = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.repeatOne,
+  repeatNoneSrc = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.repeatNone,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   height = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   className,
 }: AudioPlayerRepeatButtonProps) => {
   const { repeatMode, changeRepeatMode } = useContext(AudioPlayerContext);
 
-  const src = useMemo((): string => {
+  const src = useMemo((): ReactNode => {
     switch (repeatMode) {
       case 'all':
         return repeatAllSrc;
@@ -44,7 +46,7 @@ const AudioPlayerRepeatButton = ({
 
   return (
     <AudioPlayerButtonWrapper onClick={onButtonClick}>
-      <img src={src} alt="repeat button" width={width} height={height} className={className} />
+      <AudioPlayerButtonIcon src={src} alt="repeat button" width={width} height={height} className={className} />
     </AudioPlayerButtonWrapper>
   );
 };

@@ -1,16 +1,17 @@
 import { useContext } from 'react';
 
+import AudioPlayerButtonIcon from './AudioPlayerButtonIcon';
 import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import type { AudioPlayerVolumeButtonProps } from '../../../../types';
 import {
+  AUDIO_PLAYER_BUTTON_DEFAULT_ICON,
   AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
-  AUDIO_PLAYER_BUTTON_DEFAULT_URL,
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
 const AudioPlayerVolumeButton = ({
-  volumeSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.volume,
-  mutedSrc = AUDIO_PLAYER_BUTTON_DEFAULT_URL.muted,
+  volumeSrc = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.volume,
+  mutedSrc = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.muted,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   height = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   className,
@@ -19,7 +20,7 @@ const AudioPlayerVolumeButton = ({
 
   return (
     <AudioPlayerButtonWrapper onClick={toggleMuted}>
-      <img
+      <AudioPlayerButtonIcon
         src={volume <= 0 ? mutedSrc : volumeSrc}
         alt="volume button"
         width={width}

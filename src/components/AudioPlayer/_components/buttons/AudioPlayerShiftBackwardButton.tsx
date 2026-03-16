@@ -1,15 +1,16 @@
 import { useContext } from 'react';
 
+import AudioPlayerButtonIcon from './AudioPlayerButtonIcon';
 import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import type { AudioPlayerShiftBackwardButtonProps } from '../../../../types';
 import {
+  AUDIO_PLAYER_BUTTON_DEFAULT_ICON,
   AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
-  AUDIO_PLAYER_BUTTON_DEFAULT_URL,
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
 const AudioPlayerShiftBackwardButton = ({
-  src = AUDIO_PLAYER_BUTTON_DEFAULT_URL.shiftBackward,
+  src = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.shiftBackward,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   height = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   className,
@@ -18,7 +19,7 @@ const AudioPlayerShiftBackwardButton = ({
 
   return (
     <AudioPlayerButtonWrapper onClick={shiftTimeBackward}>
-      <img
+      <AudioPlayerButtonIcon
         src={src}
         alt="shift time to backward button"
         width={width}

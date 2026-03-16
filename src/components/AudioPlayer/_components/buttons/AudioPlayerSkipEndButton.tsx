@@ -1,15 +1,16 @@
 import { useCallback, useContext } from 'react';
 
+import AudioPlayerButtonIcon from './AudioPlayerButtonIcon';
 import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import type { AudioPlayerSkipEndButtonProps } from '../../../../types';
 import {
+  AUDIO_PLAYER_BUTTON_DEFAULT_ICON,
   AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
-  AUDIO_PLAYER_BUTTON_DEFAULT_URL,
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
 const AudioPlayerSkipEndButton = ({
-  src = AUDIO_PLAYER_BUTTON_DEFAULT_URL.skipToEnd,
+  src = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.skipToEnd,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   height = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   className,
@@ -22,7 +23,7 @@ const AudioPlayerSkipEndButton = ({
 
   return (
     <AudioPlayerButtonWrapper onClick={onButtonClick}>
-      <img src={src} alt="skip to end button" width={width} height={height} className={className} />
+      <AudioPlayerButtonIcon src={src} alt="skip to end button" width={width} height={height} className={className} />
     </AudioPlayerButtonWrapper>
   );
 };
