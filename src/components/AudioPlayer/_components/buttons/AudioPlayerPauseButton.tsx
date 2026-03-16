@@ -19,7 +19,13 @@ const AudioPlayerPauseButton = ({
 
   return (
     <AudioPlayerButtonWrapper onClick={pause}>
-      <AudioPlayerButtonIcon src={src} alt="pause button" width={width} height={height} className={className} />
+      <AudioPlayerButtonIcon
+        src={src}
+        alt="pause button"
+        width={width}
+        height={height}
+        className={className}
+      />
     </AudioPlayerButtonWrapper>
   );
 };

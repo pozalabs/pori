@@ -8,7 +8,13 @@ interface AudioPlayerButtonIconProps {
   className?: string;
 }
 
-const AudioPlayerButtonIcon = ({ src, alt, width, height, className }: AudioPlayerButtonIconProps) => {
+const AudioPlayerButtonIcon = ({
+  src,
+  alt,
+  width,
+  height,
+  className,
+}: AudioPlayerButtonIconProps) => {
   if (typeof src === 'string') {
     return <img src={src} alt={alt} width={width} height={height} className={className} />;
   }

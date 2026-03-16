@@ -1,4 +1,3 @@
-import type { ReactNode } from 'react';
 import { useCallback, useContext, useMemo } from 'react';
 
 import AudioPlayerButtonIcon from './AudioPlayerButtonIcon';

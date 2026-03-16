@@ -44,7 +44,17 @@ export const AUDIO_PLAYER_SKIP_START_BUTTON_DEFAULT_VALUE = {
 export const AUDIO_PLAYER_BUTTON_DEFAULT_SIZE = 32;
 
 const s = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE;
-const svgProps = { xmlns: 'http://www.w3.org/2000/svg', width: s, height: s, viewBox: '0 0 24 24', fill: 'none', stroke: 'currentColor', strokeWidth: 2, strokeLinecap: 'round' as const, strokeLinejoin: 'round' as const };
+const svgProps = {
+  xmlns: 'http://www.w3.org/2000/svg',
+  width: s,
+  height: s,
+  viewBox: '0 0 24 24',
+  fill: 'none',
+  stroke: 'currentColor',
+  strokeWidth: 2,
+  strokeLinecap: 'round' as const,
+  strokeLinejoin: 'round' as const,
+};
 
 export const AUDIO_PLAYER_BUTTON_DEFAULT_ICON = {
   play: (

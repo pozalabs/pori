@@ -46,7 +46,13 @@ const AudioPlayerRepeatButton = ({
 
   return (
     <AudioPlayerButtonWrapper onClick={onButtonClick}>
-      <AudioPlayerButtonIcon src={src} alt="repeat button" width={width} height={height} className={className} />
+      <AudioPlayerButtonIcon
+        src={src}
+        alt="repeat button"
+        width={width}
+        height={height}
+        className={className}
+      />
     </AudioPlayerButtonWrapper>
   );
 };

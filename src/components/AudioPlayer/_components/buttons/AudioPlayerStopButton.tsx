@@ -19,7 +19,13 @@ const AudioPlayerStopButton = ({
 
   return (
     <AudioPlayerButtonWrapper onClick={stop}>
-      <AudioPlayerButtonIcon src={src} alt="stop button" width={width} height={height} className={className} />
+      <AudioPlayerButtonIcon
+        src={src}
+        alt="stop button"
+        width={width}
+        height={height}
+        className={className}
+      />
     </AudioPlayerButtonWrapper>
   );
 };

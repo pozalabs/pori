@@ -23,7 +23,13 @@ const AudioPlayerSkipEndButton = ({
 
   return (
     <AudioPlayerButtonWrapper onClick={onButtonClick}>
-      <AudioPlayerButtonIcon src={src} alt="skip to end button" width={width} height={height} className={className} />
+      <AudioPlayerButtonIcon
+        src={src}
+        alt="skip to end button"
+        width={width}
+        height={height}
+        className={className}
+      />
     </AudioPlayerButtonWrapper>
   );
 };

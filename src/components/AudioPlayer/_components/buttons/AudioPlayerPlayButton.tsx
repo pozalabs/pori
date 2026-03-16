@@ -19,7 +19,13 @@ const AudioPlayerPlayButton = ({
 
   return (
     <AudioPlayerButtonWrapper onClick={play}>
-      <AudioPlayerButtonIcon src={src} alt="play button" width={width} height={height} className={className} />
+      <AudioPlayerButtonIcon
+        src={src}
+        alt="play button"
+        width={width}
+        height={height}
+        className={className}
+      />
     </AudioPlayerButtonWrapper>
   );
 };
