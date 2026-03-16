@@ -6,6 +6,7 @@ import cn from '../../../utils/cn';
 import Slider from '../../Slider';
 import { AUDIO_PLAYER_PROGRESS_BAR_DEFAULT_VALUE } from '../_constants';
 
+/** Controls playback position via a draggable slider. */
 const AudioPlayerProgressBar = ({
   draggable = AUDIO_PLAYER_PROGRESS_BAR_DEFAULT_VALUE.draggable,
   className,

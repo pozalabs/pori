@@ -9,6 +9,7 @@ import {
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
+/** Starts audio playback. */
 const AudioPlayerPlayButton = ({
   src = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.play,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,

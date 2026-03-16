@@ -10,6 +10,7 @@ import {
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
+/** Cycles the repeat mode (none, all, one). */
 const AudioPlayerRepeatButton = ({
   repeatAllSrc = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.repeatAll,
   repeatOneSrc = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.repeatOne,

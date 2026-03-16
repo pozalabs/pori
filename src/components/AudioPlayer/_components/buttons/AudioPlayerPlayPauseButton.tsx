@@ -9,6 +9,7 @@ import {
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
+/** Toggles between play and pause based on the current state. */
 const AudioPlayerPlayPauseButton = ({
   audioId,
   playSrc = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.play,

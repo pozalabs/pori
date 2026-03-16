@@ -9,6 +9,7 @@ import {
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
+/** Pauses audio playback. */
 const AudioPlayerPauseButton = ({
   src = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.pause,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,

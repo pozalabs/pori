@@ -5,6 +5,7 @@ import type { AudioPlayerVolumeProgressBarProps } from '../../../types';
 import Slider from '../../Slider';
 import { AUDIO_PLAYER_PROGRESS_BAR_DEFAULT_VALUE } from '../_constants';
 
+/** Controls volume level via a draggable slider. */
 const AudioPlayerVolumeProgressBar = ({
   draggable = AUDIO_PLAYER_PROGRESS_BAR_DEFAULT_VALUE.draggable,
   step = AUDIO_PLAYER_PROGRESS_BAR_DEFAULT_VALUE.step,

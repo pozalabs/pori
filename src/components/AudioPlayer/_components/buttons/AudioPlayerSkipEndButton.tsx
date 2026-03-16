@@ -9,6 +9,7 @@ import {
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
+/** Skips to the next audio in the playlist. */
 const AudioPlayerSkipEndButton = ({
   src = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.skipToEnd,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,

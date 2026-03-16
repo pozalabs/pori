@@ -9,6 +9,7 @@ import {
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
+/** Rewinds playback by the configured time shift. */
 const AudioPlayerShiftBackwardButton = ({
   src = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.shiftBackward,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
