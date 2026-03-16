@@ -25,7 +25,7 @@ interface UsePlaylistReturns
 }
 
 /**
- * This is a hook that manages a playlist, extending the playlist concept from the useAudio hook.
+ * Manages a playlist by extending useAudio with playlist functionality.
  * @param UsePlaylistParams
  * ```
  * interface UsePlaylistParams extends Omit<Parameters<typeof useAudio>[0], 'src' | 'loop'> {
@@ -33,8 +33,8 @@ interface UsePlaylistReturns
  *    repeatMode?: RepeatModeType;
  * }
  * ```
- * - playlist : initial playlist array (default : [])
- * - repeatMode : repeat mode (none | one | all) (default : none)
+ * - `playlist` - Initial playlist array (default: `[]`)
+ * - `repeatMode` - Repeat mode: none, one, or all (default: `'none'`)
  * @returns
  * `UsePlaylistReturns`
  * ```
@@ -52,10 +52,10 @@ interface UsePlaylistReturns
  *    removeAudio: (id: ArrayElementType<Playlist>['id'], autoplay?: boolean) => void;
  * }
  * ```
- * - addAudio, removeAudio, changePlayingAudio, playNextAudio, and playPrevAudio receive the autoplay option as an optional parameter.
- *   - However, this value conflicts with the autoplay parameter passed to the usePlaylist hook. If the autoplay parameter passed to the usePlaylist hook is true, the audio may automatically play even if autoplay: false is passed to the above function.
- * - addAudio, removeAudio의 autoplay default : `false`
- * - changePlayingAudio, playNextAudio, playPrevAudio의 autoplay default : `true`
+ * - addAudio, removeAudio, changePlayingAudio, playNextAudio, and playPrevAudio accept an optional autoplay parameter.
+ *   - Note: if the hook-level autoplay is `true`, audio may auto-play regardless of the per-call autoplay value.
+ * - Default autoplay for addAudio, removeAudio: `false`
+ * - Default autoplay for changePlayingAudio, playNextAudio, playPrevAudio: `true`
  */
 const usePlaylist = ({
   playlist: initPlaylist = PLAYLIST_DEFAULT_VALUE.playlist,

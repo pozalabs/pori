@@ -9,7 +9,7 @@ import useWaveformAudio from './useWaveformAudio';
 import type { UseWaveformParams, UseWaveformReturns, WaveformType } from '../../types';
 
 /**
- * This is a hook that draws and returns a waveform based on the type.
+ * Draws and returns a waveform based on the specified type.
  * @param `UseWaveformParams`
  * ```ts
  * interface UseWaveformParams {
