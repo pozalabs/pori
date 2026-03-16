@@ -5,11 +5,11 @@ import useWaveform from '../../hooks/waveform/useWaveform';
 import type { UseWaveformParams, WaveformHandles, WaveformType } from '../../types';
 
 /**
- * This is the Waveform component rendered using the useWaveform hook.
+ * Renders a waveform powered by the useWaveform hook.
  *
- * You can obtain or control the audio information through the ref passed to the component.
+ * Use the ref to access and control audio state.
  *
- * (Note: The audio state passed through the ref does not update in real-time. Please access and use it when needed.)
+ * Note: The ref exposes a snapshot of the audio state, not a live-updating value.
  * ```ts
  * interface WaveformHandles {
  *    isPlaying: boolean;

@@ -6,7 +6,7 @@ import type { SliderProps } from '../../types';
 import cn from '../../utils/cn';
 
 /**
- * This is a Slider component that allows for custom styling.
+ * Customizable slider component.
  * @param SliderProps
  * ```
  * interface SliderProps extends Omit<InputHTMLAttributes<HTMLInputElement>, 'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
@@ -25,10 +25,10 @@ import cn from '../../utils/cn';
  *    onDragEnd?: (value: number) => void;
  * }
  * ```
- * - orientation : Direction of slider (default: `horizontal`)
- * - max : Max Value of slider (default: `100`)
- * - min : Min value of slider (default: `0`)
- * - step : The unit of slider value. The value transmitted through click or drag events is always formatted in step units. (default: `1`)
+ * - `orientation` - Slider direction (default: `'horizontal'`)
+ * - `max` - Max value (default: `100`)
+ * - `min` - Min value (default: `0`)
+ * - `step` - Step increment. Values from click and drag events are rounded to this unit. (default: `1`)
  */
 const Slider = ({
   orientation = SLIDER_DEFAULT_VALUE.orientation,
