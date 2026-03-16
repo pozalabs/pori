@@ -1,7 +1,7 @@
 import type { InputHTMLAttributes } from 'react';
 
 /**
- * Type for orientation prop of `Slider`.
+ * Orientation for the `Slider` component.
  */
 export type SliderOrientationType =
   | 'horizontal'
@@ -10,7 +10,7 @@ export type SliderOrientationType =
   | 'vertical-reverse';
 
 /**
- * The prop type of `Slider`.
+ * Props for `Slider`.
  */
 export interface SliderProps extends Omit<
   InputHTMLAttributes<HTMLInputElement>,

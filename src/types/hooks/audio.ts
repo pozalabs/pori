@@ -1,7 +1,7 @@
 import type { MutableRefObject } from 'react';
 
 /**
- * The parameter type for the useAudio hook.
+ * Params for the useAudio hook.
  */
 export interface UseAudioParams {
   autoplay?: boolean;
@@ -15,7 +15,7 @@ export interface UseAudioParams {
 }
 
 /**
- * The return type for useAudioState hooks used inside useAudio.
+ * Return type of useAudioState, used internally by useAudio.
  */
 export interface UseAudioStateReturns {
   currentSrc: string;
@@ -28,7 +28,7 @@ export interface UseAudioStateReturns {
 }
 
 /**
- * The return type for useControlAudio hooks used inside useAudio.
+ * Return type of useControlAudio, used internally by useAudio.
  */
 export interface UseControlAudioReturns {
   changeCurrentSrc: (currentSrc: string) => void;
@@ -49,7 +49,7 @@ export interface UseControlAudioReturns {
 }
 
 /**
- * The return type for the useAudio hook. Expand the useAudioStateReturns, useControlAudioReturns type.
+ * Return type of the useAudio hook. Extends UseAudioStateReturns and UseControlAudioReturns.
  */
 export interface UseAudioReturns extends UseAudioStateReturns, UseControlAudioReturns {
   audioRef: MutableRefObject<HTMLAudioElement | null>;
