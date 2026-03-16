@@ -73,7 +73,7 @@ export interface AudioPlayerButtonProps {
  * Common prop type of src button provided by AudioPlayer.
  */
 export interface AudioPlayerSrcButtonProps extends AudioPlayerButtonProps {
-  src?: string;
+  src?: ReactNode;
 }
 
 /**
@@ -111,17 +111,17 @@ export type AudioPlayerStopButtonProps = AudioPlayerSrcButtonProps;
  */
 export interface AudioPlayerPlayPauseButtonProps extends AudioPlayerButtonProps {
   audioId?: ArrayElementType<Playlist>['id'];
-  playSrc?: string;
-  pauseSrc?: string;
+  playSrc?: ReactNode;
+  pauseSrc?: ReactNode;
 }
 
 /**
  * The prop type of `AudioPlayer.RepeatButton`.
  */
 export interface AudioPlayerRepeatButtonProps extends AudioPlayerButtonProps {
-  repeatAllSrc?: string;
-  repeatOneSrc?: string;
-  repeatNoneSrc?: string;
+  repeatAllSrc?: ReactNode;
+  repeatOneSrc?: ReactNode;
+  repeatNoneSrc?: ReactNode;
 }
 
 /**
@@ -135,8 +135,8 @@ export interface AudioPlayerSkipStartButtonProps extends AudioPlayerSrcButtonPro
  * The prop type of `AudioPlayer.VolumeButton`.
  */
 export interface AudioPlayerVolumeButtonProps extends AudioPlayerButtonProps {
-  volumeSrc?: string;
-  mutedSrc?: string;
+  volumeSrc?: ReactNode;
+  mutedSrc?: ReactNode;
 }
 
 /**
