@@ -1,8 +1,8 @@
 import type { GetAudioFileInformationReturns } from '../types';
 
 /**
- * This is a utility function for retrieving information from an audio file.
- * @param src
+ * Retrieves metadata (type, size) from an audio file via a HEAD request.
+ * @param src - Audio source URL
  * @returns
  * `Promise<IAudioInformation>`
  * ```
@@ -25,7 +25,7 @@ const getAudioFileInformation = async (src: string): GetAudioFileInformationRetu
   const contentLength = response.headers.get('Content-Length');
 
   if (!contentType || !contentType.startsWith('audio/')) {
-    throw new Error('This file is not audio type');
+    throw new Error('The file is not an audio file');
   }
 
   return {
