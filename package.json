@@ -141,7 +141,8 @@
     "typescript": "~5.4.5",
     "vite": "^5.3.4",
     "vitest": "^2.0.3",
-    "vitest-canvas-mock": "^0.3.3"
+    "vitest-canvas-mock": "^0.3.3",
+    "hls.js": "^1.5.18"
   },
   "peerDependencies": {
     "hls.js": "^1.5.18",
