@@ -1,15 +1,16 @@
 import { useContext } from 'react';
 
+import AudioPlayerButtonIcon from './AudioPlayerButtonIcon';
 import AudioPlayerButtonWrapper from './AudioPlayerButtonWrapper';
 import type { AudioPlayerPlayButtonProps } from '../../../../types';
 import {
+  AUDIO_PLAYER_BUTTON_DEFAULT_ICON,
   AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
-  AUDIO_PLAYER_BUTTON_DEFAULT_URL,
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
 const AudioPlayerPlayButton = ({
-  src = AUDIO_PLAYER_BUTTON_DEFAULT_URL.play,
+  src = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.play,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   height = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,
   className,
@@ -18,7 +19,13 @@ const AudioPlayerPlayButton = ({
 
   return (
     <AudioPlayerButtonWrapper onClick={play}>
-      <img src={src} alt="play button" width={width} height={height} className={className} />
+      <AudioPlayerButtonIcon
+        src={src}
+        alt="play button"
+        width={width}
+        height={height}
+        className={className}
+      />
     </AudioPlayerButtonWrapper>
   );
 };
