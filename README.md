@@ -100,4 +100,4 @@ yarn lint           # Lint
 
 ## License
 
-TBD
+[MIT](./LICENSE)
