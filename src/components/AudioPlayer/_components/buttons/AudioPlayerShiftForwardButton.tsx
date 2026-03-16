@@ -9,6 +9,7 @@ import {
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
+/** Advances playback by the configured time shift. */
 const AudioPlayerShiftForwardButton = ({
   src = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.shiftForward,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,

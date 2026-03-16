@@ -9,6 +9,7 @@ import {
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
+/** Stops audio and resets playback position. */
 const AudioPlayerStopButton = ({
   src = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.stop,
   width = AUDIO_PLAYER_BUTTON_DEFAULT_SIZE,

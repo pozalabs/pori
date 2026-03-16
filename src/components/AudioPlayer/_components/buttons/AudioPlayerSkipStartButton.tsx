@@ -10,6 +10,7 @@ import {
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
+/** Restarts the current audio or skips to the previous one. */
 const AudioPlayerSkipStartButton = ({
   src = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.skipToStart,
   shiftThreshold = AUDIO_PLAYER_SKIP_START_BUTTON_DEFAULT_VALUE.shiftThreshold,

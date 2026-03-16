@@ -6,6 +6,7 @@ import cn from '../../../utils/cn';
 import { AUDIO_PLAYER_CURRENT_TIME_DURATION_DEFAULT_VALUE } from '../_constants';
 import formatTime from '../_utils/formatTime';
 
+/** Displays the total duration of the current audio as a formatted string. */
 const AudioPlayerDuration = ({
   className,
   format = AUDIO_PLAYER_CURRENT_TIME_DURATION_DEFAULT_VALUE.format,

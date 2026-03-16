@@ -15,6 +15,7 @@ import { AUDIO_PLAYER_CONTEXT_DEFAULT_VALUE } from '../_constants';
 
 export const AudioPlayerContext = createContext(AUDIO_PLAYER_CONTEXT_DEFAULT_VALUE);
 
+/** Provides audio player state and controls to descendant components. */
 const AudioPlayerProvider = forwardRef(
   (
     { children, ...usePlaylistParams }: AudioPlayerProviderProps,

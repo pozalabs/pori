@@ -56,6 +56,18 @@ interface UsePlaylistReturns
  *   - Note: if the hook-level autoplay is `true`, audio may auto-play regardless of the per-call autoplay value.
  * - Default autoplay for addAudio, removeAudio: `false`
  * - Default autoplay for changePlayingAudio, playNextAudio, playPrevAudio: `true`
+ *
+ * @example
+ * ```tsx
+ * import { usePlaylist } from '@pozalabs/pori';
+ *
+ * const playlist = [{ id: '1', src: '/a.mp3' }, { id: '2', src: '/b.mp3' }];
+ *
+ * function Player() {
+ *   const { isPlaying, togglePlayPause, playNextAudio } = usePlaylist({ playlist });
+ *   return <button onClick={() => playNextAudio()}>Next</button>;
+ * }
+ * ```
  */
 const usePlaylist = ({
   playlist: initPlaylist = PLAYLIST_DEFAULT_VALUE.playlist,

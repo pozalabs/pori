@@ -9,6 +9,7 @@ import {
 } from '../../_constants';
 import { AudioPlayerContext } from '../AudioPlayerProvider';
 
+/** Toggles audio mute. */
 const AudioPlayerVolumeButton = ({
   volumeSrc = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.volume,
   mutedSrc = AUDIO_PLAYER_BUTTON_DEFAULT_ICON.muted,

@@ -36,6 +36,20 @@ import AudioPlayerVolumeButton from './_components/buttons/AudioPlayerVolumeButt
  * - SkipEndButton
  * - RepeatButton
  * - VolumeButton
+ *
+ * @example
+ * ```tsx
+ * import { AudioPlayer } from '@pozalabs/pori';
+ *
+ * function Player() {
+ *   return (
+ *     <AudioPlayer.Provider playlist={[{ id: '1', src: '/audio.mp3' }]}>
+ *       <AudioPlayer.PlayPauseButton />
+ *       <AudioPlayer.ProgressBar />
+ *     </AudioPlayer.Provider>
+ *   );
+ * }
+ * ```
  */
 const AudioPlayer = {
   /**
