@@ -1,0 +1,65 @@
+name: Bug Report
+description: Report a bug or unexpected behavior
+labels: [bug]
+body:
+  - type: markdown
+    attributes:
+      value: |
+        Thanks for reporting a bug! Please fill out the sections below so we can reproduce and fix the issue.
+
+  - type: input
+    id: version
+    attributes:
+      label: Version
+      description: Which version of pori are you using?
+      placeholder: e.g., 1.2.0
+    validations:
+      required: true
+
+  - type: textarea
+    id: description
+    attributes:
+      label: Description
+      description: A clear description of what the bug is.
+    validations:
+      required: true
+
+  - type: textarea
+    id: reproduction
+    attributes:
+      label: Steps to reproduce
+      description: Minimal steps or code snippet to reproduce the issue.
+      placeholder: |
+        1. Import `...` from pori
+        2. Use it like `...`
+        3. See error
+    validations:
+      required: true
+
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+      description: What did you expect to happen?
+    validations:
+      required: true
+
+  - type: textarea
+    id: actual
+    attributes:
+      label: Actual behavior
+      description: What actually happened? Include error messages or screenshots if applicable.
+    validations:
+      required: true
+
+  - type: textarea
+    id: environment
+    attributes:
+      label: Environment
+      description: Any relevant environment details.
+      placeholder: |
+        - Browser: Chrome 120
+        - OS: macOS 15
+        - React: 18.3
+    validations:
+      required: false
