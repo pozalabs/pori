@@ -9,7 +9,7 @@ export default defineConfig({
     types: 'src/types/index.ts',
   },
   treeshake: true,
-  sourcemap: 'inline',
+  sourcemap: true,
   minify: true,
   clean: true,
   dts: true,
