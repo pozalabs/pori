@@ -31,7 +31,6 @@ const RAW_RUNTIME_STATE =
           ["@eslint/compat", "npm:1.1.1"],\
           ["@eslint/eslintrc", "npm:3.1.0"],\
           ["@eslint/js", "npm:9.9.0"],\
-          ["@pozalabs/pokit", "npm:0.3.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40pozalabs%2Fpokit%2F0.3.0%2F198df576fb1aa25b1218092c403544bdf7a67a33"],\
           ["@storybook/addon-essentials", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:8.3.5"],\
           ["@storybook/addon-interactions", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:8.3.5"],\
           ["@storybook/addon-links", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:8.3.5"],\
@@ -60,6 +59,7 @@ const RAW_RUNTIME_STATE =
           ["autoprefixer", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:10.4.19"],\
           ["blob-polyfill", "npm:9.0.20240710"],\
           ["chromatic", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:11.12.6"],\
+          ["clsx", "npm:2.1.1"],\
           ["css-loader", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:7.1.2"],\
           ["eslint", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:9.9.0"],\
           ["eslint-config-prettier", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:9.1.0"],\
@@ -82,6 +82,7 @@ const RAW_RUNTIME_STATE =
           ["standardized-audio-context-mock", "npm:9.7.7"],\
           ["storybook", "npm:8.3.5"],\
           ["style-loader", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:4.0.0"],\
+          ["tailwind-merge", "npm:3.5.0"],\
           ["tailwindcss", "npm:3.4.6"],\
           ["tsup", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:8.1.1"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
@@ -1478,18 +1479,6 @@ const RAW_RUNTIME_STATE =
         "linkType": "HARD"\
       }]\
     ]],\
-    ["@pozalabs/pokit", [\
-      ["npm:0.3.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40pozalabs%2Fpokit%2F0.3.0%2F198df576fb1aa25b1218092c403544bdf7a67a33", {\
-        "packageLocation": "./.yarn/cache/@pozalabs-pokit-npm-0.3.0-338af3584a-8f35edfc29.zip/node_modules/@pozalabs/pokit/",\
-        "packageDependencies": [\
-          ["@pozalabs/pokit", "npm:0.3.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40pozalabs%2Fpokit%2F0.3.0%2F198df576fb1aa25b1218092c403544bdf7a67a33"],\
-          ["clsx", "npm:2.1.1"],\
-          ["react", "npm:18.3.1"],\
-          ["tailwind-merge", "npm:2.4.0"]\
-        ],\
-        "linkType": "HARD"\
-      }]\
-    ]],\
     ["@pozalabs/pori", [\
       ["workspace:.", {\
         "packageLocation": "./",\
@@ -1499,7 +1488,6 @@ const RAW_RUNTIME_STATE =
           ["@eslint/compat", "npm:1.1.1"],\
           ["@eslint/eslintrc", "npm:3.1.0"],\
           ["@eslint/js", "npm:9.9.0"],\
-          ["@pozalabs/pokit", "npm:0.3.0::__archiveUrl=https%3A%2F%2Fnpm.pkg.github.com%2Fdownload%2F%40pozalabs%2Fpokit%2F0.3.0%2F198df576fb1aa25b1218092c403544bdf7a67a33"],\
           ["@storybook/addon-essentials", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:8.3.5"],\
           ["@storybook/addon-interactions", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:8.3.5"],\
           ["@storybook/addon-links", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:8.3.5"],\
@@ -1528,6 +1516,7 @@ const RAW_RUNTIME_STATE =
           ["autoprefixer", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:10.4.19"],\
           ["blob-polyfill", "npm:9.0.20240710"],\
           ["chromatic", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:11.12.6"],\
+          ["clsx", "npm:2.1.1"],\
           ["css-loader", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:7.1.2"],\
           ["eslint", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:9.9.0"],\
           ["eslint-config-prettier", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:9.1.0"],\
@@ -1550,6 +1539,7 @@ const RAW_RUNTIME_STATE =
           ["standardized-audio-context-mock", "npm:9.7.7"],\
           ["storybook", "npm:8.3.5"],\
           ["style-loader", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:4.0.0"],\
+          ["tailwind-merge", "npm:3.5.0"],\
           ["tailwindcss", "npm:3.4.6"],\
           ["tsup", "virtual:a5e22085a5576e68365ea4e48877cf959a48b60e4f029904ad750e4643ac644e452102421da1cff5ea4f3cf946cc633bbd8002524814dc0adf37314604db6ed5#npm:8.1.1"],\
           ["typescript", "patch:typescript@npm%3A5.4.5#optional!builtin<compat/typescript>::version=5.4.5&hash=5adc0c"],\
@@ -11749,10 +11739,10 @@ const RAW_RUNTIME_STATE =
       }]\
     ]],\
     ["tailwind-merge", [\
-      ["npm:2.4.0", {\
-        "packageLocation": "./.yarn/cache/tailwind-merge-npm-2.4.0-be8d0b173f-77bd20647d.zip/node_modules/tailwind-merge/",\
+      ["npm:3.5.0", {\
+        "packageLocation": "./.yarn/cache/tailwind-merge-npm-3.5.0-20a5fbb04c-4dc588f5b5.zip/node_modules/tailwind-merge/",\
         "packageDependencies": [\
-          ["tailwind-merge", "npm:2.4.0"]\
+          ["tailwind-merge", "npm:3.5.0"]\
         ],\
         "linkType": "HARD"\
       }]\
