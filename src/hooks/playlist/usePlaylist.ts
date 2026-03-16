@@ -14,8 +14,7 @@ interface UsePlaylistParams extends Omit<Parameters<typeof useAudio>[0], 'src' |
 }
 
 interface UsePlaylistReturns
-  extends ReturnType<typeof useAudio>,
-    ReturnType<typeof usePlayingAudio> {
+  extends ReturnType<typeof useAudio>, ReturnType<typeof usePlayingAudio> {
   hasNextAudio: boolean;
   hasPrevAudio: boolean;
   playlist: Playlist;

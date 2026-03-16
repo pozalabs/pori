@@ -91,11 +91,11 @@ function CustomPlayer({ src }: { src: string }) {
 ## Development
 
 ```bash
-yarn dev            # Dev server (port 3000)
-yarn storybook      # Storybook (port 6006)
-yarn build          # Build with tsup
-yarn test           # Run tests
-yarn lint           # Lint
+bun dev            # Dev server (port 3000)
+bun storybook      # Storybook (port 6006)
+bun run build      # Build with tsup
+bun run test       # Run tests
+bun run lint       # Lint
 ```
 
 ## License

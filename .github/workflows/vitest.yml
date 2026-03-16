@@ -12,26 +12,11 @@ jobs:
       - name: Checkout
         uses: actions/checkout@v4
 
-      - name: Use Node.js
-        uses: actions/setup-node@v4
-        with:
-          node-version: '20.x'
-
-      - name: Create .yarnrc.yml file
-        run: |
-          cat << EOF > .yarnrc.yml
-          yarnPath: .yarn/releases/yarn-4.3.1.cjs
-          nodeLinker: pnp
-          enableGlobalCache: false
-          npmScopes:
-            pozalabs:
-              npmRegistryServer: "https://npm.pkg.github.com"
-              npmAlwaysAuth: true
-              npmAuthToken: "${{ secrets.NPM_AUTH_TOKEN }}"
-          EOF
+      - name: Setup Bun
+        uses: oven-sh/setup-bun@v2
 
       - name: Install dependencies
-        run: yarn install
+        run: bun install --frozen-lockfile
 
       - name: Run vitest
-        run: yarn test
+        run: bun run test
