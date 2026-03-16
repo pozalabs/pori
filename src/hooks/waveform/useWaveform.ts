@@ -45,6 +45,16 @@ import type { UseWaveformParams, UseWaveformReturns, WaveformType } from '../../
  *    waveform?: T extends 'canvas' ? HTMLCanvasElement : T extends 'svg' ? SVGSVGElement : undefined;
  * }
  * ```
+ *
+ * @example
+ * ```tsx
+ * import { useWaveform } from '@pozalabs/pori';
+ *
+ * function WaveformPlayer() {
+ *   const { waveform, isPlaying, play, pause } = useWaveform({ src: '/audio.mp3' });
+ *   return <div ref={(el) => el && waveform && el.appendChild(waveform)} />;
+ * }
+ * ```
  */
 const useWaveform = <T extends WaveformType = 'canvas'>({
   src,

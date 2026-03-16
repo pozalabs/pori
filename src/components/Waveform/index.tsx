@@ -20,6 +20,18 @@ import type { UseWaveformParams, WaveformHandles, WaveformType } from '../../typ
  *    changeCurrentTime: (currentTime: number) => void;
  * }
  * ```
+ *
+ * @example
+ * ```tsx
+ * import { useRef } from 'react';
+ * import { Waveform } from '@pozalabs/pori';
+ * import type { WaveformHandles } from '@pozalabs/pori';
+ *
+ * function Player() {
+ *   const ref = useRef<WaveformHandles>(null);
+ *   return <Waveform ref={ref} src="/audio.mp3" />;
+ * }
+ * ```
  */
 const Waveform = forwardRef(
   <T extends WaveformType>(props: UseWaveformParams<T>, ref: ForwardedRef<WaveformHandles>) => {

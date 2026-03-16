@@ -61,6 +61,16 @@ import type { UseAudioParams, UseAudioReturns } from '../../types';
  * }
  * ```
  * - `playbackRange` - Represents currentTime scaled to maxPlaybackRange. Defaults to a percentage (0-100).
+ *
+ * @example
+ * ```tsx
+ * import { useAudio } from '@pozalabs/pori';
+ *
+ * function Player() {
+ *   const { isPlaying, togglePlayPause } = useAudio({ src: '/audio.mp3' });
+ *   return <button onClick={() => togglePlayPause()}>{isPlaying ? 'Pause' : 'Play'}</button>;
+ * }
+ * ```
  */
 const useAudio = ({
   autoplay = AUDIO_DEFAULT_VALUE.autoplay,

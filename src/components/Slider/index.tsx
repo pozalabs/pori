@@ -29,6 +29,17 @@ import cn from '../../utils/cn';
  * - `max` - Max value (default: `100`)
  * - `min` - Min value (default: `0`)
  * - `step` - Step increment. Values from click and drag events are rounded to this unit. (default: `1`)
+ *
+ * @example
+ * ```tsx
+ * import { useState } from 'react';
+ * import { Slider } from '@pozalabs/pori';
+ *
+ * function VolumeControl() {
+ *   const [volume, setVolume] = useState(50);
+ *   return <Slider value={volume} onChange={setVolume} />;
+ * }
+ * ```
  */
 const Slider = ({
   orientation = SLIDER_DEFAULT_VALUE.orientation,
