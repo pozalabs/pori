@@ -21,6 +21,12 @@ npm install @pozalabs/pori
 
 > Requires React 18 or later.
 
+For HLS streaming (`.m3u8`), install `hls.js` as well:
+
+```bash
+npm install hls.js
+```
+
 ## Quick Start
 
 ### Compose an audio player

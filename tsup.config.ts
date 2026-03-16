@@ -16,7 +16,7 @@ export default defineConfig({
   splitting: true,
   outDir: './dist',
   format: ['cjs', 'esm'],
-  external: ['react', 'react-dom'],
+  external: ['react', 'react-dom', 'hls.js'],
   onSuccess: 'node ./.scripts/import-css.js && sh ./.scripts/declare-type.sh',
   esbuildOptions: options => {
     options.loader = {
