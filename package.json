@@ -1,7 +1,21 @@
 {
   "name": "@pozalabs/pori",
   "version": "0.5.6",
-  "description": "Pozalabs audio library for react",
+  "description": "Audio library for React — waveform visualization, HLS streaming, and playlist management",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/pozalabs/pori.git"
+  },
+  "homepage": "https://github.com/pozalabs/pori",
+  "keywords": [
+    "audio",
+    "react",
+    "waveform",
+    "player",
+    "playlist",
+    "hls"
+  ],
   "main": "./dist/index.js",
   "module": "./dist/index.mjs",
   "types": "./dist/index.d.ts",
