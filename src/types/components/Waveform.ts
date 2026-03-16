@@ -1,7 +1,7 @@
 import type { RefObject } from 'react';
 
 /**
- * This is the type of ref passed to `Waveform`. You can use waveformRef to bind the desired behavior to the waveform.
+ * Ref handle for the `Waveform` component. Provides access to the waveform element and audio controls.
  */
 export interface WaveformHandles {
   waveformRef: RefObject<HTMLDivElement>;

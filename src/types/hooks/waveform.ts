@@ -1,12 +1,12 @@
 import type { DOMAttributes } from 'react';
 
 /**
- * Type for type prop of waveform.
+ * Rendering type for waveform.
  */
 export type WaveformType = 'canvas' | 'svg';
 
 /**
- * The event type of the audio element.
+ * Event handlers for the audio element.
  */
 export type HTMLAudioElementEventType = Omit<
   DOMAttributes<HTMLAudioElement>,
@@ -14,7 +14,7 @@ export type HTMLAudioElementEventType = Omit<
 >;
 
 /**
- * The parameter type for the useWaveform hook.
+ * Params for the useWaveform hook.
  */
 export interface UseWaveformParams<T extends WaveformType> extends HTMLAudioElementEventType {
   src: string;
@@ -35,7 +35,7 @@ export interface UseWaveformParams<T extends WaveformType> extends HTMLAudioElem
 }
 
 /**
- * The return type for the useWaveform hook.
+ * Return type of the useWaveform hook.
  */
 export interface UseWaveformReturns<T extends WaveformType> {
   isPlaying: boolean;

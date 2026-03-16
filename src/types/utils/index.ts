@@ -1,5 +1,5 @@
 /**
- * The parameter type for the fetchAudio function.
+ * Params for the fetchAudio function.
  */
 export interface FetchAudioParams {
   src: string;
@@ -9,7 +9,7 @@ export interface FetchAudioParams {
 }
 
 /**
- * The return type for the fetchAudio function.
+ * Return type of the fetchAudio function.
  */
 export interface FetchAudioReturns {
   url: string;
@@ -18,7 +18,7 @@ export interface FetchAudioReturns {
 }
 
 /**
- * The return type for the getAudioFileInformation function.
+ * Return type of the getAudioFileInformation function.
  */
 export type GetAudioFileInformationReturns = Promise<{
   audioType: string;

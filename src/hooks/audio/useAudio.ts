@@ -9,7 +9,7 @@ import useKeyBinding from './useKeyboardControl';
 import type { UseAudioParams, UseAudioReturns } from '../../types';
 
 /**
- * This is a hook that allows controlling audio. Currently, it supports audio playback and volume control.
+ * Controls audio playback and volume.
  * @param UseAudioParams
  * ```
  * interface UseAudioParams {
@@ -23,14 +23,14 @@ import type { UseAudioParams, UseAudioReturns } from '../../types';
  *    timeShift?: number;
  * }
  * ```
- * - `autoplay` : auto-play feature (default : false)
- * - `enabledKeyboardControl` : controls via keyboard (default : false)
- * - `loop` : audio repeat (default : false)
- * - `maxPlaybackRange` : The maximum value for progress, when converting the current playback time (default : 100)
- * - `maxVolume` : current max volume value (default : 1)
- * - `preventDefaultKeyboardEvent` : execute preventDefault in a keyboard control event (default : true)
- * - `src` : audio source url
- * - `timeShift` : skipping audio time(seconds) (default : 10)
+ * - `autoplay` - Whether to auto-play on mount (default: `false`)
+ * - `enabledKeyboardControl` - Whether to enable keyboard controls (default: `false`)
+ * - `loop` - Whether to loop the audio (default: `false`)
+ * - `maxPlaybackRange` - Maximum value for playback progress (default: `100`)
+ * - `maxVolume` - Maximum volume value (default: `1`)
+ * - `preventDefaultKeyboardEvent` - Whether to call preventDefault on keyboard events (default: `true`)
+ * - `src` - Audio source URL
+ * - `timeShift` - Time skip duration in seconds (default: `10`)
  * @returns
  * `UseAudioReturns`
  * ```
@@ -60,7 +60,7 @@ import type { UseAudioParams, UseAudioReturns } from '../../types';
  *    togglePlayPause: (src?: string) => void;
  * }
  * ```
- * - `playbackRange` : The currentTime is converted to a value based on the maxPlaybackRange parameter. If the maxPlaybackRange is not customized, the default playback range is converted to a percentage.
+ * - `playbackRange` - Represents currentTime scaled to maxPlaybackRange. Defaults to a percentage (0-100).
  */
 const useAudio = ({
   autoplay = AUDIO_DEFAULT_VALUE.autoplay,

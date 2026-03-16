@@ -16,34 +16,34 @@ import AudioPlayerStopButton from './_components/buttons/AudioPlayerStopButton';
 import AudioPlayerVolumeButton from './_components/buttons/AudioPlayerVolumeButton';
 
 /**
- * This is an audio player that can be customized with the desired UI.
- * The components provided are as follows:
+ * Customizable audio player with compound components.
+ *
+ * All sub-components must be wrapped with `AudioPlayer.Provider`.
+ * Button components render a custom image as the button icon.
  * - Provider
  * - Playlist
  * - CurrentTime
  * - Duration
  * - ProgressBar
  * - VolumeProgressBar
- * - Buttons based on images
- *    - PlayButton
- *    - PauseButton
- *    - PlayPauseButton
- *    - StopButton
- *    - ShiftForwardButton
- *    - ShiftBackwardButton
- *    - SkipStartButton
- *    - SkipEndButton
- *    - RepeatButton
- *    - VolumeButton
+ * - PlayButton
+ * - PauseButton
+ * - PlayPauseButton
+ * - StopButton
+ * - ShiftForwardButton
+ * - ShiftBackwardButton
+ * - SkipStartButton
+ * - SkipEndButton
+ * - RepeatButton
+ * - VolumeButton
  */
 const AudioPlayer = {
   /**
-   * This is a component that contains the logic of the audio player.
-   * Please note that it will not work properly if you do not wrap another audio player component with this component.
+   * Provides audio player state and logic to child components.
    */
   Provider: AudioPlayerProvider,
   /**
-   * This is a component that draws the playlist list of the audio player.
+   * Renders the audio player's playlist.
    * @param AudioPlayerPlaylistProps
    * ```
    * interface AudioPlayerPlaylistProps {
@@ -54,8 +54,7 @@ const AudioPlayer = {
    */
   Playlist: AudioPlayerPlaylist,
   /**
-   * This is a component that draws the current playback time of the audio player.
-   * The time string changes depending on the format you pass in.
+   * Displays the current playback time.
    * @param AudioPlayerCurrentTimeProps
    * ```
    * interface AudioPlayerCurrentTimeProps {
@@ -63,12 +62,11 @@ const AudioPlayer = {
    *    format?: 'SS' | 'S' | 'MM:SS' | 'M:S' | 'HH:MM:SS' | 'H:M:S';
    * }
    * ```
-   * - format : Time format. (default : `'MM:SS'`)
+   * - `format` - Time display format (default: `'MM:SS'`)
    */
   CurrentTime: AudioPlayerCurrentTime,
   /**
-   * This component plots the total playback time of the currently playing audio.
-   * The time string changes depending on the format you pass in.
+   * Displays the total duration of the current audio.
    * @param AudioPlayerDurationProps
    * ```
    * interface AudioPlayerDurationProps {
@@ -76,36 +74,33 @@ const AudioPlayer = {
    *    format?: 'SS' | 'S' | 'MM:SS' | 'M:S' | 'HH:MM:SS' | 'H:M:S';
    * }
    * ```
-   * - format : Time format (default : `'MM:SS'`)
+   * - `format` - Time display format (default: `'MM:SS'`)
    */
   Duration: AudioPlayerDuration,
   /**
-   * This is the playback bar of the audio player.
-   * Inherits the functionality of the Slider component.
+   * Playback progress bar. Extends the Slider component.
    * @param AudioPlayerProgressBarProps
    * ```
    * interface AudioPlayerProgressBarProps extends Omit<Parameters<typeof Slider>[0], 'max' | 'min' | 'value' | 'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
    *    draggable?: boolean;
    * }
    * ```
-   * - draggable : Whether draggability is possible. (default : `true`)
+   * - `draggable` - Whether dragging is enabled (default: `true`)
    */
   ProgressBar: AudioPlayerProgressBar,
   /**
-   * This is the audio player's volume control bar.
-   * Inherits the functionality of the Slider component.
+   * Volume control bar. Extends the Slider component.
    * @param AudioPlayerVolumeProgressBarProps
    * ```
    * interface AudioPlayerVolumeProgressBarProps extends Omit<Parameters<typeof Slider>[0], 'max' | 'min' | 'value' | 'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'> {
    *    draggable?: boolean;
    * }
    * ```
-   * - draggable : Whether draggability is possible. (default : `true`)
+   * - `draggable` - Whether dragging is enabled (default: `true`)
    */
   VolumeProgressBar: AudioPlayerVolumeProgressBar,
   /**
-   * Audio player play button.
-   * It operates based on images.
+   * Plays the audio.
    * @param AudioPlayerPlayButton
    * ```
    * interface AudioPlayerPlayButton {
@@ -115,13 +110,12 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : width of image (default : `32`)
-   * - height : height of image (default : `32`)
+   * - `width` - Icon width (default: `32`)
+   * - `height` - Icon height (default: `32`)
    */
   PlayButton: AudioPlayerPlayButton,
   /**
-   * This is the audio player pause button.
-   * It operates based on images.
+   * Pauses the audio.
    * @param AudioPlayerPauseButton
    * ```
    * interface AudioPlayerPauseButton {
@@ -131,13 +125,12 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : width of image (default : `32`)
-   * - height : height of image (default : `32`)
+   * - `width` - Icon width (default: `32`)
+   * - `height` - Icon height (default: `32`)
    */
   PauseButton: AudioPlayerPauseButton,
   /**
-   * This button operates as play or pause depending on the current playback status.
-   * It operates based on images.
+   * Toggles between play and pause based on the current playback state.
    * @param AudioPlayerPlayPauseButton
    * ```
    * interface AudioPlayerPlayPauseButton {
@@ -149,13 +142,12 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : width of image (default : `32`)
-   * - height : height of image (default : `32`)
+   * - `width` - Icon width (default: `32`)
+   * - `height` - Icon height (default: `32`)
    */
   PlayPauseButton: AudioPlayerPlayPauseButton,
   /**
-   * This is the audio player stop button.
-   * It operates based on images.
+   * Stops the audio and resets playback.
    * @param AudioPlayerStopButton
    * ```
    * interface AudioPlayerStopButton {
@@ -165,13 +157,12 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : width of image (default : `32`)
-   * - height : height of image (default : `32`)
+   * - `width` - Icon width (default: `32`)
+   * - `height` - Icon height (default: `32`)
    */
   StopButton: AudioPlayerStopButton,
   /**
-   * This button changes the playback time to the previous timeShift seconds. (timeShift is the value passed to the Provider.)
-   * It operates based on images.
+   * Shifts the playback time forward by timeShift seconds. (timeShift is configured via the Provider.)
    * @param AudioPlayerShiftForwardButton
    * ```
    * interface AudioPlayerShiftForwardButton {
@@ -181,13 +172,12 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : width of image (default : `32`)
-   * - height : height of image (default : `32`)
+   * - `width` - Icon width (default: `32`)
+   * - `height` - Icon height (default: `32`)
    */
   ShiftForwardButton: AudioPlayerShiftForwardButton,
   /**
-   * This button changes the playback time by timeShift seconds. (timeShift is the value passed to the Provider.)
-   * It operates based on images.
+   * Shifts the playback time backward by timeShift seconds. (timeShift is configured via the Provider.)
    * @param AudioPlayerShiftBackwardButton
    * ```
    * interface AudioPlayerShiftBackwardButton {
@@ -197,14 +187,12 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : width of image (default : `32`)
-   * - height : height of image (default : `32`)
+   * - `width` - Icon width (default: `32`)
+   * - `height` - Icon height (default: `32`)
    */
   ShiftBackwardButton: AudioPlayerShiftBackwardButton,
   /**
-   * This button plays the beginning of the song if the current play time is more than shiftThreshold seconds, and the previous song if it is less than shiftThreshold seconds.
-   * (shiftThreshold is a value passed as a prop.)
-   * It operates based on images.
+   * Restarts the current audio if playback exceeds shiftThreshold seconds; otherwise, skips to the previous audio.
    * @param AudioPlayerSkipStartButton
    * ```
    * interface AudioPlayerSkipStartButton {
@@ -215,14 +203,13 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - shiftThreshold : This value is the standard for determining whether to play the first or previous song. It is in seconds. (default : `2`)
-   * - width : width of image (default : `32`)
-   * - height : height of image (default : `32`)
+   * - `shiftThreshold` - Threshold in seconds to decide between restarting and skipping to the previous audio (default: `2`)
+   * - `width` - Icon width (default: `32`)
+   * - `height` - Icon height (default: `32`)
    */
   SkipStartButton: AudioPlayerSkipStartButton,
   /**
-   * This button plays the next song.
-   * It operates based on images.
+   * Skips to the next audio.
    * @param AudioPlayerSkipEndButton
    * ```
    * interface AudioPlayerSkipEndButton {
@@ -232,13 +219,12 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : width of image (default : `32`)
-   * - height : height of image (default : `32`)
+   * - `width` - Icon width (default: `32`)
+   * - `height` - Icon height (default: `32`)
    */
   SkipEndButton: AudioPlayerSkipEndButton,
   /**
-   * This button toggles repeat playback mode. (No repeat -> Repeat all -> Repeat one song -> No repeat)
-   * It operates based on images.
+   * Toggles repeat mode. (none -> all -> one -> none)
    * @param AudioPlayerRepeatButton
    * ```
    * interface AudioPlayerRepeatButton {
@@ -250,13 +236,12 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : width of image (default : `32`)
-   * - height : height of image (default : `32`)
+   * - `width` - Icon width (default: `32`)
+   * - `height` - Icon height (default: `32`)
    */
   RepeatButton: AudioPlayerRepeatButton,
   /**
-   * This is the volume button.
-   * It operates based on images.
+   * Toggles mute.
    * @param AudioPlayerVolumeButton
    * ```
    * interface AudioPlayerVolumeButton {
@@ -267,8 +252,8 @@ const AudioPlayer = {
    *    className?: number;
    * }
    * ```
-   * - width : width of image (default : `32`)
-   * - height : height of image (default : `32`)
+   * - `width` - Icon width (default: `32`)
+   * - `height` - Icon height (default: `32`)
    */
   VolumeButton: AudioPlayerVolumeButton,
 };

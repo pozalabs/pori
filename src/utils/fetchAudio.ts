@@ -112,8 +112,7 @@ const fetchChunksWithConcurrentLimit = async ({
 };
 
 /**
- * This is a utility function that splits an audio file into chunks, downloads them in parallel, and returns the result.
- * It generates and returns the audio file in the form of a URL, Blob, and ArrayBuffer.
+ * Downloads an audio file in parallel chunks and returns the result as a URL, Blob, and ArrayBuffer.
  * @param FetchAudioParams
  * ```
  * interface FetchAudioParams {

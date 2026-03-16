@@ -2,7 +2,7 @@ import type { ArrayElementType } from '../../../types';
 import type { Playlist, RepeatModeType } from '../../../types';
 
 /**
- * Type for the audio player context value.
+ * Context value for the audio player.
  */
 export interface AudioPlayerContextType {
   currentSrc: string;

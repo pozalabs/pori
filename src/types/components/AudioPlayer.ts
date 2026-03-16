@@ -6,12 +6,12 @@ import type { Playlist } from '../hooks';
 import type { ArrayElementType, WithArray } from '../utils';
 
 /**
- * Type of time format used to export current time and duration.
+ * Time format for displaying current time and duration.
  */
 export type AudioPlayerTimeFormat = 'SS' | 'S' | 'MM:SS' | 'M:S' | 'HH:MM:SS' | 'H:M:S';
 
 /**
- * This is the type of ref passed to `AudioPlayer.Provider`. Contains all functions returned by useAudio and usePlaylist. (excluding src manipulation)
+ * Ref handle for `AudioPlayer.Provider`. Contains all controls from useAudio and usePlaylist, excluding source management.
  */
 export interface AudioPlayerHandles {
   addAudio: (audio: ArrayElementType<Playlist>, autoplay?: boolean) => void;
@@ -38,14 +38,14 @@ export interface AudioPlayerHandles {
 }
 
 /**
- * The prop type of `AudioPlayer.Provider`.
+ * Props for `AudioPlayer.Provider`.
  */
 export interface AudioPlayerProviderProps extends Omit<Parameters<typeof usePlaylist>[0], ''> {
   children?: WithArray<ReactNode>;
 }
 
 /**
- * The prop type of `AudioPlayer.ProgressBar` and `AudioPlayer.VolumeProgressBar`.
+ * Props for `AudioPlayer.ProgressBar` and `AudioPlayer.VolumeProgressBar`.
  */
 export interface AudioPlayerProgressBarProps extends Omit<
   Parameters<typeof Slider>[0],
@@ -55,12 +55,12 @@ export interface AudioPlayerProgressBarProps extends Omit<
 }
 
 /**
- * The prop type of `AudioPlayer.VolumeProgressBar`.
+ * Props for `AudioPlayer.VolumeProgressBar`.
  */
 export type AudioPlayerVolumeProgressBarProps = AudioPlayerProgressBarProps;
 
 /**
- * Common prop type of buttons provided by AudioPlayer.
+ * Common props for AudioPlayer buttons.
  */
 export interface AudioPlayerButtonProps {
   width?: number;
@@ -69,44 +69,44 @@ export interface AudioPlayerButtonProps {
 }
 
 /**
- * Common prop type of src button provided by AudioPlayer.
+ * Common props for AudioPlayer buttons that accept a custom icon.
  */
 export interface AudioPlayerSrcButtonProps extends AudioPlayerButtonProps {
   src?: ReactNode;
 }
 
 /**
- * The prop type of `AudioPlayer.PauseButton`.
+ * Props for `AudioPlayer.PauseButton`.
  */
 export type AudioPlayerPauseButtonProps = AudioPlayerSrcButtonProps;
 
 /**
- * The prop type of `AudioPlayer.PlayButton`.
+ * Props for `AudioPlayer.PlayButton`.
  */
 export type AudioPlayerPlayButtonProps = AudioPlayerSrcButtonProps;
 
 /**
- * The prop type of `AudioPlayer.ShiftBackwardButton`.
+ * Props for `AudioPlayer.ShiftBackwardButton`.
  */
 export type AudioPlayerShiftBackwardButtonProps = AudioPlayerSrcButtonProps;
 
 /**
- * The prop type of `AudioPlayer.ShiftForwardButton`.
+ * Props for `AudioPlayer.ShiftForwardButton`.
  */
 export type AudioPlayerShiftForwardButtonProps = AudioPlayerSrcButtonProps;
 
 /**
- * The prop type of `AudioPlayer.SkipEndButton`.
+ * Props for `AudioPlayer.SkipEndButton`.
  */
 export type AudioPlayerSkipEndButtonProps = AudioPlayerSrcButtonProps;
 
 /**
- * The prop type of `AudioPlayer.StopButton`.
+ * Props for `AudioPlayer.StopButton`.
  */
 export type AudioPlayerStopButtonProps = AudioPlayerSrcButtonProps;
 
 /**
- * The prop type of `AudioPlayer.PlayPauseButton`.
+ * Props for `AudioPlayer.PlayPauseButton`.
  */
 export interface AudioPlayerPlayPauseButtonProps extends AudioPlayerButtonProps {
   audioId?: ArrayElementType<Playlist>['id'];
@@ -115,7 +115,7 @@ export interface AudioPlayerPlayPauseButtonProps extends AudioPlayerButtonProps 
 }
 
 /**
- * The prop type of `AudioPlayer.RepeatButton`.
+ * Props for `AudioPlayer.RepeatButton`.
  */
 export interface AudioPlayerRepeatButtonProps extends AudioPlayerButtonProps {
   repeatAllSrc?: ReactNode;
@@ -124,14 +124,14 @@ export interface AudioPlayerRepeatButtonProps extends AudioPlayerButtonProps {
 }
 
 /**
- * The prop type of `AudioPlayer.SkipStartButton`.
+ * Props for `AudioPlayer.SkipStartButton`.
  */
 export interface AudioPlayerSkipStartButtonProps extends AudioPlayerSrcButtonProps {
   shiftThreshold?: number;
 }
 
 /**
- * The prop type of `AudioPlayer.VolumeButton`.
+ * Props for `AudioPlayer.VolumeButton`.
  */
 export interface AudioPlayerVolumeButtonProps extends AudioPlayerButtonProps {
   volumeSrc?: ReactNode;
@@ -139,7 +139,7 @@ export interface AudioPlayerVolumeButtonProps extends AudioPlayerButtonProps {
 }
 
 /**
- * The prop type of `AudioPlayer.CurrentTime` and `AudioPlayer.Duration`.
+ * Props for `AudioPlayer.CurrentTime` and `AudioPlayer.Duration`.
  */
 export interface AudioPlayerTimeProps {
   className?: string;
@@ -147,17 +147,17 @@ export interface AudioPlayerTimeProps {
 }
 
 /**
- * The prop type of `AudioPlayer.CurrentTime`.
+ * Props for `AudioPlayer.CurrentTime`.
  */
 export type AudioPlayerCurrentTimeProps = AudioPlayerTimeProps;
 
 /**
- * The prop type of `AudioPlayer.Duration`.
+ * Props for `AudioPlayer.Duration`.
  */
 export type AudioPlayerDurationProps = AudioPlayerTimeProps;
 
 /**
- * The prop type of `AudioPlayer.Playlist`.
+ * Props for `AudioPlayer.Playlist`.
  */
 export interface AudioPlayerPlaylistProps extends HTMLAttributes<HTMLUListElement> {
   renderItem: (audio: ArrayElementType<Playlist>, index?: number) => ReactNode;
