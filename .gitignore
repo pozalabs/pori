@@ -4,5 +4,6 @@ coverage
 node_modules
 
 .DS_Store
+.idea
 
 *.d.ts
