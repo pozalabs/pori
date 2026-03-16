@@ -12,11 +12,10 @@ export type SliderOrientationType =
 /**
  * The prop type of `Slider`.
  */
-export interface SliderProps
-  extends Omit<
-    InputHTMLAttributes<HTMLInputElement>,
-    'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'
-  > {
+export interface SliderProps extends Omit<
+  InputHTMLAttributes<HTMLInputElement>,
+  'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'
+> {
   orientation?: SliderOrientationType;
   max?: number;
   min?: number;

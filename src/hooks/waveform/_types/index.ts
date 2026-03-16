@@ -1,21 +1,20 @@
 import type { UseWaveformParams, WaveformType } from '../../../types';
 
-export interface UseTypeWaveformParams<T extends WaveformType>
-  extends Required<
-    Pick<
-      UseWaveformParams<T>,
-      | 'variant'
-      | 'width'
-      | 'height'
-      | 'gap'
-      | 'waveColor'
-      | 'progressColor'
-      | 'hoveredColor'
-      | 'bgColor'
-      | 'className'
-      | 'controls'
-    >
-  > {
+export interface UseTypeWaveformParams<T extends WaveformType> extends Required<
+  Pick<
+    UseWaveformParams<T>,
+    | 'variant'
+    | 'width'
+    | 'height'
+    | 'gap'
+    | 'waveColor'
+    | 'progressColor'
+    | 'hoveredColor'
+    | 'bgColor'
+    | 'className'
+    | 'controls'
+  >
+> {
   enabled: boolean;
   peaks: number[];
   currentTime: number;

@@ -47,11 +47,10 @@ export interface AudioPlayerProviderProps extends Omit<Parameters<typeof usePlay
 /**
  * The prop type of `AudioPlayer.ProgressBar` and `AudioPlayer.VolumeProgressBar`.
  */
-export interface AudioPlayerProgressBarProps
-  extends Omit<
-    Parameters<typeof Slider>[0],
-    'max' | 'min' | 'value' | 'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'
-  > {
+export interface AudioPlayerProgressBarProps extends Omit<
+  Parameters<typeof Slider>[0],
+  'max' | 'min' | 'value' | 'onChange' | 'onDrag' | 'onDragStart' | 'onDragEnd'
+> {
   draggable?: boolean;
 }
 
