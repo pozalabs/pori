@@ -1,11 +1,8 @@
 dist
 coverage
-storybook-static
 
 node_modules
 
 .DS_Store
-
-*storybook.log
 
 *.d.ts

@@ -92,7 +92,6 @@ function CustomPlayer({ src }: { src: string }) {
 
 ```bash
 bun dev            # Dev server (port 3000)
-bun storybook      # Storybook (port 6006)
 bun run build      # Build with tsup
 bun run test       # Run tests
 bun run lint       # Lint
