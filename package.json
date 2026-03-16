@@ -68,7 +68,7 @@
   "scripts": {
     "build": "tsup",
     "dev": "vite",
-    "test": "vitest",
+    "test": "vitest --run",
     "coverage": "vitest run --coverage",
     "tsc": "tsc --noEmit",
     "lint": "eslint src --report-unused-disable-directives --max-warnings 0",
